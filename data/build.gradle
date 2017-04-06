@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -28,4 +30,21 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.2.0'
     testCompile 'junit:junit:4.12'
+
+
+    // Retrofit
+    compile "com.squareup.retrofit2:retrofit:2.1.0"
+    compile "com.squareup.retrofit2:converter-gson:2.1.0"
+    compile "com.squareup.retrofit2:adapter-rxjava:2.1.0"
+
+    // rx
+    compile "io.reactivex:rxjava:2.1.0"
+    compile "io.reactivex:rxandroid:1.2.1"
+    compile "com.github.VictorAlbertos.RxCache:runtime:1.6.9"
+    compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
+
+    // dagger
+    compile "com.google.dagger:dagger:2.7"
+    apt "com.google.dagger:dagger-compiler:2.7"
 }
+
