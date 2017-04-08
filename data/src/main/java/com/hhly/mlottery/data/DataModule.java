@@ -49,7 +49,8 @@ public class DataModule {
     @Provides
     @Singleton
     OkHttpClient provideOkHttpClient() {
-        OkHttpClient.Builder httpClientBuilder = new OkHttpClient().newBuilder();
+        OkHttpClient.Builder httpClientBuilder = new OkHttpClient().newBuilder()
+                .addInterceptor();
         httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         return httpClientBuilder.build();
     }
