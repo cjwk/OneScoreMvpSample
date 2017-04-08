@@ -7,8 +7,10 @@ import com.hhly.mlottery.frame.cpifrag.basketballtask.data.GetTaskSource;
 import com.hhly.mlottery.frame.cpifrag.basketballtask.data.IGetTaskSource;
 import com.hhly.mlottery.frame.cpifrag.basketballtask.data.OnTaskDataListener;
 import com.hhly.mlottery.mvp.BasePresenter;
+import com.hhly.mlottery.util.L;
 
 import rx.Observable;
+import rx.Subscriber;
 
 /**
  * @author: Wangg
@@ -62,6 +64,24 @@ public class BasketBallOddPresenter extends BasePresenter<BasketBallContract.Odd
     public void showLoad() {
 
         Observable<BasketIndex> observable = basketIndexReposeitory.getIndexList("zh", "8", "", "asiaLet", "1");
+        addSubscription(observable, new Subscriber<BasketIndex>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(BasketIndex basketIndex) {
+
+                L.d("xxccvvbb", "______" + basketIndex.getData().getAllInfo().get(0).getHomeTeam());
+
+            }
+        });
 
 
         mView.showLoadView();

@@ -15,6 +15,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
+import rx.android.schedulers.AndroidSchedulers;
 
 
 /**

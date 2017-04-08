@@ -6,6 +6,7 @@ import com.hhly.mlottery.data.DataManager;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -44,6 +45,7 @@ public abstract class BasePresenter<V extends IView> implements IPresenter<V> {
     @Override
     public void detachView() {
         //Rx取消注册
+        onUnSubscribe();
     }
 
 

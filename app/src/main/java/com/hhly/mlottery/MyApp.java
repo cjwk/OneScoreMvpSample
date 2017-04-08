@@ -8,7 +8,6 @@ import android.content.res.Resources;
 import android.support.multidex.MultiDex;
 import android.util.DisplayMetrics;
 
-import com.hhly.mlottery.config.BaseURLs;
 import com.hhly.mlottery.data.DataManager;
 import com.hhly.mlottery.util.AppConstants;
 import com.hhly.mlottery.util.CommonUtils;
@@ -109,7 +108,7 @@ public class MyApp extends Application {
     private void initDagger() {
 
         DaggerMyAppComponent.builder()
-                .myAppModule(new MyAppModule(this, BaseURLs.URL_MVP_API_HOST))
+                .myAppModule(new MyAppModule(this, "http://m.1332255.com:81/"))
                 .build()
                 .inject(this);
 
