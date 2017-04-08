@@ -3,7 +3,6 @@ package com.hhly.mlottery.data.repository;
 import com.hhly.mlottery.data.api.BasketIndexApi;
 import com.hhly.mlottery.data.bean.BasketIndex;
 
-import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -22,6 +21,6 @@ public class BasketIndexReposeitory {
 
     public Observable<BasketIndex> getIndexList(String lang, String timeZone, String date, String type, String appType) {
 
-        return mBasketIndexApi.getIndexList(lang,timeZone,date,type,appType).co
+        return mBasketIndexApi.getIndexList(lang, timeZone, date, type, appType);
     }
 }
