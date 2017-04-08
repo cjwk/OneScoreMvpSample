@@ -1,10 +1,14 @@
 package com.hhly.mlottery.frame.cpifrag.basketballtask;
 
 import com.hhly.mlottery.bean.basket.index.BasketIndexBean;
+import com.hhly.mlottery.data.bean.BasketIndex;
+import com.hhly.mlottery.data.repository.BasketIndexReposeitory;
 import com.hhly.mlottery.frame.cpifrag.basketballtask.data.GetTaskSource;
 import com.hhly.mlottery.frame.cpifrag.basketballtask.data.IGetTaskSource;
 import com.hhly.mlottery.frame.cpifrag.basketballtask.data.OnTaskDataListener;
 import com.hhly.mlottery.mvp.BasePresenter;
+
+import rx.Observable;
 
 /**
  * @author: Wangg
@@ -20,8 +24,12 @@ public class BasketBallOddPresenter extends BasePresenter<BasketBallContract.Odd
 
     private BasketIndexBean basketIndexBean;
 
+    private BasketIndexReposeitory basketIndexReposeitory;
+
     public BasketBallOddPresenter(BasketBallContract.OddView view) {
         super(view);
+
+        basketIndexReposeitory = mDataManager.basketIndexReposeitory;
     }
 
 
@@ -52,6 +60,10 @@ public class BasketBallOddPresenter extends BasePresenter<BasketBallContract.Odd
 
     @Override
     public void showLoad() {
+
+        Observable<BasketIndex> observable = basketIndexReposeitory.getIndexList("zh", "8", "", "asiaLet", "1");
+
+
         mView.showLoadView();
     }
 
