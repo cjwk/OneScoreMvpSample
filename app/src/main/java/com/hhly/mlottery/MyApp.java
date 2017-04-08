@@ -40,9 +40,8 @@ public class MyApp extends Application {
     public static double LA;// 用户所在经度
     public static double LO;// 用户所在纬度
 
-
-
     private static MyApp myApp;
+
 
 
     @Override
@@ -100,7 +99,6 @@ public class MyApp extends Application {
 
 
     private void initDagger() {
-
 
     }
 

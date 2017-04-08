@@ -6,9 +6,16 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
 
+
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
+
+
+
+
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 25
+        minSdkVersion 16
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
 
@@ -32,20 +39,23 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     // Retrofit
-    compile "com.squareup.retrofit2:retrofit:2.1.0"
-    compile "com.squareup.retrofit2:converter-gson:2.1.0"
-    compile "com.squareup.retrofit2:adapter-rxjava:2.1.0"
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
 
-    // rx
-    compile "io.reactivex:rxjava:1.1.2"
-    compile "io.reactivex:rxandroid:1.2.1"
+
+    compile 'io.reactivex:rxjava:1.1.2'
+    compile 'io.reactivex:rxandroid:1.1.0'
+
     compile "com.github.VictorAlbertos.RxCache:runtime:1.6.9"
     compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
 
 
     // dagger
     compile "com.google.dagger:dagger:2.7"
     apt "com.google.dagger:dagger-compiler:2.7"
+    compile 'com.google.android:multidex:0.1'
 
 
 }

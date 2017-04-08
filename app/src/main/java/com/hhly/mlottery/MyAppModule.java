@@ -26,6 +26,7 @@ public class MyAppModule {
         this.mHostUrl = mHostUrl;
     }
 
+
     @Provides
     @Singleton
     DataManager provideDataManager() {
