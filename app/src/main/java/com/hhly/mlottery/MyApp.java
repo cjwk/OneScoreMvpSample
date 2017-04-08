@@ -8,6 +8,8 @@ import android.content.res.Resources;
 import android.support.multidex.MultiDex;
 import android.util.DisplayMetrics;
 
+import com.hhly.mlottery.config.BaseURLs;
+import com.hhly.mlottery.data.DataManager;
 import com.hhly.mlottery.util.AppConstants;
 import com.hhly.mlottery.util.CommonUtils;
 import com.hhly.mlottery.util.CrashException;
@@ -19,6 +21,8 @@ import com.hhly.mlottery.util.net.VolleyContentFast;
 import com.tendcloud.tenddata.TCAgent;
 
 import java.util.Locale;
+
+import javax.inject.Inject;
 
 import cn.finalteam.okhttpfinal.OkHttpFinal;
 import cn.finalteam.okhttpfinal.OkHttpFinalConfiguration;
@@ -43,6 +47,8 @@ public class MyApp extends Application {
     private static MyApp myApp;
 
 
+    @Inject
+    DataManager mDataManager;
 
     @Override
     public void onCreate() {
@@ -52,6 +58,8 @@ public class MyApp extends Application {
         new Thread() {
             @Override
             public void run() {
+
+                initDagger();
 
                 // 初始化TalkingData统计
                 TCAgent.LOG_ON = true;
@@ -100,6 +108,29 @@ public class MyApp extends Application {
 
     private void initDagger() {
 
+        DaggerMyAppComponent.builder()
+                .myAppModule(new MyAppModule(this, BaseURLs.URL_MVP_API_HOST))
+                .build()
+                .inject(this);
+
+    }
+
+    /**
+     * 获取 DataManager
+     *
+     * @return dataManager
+     */
+    public static DataManager getDataManager() {
+        return get().mDataManager;
+    }
+
+    /**
+     * 获取 Application 单例
+     *
+     * @return App
+     */
+    public static MyApp get() {
+        return myApp;
     }
 
 
