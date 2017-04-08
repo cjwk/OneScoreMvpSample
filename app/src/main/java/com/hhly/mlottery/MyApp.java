@@ -8,7 +8,6 @@ import android.content.res.Resources;
 import android.support.multidex.MultiDex;
 import android.util.DisplayMetrics;
 
-import com.hhly.mlottery.data.DataManager;
 import com.hhly.mlottery.util.AppConstants;
 import com.hhly.mlottery.util.CommonUtils;
 import com.hhly.mlottery.util.CrashException;
@@ -20,8 +19,6 @@ import com.hhly.mlottery.util.net.VolleyContentFast;
 import com.tendcloud.tenddata.TCAgent;
 
 import java.util.Locale;
-
-import javax.inject.Inject;
 
 import cn.finalteam.okhttpfinal.OkHttpFinal;
 import cn.finalteam.okhttpfinal.OkHttpFinalConfiguration;
@@ -43,9 +40,6 @@ public class MyApp extends Application {
     public static double LA;// 用户所在经度
     public static double LO;// 用户所在纬度
 
-
-    @Inject
-    DataManager mDataManager;
 
 
     private static MyApp myApp;
@@ -106,7 +100,6 @@ public class MyApp extends Application {
 
 
     private void initDagger() {
-
 
 
     }
