@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.support.multidex.MultiDex;
 import android.util.DisplayMetrics;
 
+import com.hhly.mlottery.config.BaseURLs;
 import com.hhly.mlottery.data.DataManager;
 import com.hhly.mlottery.util.AppConstants;
 import com.hhly.mlottery.util.CommonUtils;
@@ -53,12 +54,14 @@ public class MyApp extends Application {
     public void onCreate() {
         appcontext = this;
 
+        myApp = this;
+
         // 子线程中做初始化操作，提升APP打开速度
         new Thread() {
             @Override
             public void run() {
 
-                initDagger();
+                // initDagger();
 
                 // 初始化TalkingData统计
                 TCAgent.LOG_ON = true;
@@ -98,17 +101,20 @@ public class MyApp extends Application {
                 OkHttpFinalConfiguration.Builder builder = new OkHttpFinalConfiguration.Builder();
                 OkHttpFinal.getInstance().init(builder.build());
 
+                initDagger();
             }
         }.start();
 
         super.onCreate();
+
+
     }
 
 
     private void initDagger() {
 
         DaggerMyAppComponent.builder()
-                .myAppModule(new MyAppModule(this, "http://m.1332255.com:81/"))
+                .myAppModule(new MyAppModule(this, BaseURLs.URL_MVP_API_HOST))
                 .build()
                 .inject(this);
 
