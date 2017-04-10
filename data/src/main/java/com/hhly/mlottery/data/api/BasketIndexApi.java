@@ -16,6 +16,6 @@ import rx.Observable;
 public interface BasketIndexApi {
     //篮球指数列表
     @POST("mlottery/core/basketballMatch.findIndexList.do")
-    Observable<BasketIndex> getIndexList(@Query("lang") String lang, @Query("timeZone") String timeZone, @Query("date") String date, @Query("type") String type, @Query("appType") String appType);
+    Observable<BasketIndex> getIndexList(@Query("date") String date, @Query("type") String type, @Query("appType") String appType);
 
 }

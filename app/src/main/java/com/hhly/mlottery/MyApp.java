@@ -114,7 +114,7 @@ public class MyApp extends Application {
     private void initDagger() {
 
         DaggerMyAppComponent.builder()
-                .myAppModule(new MyAppModule(this, BaseURLs.URL_MVP_API_HOST))
+                .myAppModule(new MyAppModule(this, BaseURLs.URL_MVP_API_HOST, AppConstants.timeZone + "", VolleyContentFast.returenLanguage()))
                 .build()
                 .inject(this);
 

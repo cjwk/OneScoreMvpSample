@@ -19,8 +19,8 @@ public class BasketIndexReposeitory {
         this.mBasketIndexApi = mBasketIndexApi;
     }
 
-    public Observable<BasketIndex> getIndexList(String lang, String timeZone, String date, String type, String appType) {
+    public Observable<BasketIndex> getIndexList( String date, String type, String appType) {
 
-        return mBasketIndexApi.getIndexList(lang, timeZone, date, type, appType);
+        return mBasketIndexApi.getIndexList( date, type, appType);
     }
 }

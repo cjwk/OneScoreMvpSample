@@ -32,12 +32,17 @@ public class DataModule {
     private final String mApiHostUrl;
     private final Context context;
 
+    private final String timeZone;
+
+    private final String lang;
+
     private static final int DEFAULT_TIMEOUT = 5;
 
-    public DataModule(Context context, String apiHostUrl) {
+    public DataModule(Context context, String mApiHostUrl, String timeZone, String lang) {
+        this.mApiHostUrl = mApiHostUrl;
         this.context = context;
-        this.mApiHostUrl = apiHostUrl;
-
+        this.timeZone = timeZone;
+        this.lang = lang;
     }
 
     @Provides
@@ -48,13 +53,20 @@ public class DataModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient() {
+    OkHttpClient provideOkHttpClient(DataInterceptor dataInterceptor) {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient().newBuilder()
-                .addInterceptor();
+                .addInterceptor(dataInterceptor);
         httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         return httpClientBuilder.build();
     }
 
+
+    @Provides
+    @Singleton
+    DataInterceptor provideDataInterceptor() {
+        DataInterceptor dataInterceptor = new DataInterceptor(timeZone, lang);
+        return dataInterceptor;
+    }
 
     @Provides
     @Singleton

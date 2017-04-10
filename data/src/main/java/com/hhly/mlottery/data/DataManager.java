@@ -18,10 +18,10 @@ public class DataManager {
     @Inject
     public BasketIndexReposeitory basketIndexReposeitory;
 
-    public DataManager(Context context, String apiHostUrl) {
+    public DataManager(Context context, String apiHostUrl, String timeZone, String lang) {
 
         DaggerDataComponent.builder()
-                .dataModule(new DataModule(context, apiHostUrl))
+                .dataModule(new DataModule(context, apiHostUrl, timeZone, lang))
                 .build()
                 .inject(this);
 

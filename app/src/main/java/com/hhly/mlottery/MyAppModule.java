@@ -21,15 +21,20 @@ public class MyAppModule {
 
     private final String mHostUrl;
 
-    public MyAppModule(MyApp myApp, String mHostUrl) {
+    private final String timeZone;
+
+    private final String lang;
+
+    public MyAppModule(MyApp myApp, String mHostUrl, String timeZone, String lang) {
         this.myApp = myApp;
         this.mHostUrl = mHostUrl;
+        this.timeZone = timeZone;
+        this.lang = lang;
     }
-
 
     @Provides
     @Singleton
     DataManager provideDataManager() {
-        return new DataManager(myApp, mHostUrl);
+        return new DataManager(myApp, mHostUrl, timeZone, lang);
     }
 }
