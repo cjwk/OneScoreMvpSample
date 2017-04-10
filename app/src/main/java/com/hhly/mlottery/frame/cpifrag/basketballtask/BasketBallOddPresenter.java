@@ -64,6 +64,7 @@ public class BasketBallOddPresenter extends BasePresenter<BasketBallContract.Odd
     public void showLoad() {
 
         Observable<BasketIndex> observable = basketIndexReposeitory.getIndexList("", "asiaLet", "1");
+
         addSubscription(observable, new Subscriber<BasketIndex>() {
             @Override
             public void onCompleted() {
