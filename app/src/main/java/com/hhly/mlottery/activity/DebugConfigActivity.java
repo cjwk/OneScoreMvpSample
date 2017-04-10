@@ -34,7 +34,6 @@ public class DebugConfigActivity extends BaseActivity {
 
     public final static int DIY_INPUT = 8;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
