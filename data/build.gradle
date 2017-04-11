@@ -3,8 +3,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
 
 
     aaptOptions.cruncherEnabled = false
@@ -14,10 +14,10 @@ android {
 
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+        versionCode version_code
+        versionName version_name
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -35,27 +35,26 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    testCompile 'junit:junit:4.12'
+    compile "com.android.support:appcompat-v7:$data_support_version"
+    testCompile "junit:junit:$testCompile_version"
 
     // Retrofit
-    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
+    compile "com.squareup.retrofit2:retrofit:$retrofit2_version"
+    compile "com.squareup.retrofit2:converter-gson:$retrofit2_version"
+    compile "com.squareup.retrofit2:adapter-rxjava:$retrofit2_version"
 
 
-    compile 'io.reactivex:rxjava:1.1.2'
-    compile 'io.reactivex:rxandroid:1.1.0'
+    compile "io.reactivex:rxjava:$rxjava_version"
+    compile "io.reactivex:rxandroid:$rxandroid_version"
 
-    compile "com.github.VictorAlbertos.RxCache:runtime:1.6.9"
-    compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
-    compile 'com.squareup.okhttp:okhttp:2.5.0'
-
+    compile "com.github.VictorAlbertos.RxCache:runtime:$runtime_version"
+    compile "com.github.VictorAlbertos.Jolyglot:gson:$Jolyglot_gson_version"
+    compile "com.squareup.okhttp:okhttp:$okhttp_version"
 
     // dagger
-    compile "com.google.dagger:dagger:2.7"
-    apt "com.google.dagger:dagger-compiler:2.7"
-    compile 'com.google.android:multidex:0.1'
+    compile "com.google.dagger:dagger:$dagger_version"
+    apt "com.google.dagger:dagger-compiler:$dagger_version"
+    compile "com.google.android:multidex:$multidex_version"
 
 
 }
