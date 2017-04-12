@@ -16,7 +16,7 @@ import javax.inject.Inject;
 public class DataManager {
 
     @Inject
-    public BasketIndexReposeitory basketIndexReposeitory;
+    public BasketIndexReposeitory basketIndexReposeitory;   //在DataModule中已经被注入，dataManager里面可以直接使用
 
     public DataManager(Context context, String apiHostUrl, String timeZone, String lang) {
 
