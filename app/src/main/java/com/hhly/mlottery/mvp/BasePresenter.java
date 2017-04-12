@@ -25,7 +25,6 @@ public abstract class BasePresenter<V extends IView> implements IPresenter<V> {
     CompositeSubscription mCompositeSubscription;
 
     private BasePresenter() {
-
         mDataManager = MyApp.getDataManager();
 
 
