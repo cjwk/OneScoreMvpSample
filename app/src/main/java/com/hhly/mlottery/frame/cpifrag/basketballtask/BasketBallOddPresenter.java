@@ -63,6 +63,9 @@ public class BasketBallOddPresenter extends BasePresenter<BasketBallContract.Odd
     @Override
     public void showLoad() {
 
+
+        //使用龙帅他们的Mvp架构
+
         Observable<BasketIndex> observable = basketIndexReposeitory.getIndexList("", "asiaLet", "1");
 
         addSubscription(observable, new Subscriber<BasketIndex>() {
