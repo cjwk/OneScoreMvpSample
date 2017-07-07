@@ -1,8 +1,8 @@
 package com.hhly.mlottery.mvp;
 
 import com.hhly.mlottery.MyApp;
-import com.hhly.mlottery.data.DataManager;
 
+import data.DataManager;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -20,15 +20,19 @@ public abstract class BasePresenter<V extends IView> implements IPresenter<V> {
     protected final String TAG = getClass().getSimpleName();
     protected V mView; //子类presenter可以接调用
 
-    protected DataManager mDataManager;
+    public static String NODATA = "1";
+    public static String NETERROR = "2";
+
+    public DataManager mDataManager;
+
 
     CompositeSubscription mCompositeSubscription;
 
     private BasePresenter() {
+        // dataManagerr配置
+        //mDataManager  = MyApp.get
         mDataManager = MyApp.getDataManager();
 
-
-        // dataManagerr配置
     }
 
     public BasePresenter(V view) {
@@ -45,6 +49,7 @@ public abstract class BasePresenter<V extends IView> implements IPresenter<V> {
     public void detachView() {
         //Rx取消注册
         onUnSubscribe();
+
     }
 
 
@@ -68,6 +73,4 @@ public abstract class BasePresenter<V extends IView> implements IPresenter<V> {
                 .subscribe(subscriber);
         mCompositeSubscription.add(subscription);
     }
-
-
 }

@@ -63,7 +63,6 @@ public class BasketballSettingActivity extends BaseActivity implements OnClickLi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.basketball_setting);
 
@@ -277,7 +276,7 @@ public class BasketballSettingActivity extends BaseActivity implements OnClickLi
      */
     private void requestServer(String isPush) {
         String deviceId = AppConstants.deviceToken;
-        String userId = AppConstants.register.getData().getUser().getUserId();
+        String userId = AppConstants.register.getUser().getUserId();
         Map<String, String> params = new HashMap<>();
         params.put("deviceId", deviceId);
         params.put("userId", userId);

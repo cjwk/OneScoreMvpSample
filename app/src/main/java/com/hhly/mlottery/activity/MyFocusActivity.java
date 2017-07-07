@@ -1,102 +1,35 @@
 package com.hhly.mlottery.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.RadioGroup;
-import android.widget.TextView;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 
 import com.hhly.mlottery.R;
-import com.hhly.mlottery.frame.basketballframe.basketnewfragment.BasketballFocusNewFragment;
-import com.hhly.mlottery.frame.footballframe.FocusFragment;
-import com.hhly.mlottery.util.FragmentUtils;
-import com.umeng.analytics.MobclickAgent;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.hhly.mlottery.mvptask.myfocus.MyFocusFragment;
 
 /**
- * 我的关注界面
- * created by ：155马东运
+ * @author: Wangg
+ * @name：xxx
+ * @description: 我的关注
+ * @created on:2017/5/31  15:55.
  */
-public class MyFocusActivity extends BaseActivity implements View.OnClickListener{
 
-    @BindView(R.id.my_focus_radio_group)
-    RadioGroup mFocusGroup;
-    @BindView(R.id.public_img_back)
-    ImageView mImgBack;
-
-    TextView mSelectGameFocused; //点击关注比赛
-
-
-    FragmentManager fragmentManager;
-    private List<Fragment> fragments = new ArrayList<>();
-
-    private FocusFragment mFootballFocus;
-    private BasketballFocusNewFragment mBasketballFocus;
-    private Fragment currentFragment;
+public class MyFocusActivity extends BaseActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_focus);
-        ButterKnife.bind(this);
-        setListener();
-        initView();
-    }
+        setContentView(R.layout.focus_my);
 
-    private void setListener() {
-        mFocusGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-                    case R.id.my_focus_basket:
-                        switchFragment(0);
-                        break;
-                    case R.id.my_focus_football:
-                        switchFragment(1);
-                        break;
-                    default:
-                        break;
-                }
+        MyFocusFragment myFocusFragment = (MyFocusFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        if (myFocusFragment == null) {
+            myFocusFragment = MyFocusFragment.newInstance(getIntent().getIntExtra("type",0));
+            if (getSupportFragmentManager() != null && myFocusFragment != null) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.contentFrame, myFocusFragment);
+                transaction.commit();
             }
-        });
-    }
-
-    private void initView(){
-        mImgBack.setOnClickListener(this);
-        fragmentManager=getSupportFragmentManager();
-        mFootballFocus=FocusFragment.newInstance("","");
-        mBasketballFocus= BasketballFocusNewFragment.newInstance(0 , 0);
-        fragments.add(mBasketballFocus);
-        fragments.add(mFootballFocus);
-        switchFragment(0);
-
-    }
-
-
-    public void switchFragment(int position) {
-
-        currentFragment = FragmentUtils.switchFragment(fragmentManager, R.id.my_focus_container, currentFragment, fragments.get(position).getClass(), null, false, fragments.get(position).getClass().getSimpleName() + position, false);
-
-    }
-    public void replaceFragments(int position){
-        FragmentUtils.replaceFragment(fragmentManager,R.id.my_focus_container,fragments.get(position));
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.public_img_back:
-                MobclickAgent.onEvent(this, "MyFocusActivity_Exit");
-                finish();
-                break;
         }
     }
 }

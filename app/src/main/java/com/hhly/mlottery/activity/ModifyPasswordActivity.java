@@ -1,12 +1,11 @@
 package com.hhly.mlottery.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,9 +13,10 @@ import android.widget.TextView;
 import com.hhly.mlottery.MyApp;
 import com.hhly.mlottery.R;
 import com.hhly.mlottery.bean.account.BaseBean;
+import com.hhly.mlottery.bean.account.Register;
 import com.hhly.mlottery.config.BaseURLs;
 import com.hhly.mlottery.util.AppConstants;
-import com.hhly.mlottery.util.CommonUtils;
+import com.hhly.mlottery.util.DeviceInfo;
 import com.hhly.mlottery.util.L;
 import com.hhly.mlottery.util.PreferenceUtil;
 import com.hhly.mlottery.util.UiUtils;
@@ -37,6 +37,8 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
     private EditText et_password_old, et_password_new, et_password_confirm;
     private ProgressDialog progressBar;
     private ImageView mIv_eye;
+    private String language;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,9 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         et_password_old = (EditText) findViewById(R.id.et_password_old);
         et_password_new = (EditText) findViewById(R.id.et_password_new);
         et_password_confirm = (EditText) findViewById(R.id.et_password_confirm);
+
+
+
     }
 
     @Override
@@ -102,7 +107,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                     et_password_confirm.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     mIv_eye.setImageResource(R.mipmap.open_eye);
                 }  // 光标移动到结尾
-                CommonUtils.selectionLast(et_password_old, et_password_new, et_password_confirm);
+                DeviceInfo.selectionLast(et_password_old, et_password_new, et_password_confirm);
 
                 break;
             default:
@@ -112,7 +117,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
 
     private void modifyPassword() {
         String pwOld = et_password_old.getText().toString();
-        String pwNew = et_password_new.getText().toString();
+        final String pwNew = et_password_new.getText().toString();
         String pwConfirm = et_password_confirm.getText().toString();
 
         Resources res = getResources();
@@ -132,30 +137,44 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                         res.getString(R.string.comfirm_pw) + res.getString(R.string.pwd_format))) {
 
                     if (pwNew.equals(pwConfirm)) {
-
                         String url = BaseURLs.URL_CHANGEPASSWORD;
                         Map<String, String> param = new HashMap<>();
-                        param.put("account", PreferenceUtil.getString(AppConstants.SPKEY_LOGINACCOUNT,""));
-                        param.put("accountType", AccountType.TYPE_PHONE);
+                        param.put("userId", AppConstants.register.getUser().getUserId());
                         param.put("oldPassword", MD5Util.getMD5(pwOld));
                         param.put("newPassword", MD5Util.getMD5(pwNew));
+                        param.put("loginToken",AppConstants.register.getToken());
+                        if (MyApp.isLanguage.equals("rCN")) {
+                            // 如果是中文简体的语言环境
+                            language = "langzh";
+                        } else if (MyApp.isLanguage.equals("rTW")) {
+                            // 如果是中文繁体的语言环境
+                            language="langzh-TW";
+                        }
 
-                        VolleyContentFast.requestJsonByPost(url, param, new VolleyContentFast.ResponseSuccessListener<BaseBean>() {
+                        String sign=DeviceInfo.getSign("/user/updatepassword"+language+"loginToken"+AppConstants.register.getToken()+"newPassword"+MD5Util.getMD5(pwNew)+"oldPassword"+MD5Util.getMD5(pwOld)+"timeZone8"+"userId"+AppConstants.register.getUser().getUserId());
+                        param.put("sign",sign);
+
+
+                        VolleyContentFast.requestJsonByPost(url, param, new VolleyContentFast.ResponseSuccessListener<Register>() {
                             @Override
-                            public void onResponse(BaseBean reset) {
+                            public void onResponse(Register reset) {
                                 progressBar.dismiss();
 
-                                if (reset != null && reset.getResult() == AccountResultCode.SUCC) {
+                                if (reset != null && Integer.parseInt(reset.getCode()) == AccountResultCode.SUCC) {
                                     UiUtils.toast(MyApp.getInstance(), R.string.modify_password_succ);
+                                    PreferenceUtil.commitString("et_password", pwNew.toString());
                                     L.d(TAG, "修改密码成功");
                                     setResult(RESULT_OK);
                                     finish();
-                                } else if (reset.getResult() == AccountResultCode.USERNAME_PASS_ERROR) {
+                                } else if (Integer.parseInt(reset.getCode())== AccountResultCode.USERNAME_PASS_ERROR) {
                                     L.e(TAG, "成功请求，修改密码失败");
                                     UiUtils.toast(MyApp.getInstance(), R.string.username_original_pass_error);
-                                    // CommonUtils.handlerRequestResult(reset.getResult() , reset.getMsg());
-                                } else {
-                                    CommonUtils.handlerRequestResult(reset.getResult(), reset.getMsg());
+                                } else if (Integer.parseInt(reset.getCode())  == AccountResultCode.TOKEN_INVALID) {
+                                    UiUtils.toast(getApplicationContext() ,R.string.name_invalid);
+                                    Intent intent = new Intent(ModifyPasswordActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                }else {
+                                    DeviceInfo.handlerRequestResult(Integer.parseInt(reset.getCode()), "未知错误");
                                 }
                             }
                         }, new VolleyContentFast.ResponseErrorListener() {
@@ -165,7 +184,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                                 L.e(TAG, "修改密码失败");
                                 UiUtils.toast(ModifyPasswordActivity.this, R.string.immediate_unconection);
                             }
-                        }, BaseBean.class);
+                        }, Register.class);
 
                     } else {
                         UiUtils.toast(getApplicationContext(), R.string.pw_not_same);
@@ -178,19 +197,4 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         }
     }
 
-  /*  @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        L.d(TAG , " onCheckedChanged  , isCheck =  "+ isChecked);
-        if (!isChecked){
-            et_password_old.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            et_password_new.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            et_password_confirm.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        }else{
-            et_password_old.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-            et_password_new.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-            et_password_confirm.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-        }
-
-        CommonUtils.selectionLast(et_password_old ,et_password_new,et_password_confirm );
-    }*/
 }

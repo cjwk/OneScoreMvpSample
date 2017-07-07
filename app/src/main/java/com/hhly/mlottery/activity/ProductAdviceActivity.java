@@ -33,6 +33,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * 产品建议
+ */
 public class ProductAdviceActivity extends BaseActivity implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener{
 
 
@@ -311,5 +314,11 @@ public class ProductAdviceActivity extends BaseActivity implements View.OnClickL
                 initData();
             }
         },1000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
     }
 }

@@ -55,12 +55,6 @@ public class HomeLanguageActivity extends BaseActivity implements View.OnClickLi
                 language_id_layout.setVisibility(View.GONE);
                 language_th_layout.setVisibility(View.GONE);
                 language_vi_layout.setVisibility(View.GONE);
-
-                // TODO 暂用
-                language_en_layout.setVisibility(View.VISIBLE);
-                language_th_layout.setVisibility(View.VISIBLE);
-                language_vi_layout.setVisibility(View.VISIBLE);
-
                 break;
             case AppConstants.PACKGER_NAME_TH:// 泰国版
                 language_china_layout.setVisibility(View.GONE);
@@ -148,7 +142,6 @@ public class HomeLanguageActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        Intent it = new Intent(mContext, WelcomeActivity.class);
         switch (v.getId()) {
             case R.id.public_img_back:// 点击返回菜单栏
                 finish();
@@ -299,11 +292,16 @@ public class HomeLanguageActivity extends BaseActivity implements View.OnClickLi
                 }
                 MyApp.isLanguage = PreferenceUtil.getString("language", "");
                 MyApp.mResources.updateConfiguration(MyApp.mConfiguration, MyApp.mDm);
+
+                //重新注入请求参数
+                MyApp.get().initDagger();
+
                 this.finish();
                 Intent intent = new Intent();
                 intent.setClass(this, IndexActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("languageChanger", true);
                 startActivity(intent);// 跳回到首页面
                 break;
             default:

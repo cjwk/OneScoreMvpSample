@@ -51,9 +51,11 @@ public class BasketBallOddPresenter extends BasePresenter<BasketBallContract.Odd
                 mView.showResponseDataView();
             }
 
+
             @Override
-            public void getNoData() {
-                mView.noData();
+            public void getNoData(String date) {
+                mView.noData(date);
+
             }
         });
 
@@ -89,6 +91,7 @@ public class BasketBallOddPresenter extends BasePresenter<BasketBallContract.Odd
 
 
         mView.showLoadView();
+
     }
 
     @Override

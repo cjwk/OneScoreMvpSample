@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
+import com.hhly.mlottery.MyApp;
 import com.hhly.mlottery.util.FragmentUtils;
 import com.umeng.analytics.MobclickAgent;
 
@@ -139,7 +140,6 @@ public class BaseActivity extends FragmentActivity {
 
     @Override
     protected void onResume() {
-        // TODO Auto-generated method stub
         super.onResume();
         MobclickAgent.onResume(this);
       //  TCAgent.onPageStart(this, getClass().getSimpleName());
@@ -156,6 +156,7 @@ public class BaseActivity extends FragmentActivity {
     protected void onDestroy() {
 //        AppManager.getAppManager().finishActivity(this);
         super.onDestroy();
+        MyApp.getRefWatcher().watch(this);
     }
 
     @Override

@@ -19,12 +19,15 @@ import android.widget.TextView;
 import com.hhly.mlottery.MyApp;
 import com.hhly.mlottery.R;
 import com.hhly.mlottery.bean.account.BaseBean;
+import com.hhly.mlottery.bean.account.Register;
 import com.hhly.mlottery.bean.account.SendSmsCode;
 import com.hhly.mlottery.config.BaseURLs;
 import com.hhly.mlottery.impl.GetVerifyCodeCallBack;
-import com.hhly.mlottery.util.CommonUtils;
+import com.hhly.mlottery.util.AppConstants;
 import com.hhly.mlottery.util.CountDown;
+import com.hhly.mlottery.util.DeviceInfo;
 import com.hhly.mlottery.util.L;
+import com.hhly.mlottery.util.PreferenceUtil;
 import com.hhly.mlottery.util.UiUtils;
 import com.hhly.mlottery.util.cipher.MD5Util;
 import com.hhly.mlottery.util.net.VolleyContentFast;
@@ -60,6 +63,7 @@ public class FindPassWordActivity extends BaseActivity implements View.OnClickLi
     private CountDown countDown;
     public static final int TIMEOUT = 59699;
     public static final int TIMEOUT_INTERVEL = 1000;
+    private String language;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,7 +174,7 @@ public class FindPassWordActivity extends BaseActivity implements View.OnClickLi
                 }
                 et_password.setTypeface(Typeface.SANS_SERIF);
                 // 光标移动到结尾
-                CommonUtils.selectionLast(et_password);
+                DeviceInfo.selectionLast(et_password);
                 break;
             case R.id.tv_comfirm:
                 MobclickAgent.onEvent(mContext, "FindPassWordActivity_Reset_Password_Confirm");
@@ -187,7 +191,7 @@ public class FindPassWordActivity extends BaseActivity implements View.OnClickLi
 
         String phone = et_username.getText().toString();
         String verifyCode = et_verifycode.getText().toString();
-        String pwd = et_password.getText().toString();
+        final String pwd = et_password.getText().toString();
 
         if (UiUtils.isMobileNO(this , phone)){
             if (UiUtils.checkVerifyCode(this , verifyCode)){
@@ -197,24 +201,33 @@ public class FindPassWordActivity extends BaseActivity implements View.OnClickLi
 
                     String url = BaseURLs.URL_RESETPASSWORD;
                     Map<String, String> param = new HashMap<>();
-                    param.put("phone" , phone);
-                    param.put("accountType" , AccountType.TYPE_PHONE);
-                    param.put("newPassword" , MD5Util.getMD5(pwd));
-                    param.put("smsCode" , verifyCode);
+                    param.put("phoneNum" , phone);
+                    param.put("password" , MD5Util.getMD5(pwd).toUpperCase());
+                    param.put("sms" , verifyCode);
+                    if (MyApp.isLanguage.equals("rCN")) {
+                        // 如果是中文简体的语言环境
+                        language = "langzh";
+                    } else if (MyApp.isLanguage.equals("rTW")) {
+                        // 如果是中文繁体的语言环境
+                        language="langzh-TW";
+                    }
+                    String sign=DeviceInfo.getSign("/user/resetpassword"+language+"password"+MD5Util.getMD5(pwd)+"phoneNum"+phone+"sms"+verifyCode+"timeZone8");
+                    param.put("sign",sign);
 
-                    VolleyContentFast.requestJsonByPost(url,param, new VolleyContentFast.ResponseSuccessListener<BaseBean>() {
+                    VolleyContentFast.requestJsonByPost(url,param, new VolleyContentFast.ResponseSuccessListener<Register>() {
                         @Override
-                        public void onResponse(BaseBean reset) {
+                        public void onResponse(Register reset) {
                             progressBar.dismiss();
 
-                            if (reset != null&& reset.getResult() == AccountResultCode.SUCC){
+                            if (reset != null&& Integer.parseInt(reset.getCode()) == AccountResultCode.SUCC){
                                 UiUtils.toast(MyApp.getInstance(), R.string.reset_password_succ);
+                                PreferenceUtil.commitString("et_password", pwd);
                                 L.d(TAG,"重置密码成功");
                                 setResult(RESULT_OK);
                                 finish();
                             }else{
                                 L.e(TAG,"成功请求，重置密码失败");
-                                CommonUtils.handlerRequestResult(reset.getResult() , reset.getMsg());
+                                DeviceInfo.handlerRequestResult(Integer.parseInt(reset.getCode()),"未知错误");
                             }
                         }
                     }, new VolleyContentFast.ResponseErrorListener() {
@@ -224,7 +237,7 @@ public class FindPassWordActivity extends BaseActivity implements View.OnClickLi
                             L.e(TAG,"重置密码失败");
                             UiUtils.toast(FindPassWordActivity.this , R.string.immediate_unconection);
                         }
-                    } , BaseBean.class);
+                    } , Register.class);
                 }
             }
         }
@@ -232,7 +245,7 @@ public class FindPassWordActivity extends BaseActivity implements View.OnClickLi
 
     private void getVerifyCode() {
         String phone = et_username.getText().toString();
-        CommonUtils.getVerifyCode(this, phone, OperateType.TYPE_FORGET_PASSWORD ,new GetVerifyCodeCallBack() {
+        DeviceInfo.getVerifyCode(this, phone, OperateType.FORGET ,new GetVerifyCodeCallBack() {
             @Override
             public void beforGet() {
                 //countDown.start();
@@ -248,12 +261,12 @@ public class FindPassWordActivity extends BaseActivity implements View.OnClickLi
                 mProgressBar.setVisibility(View.GONE);
                 countDown.start();
                 // 正常情况下要1min后才能重新发验证码，但是遇到下面几种情况可以点击重发
-                if (code.getResult() == AccountResultCode.SUCC) {
+                if (Integer.parseInt(code.getCode()) == AccountResultCode.SUCC) {
                     UiUtils.toast(MyApp.getInstance(), R.string.send_register_succ);
-                } else if(code.getResult() == AccountResultCode.PHONE_FORMAT_ERROR
-                        || code.getResult() == AccountResultCode.MESSAGE_SEND_FAIL
-                        ||code.getResult()==AccountResultCode.ONLY_FIVE_EACHDAY
-                        ||code.getResult()==AccountResultCode.USER_NOT_EXIST
+                } else if(Integer.parseInt(code.getCode()) == AccountResultCode.PHONE_FORMAT_ERROR
+                        || Integer.parseInt(code.getCode()) == AccountResultCode.MESSAGE_SEND_FAIL
+                        ||Integer.parseInt(code.getCode())==AccountResultCode.ONLY_FIVE_EACHDAY
+                        ||Integer.parseInt(code.getCode())==AccountResultCode.USER_NOT_EXIST
                         ){
                     resetCountDown();
                 }

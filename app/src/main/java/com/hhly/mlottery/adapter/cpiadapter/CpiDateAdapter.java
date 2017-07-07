@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.hhly.mlottery.R;
 import com.hhly.mlottery.util.DateUtil;
+import com.hhly.mlottery.util.UiUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,6 @@ public class CpiDateAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         LayoutInflater inflater = LayoutInflater.from(context);
         ViewHolder viewHolder;
         if (convertView == null) {

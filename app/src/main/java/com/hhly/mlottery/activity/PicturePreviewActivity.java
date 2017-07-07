@@ -122,11 +122,9 @@ public class PicturePreviewActivity extends BaseActivity {
     }
 
     protected void nextPicture() {
-        // TODO Auto-generated method stub
     }
 
     protected void prePicture() {
-        // TODO Auto-generated method stub
     }
 
     public void recycle() {
@@ -287,5 +285,11 @@ public class PicturePreviewActivity extends BaseActivity {
     public void onClick() {
         savePhotoToSDCard(zoomBitmap(bitmap, widthPixels, heightPixels), getLocalPath(url));
         Toast.makeText(getApplicationContext(), mContext.getResources().getString(R.string.foreign_pic), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
     }
 }

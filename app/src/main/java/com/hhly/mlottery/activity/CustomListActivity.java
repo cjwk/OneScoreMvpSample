@@ -28,7 +28,6 @@ import com.hhly.mlottery.util.net.VolleyContentFast;
 import com.hhly.mlottery.view.LoadMoreRecyclerView;
 import com.hhly.mlottery.widget.ExactSwipeRefreshLayout;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -51,12 +50,20 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
     private LoadMoreRecyclerView mCustomListRecycle;
 
     private CustomFocusClickListener mCustomFocusClickListener;
+    private CustomDetailsClickListener mCustomDetailsClickListener;
+
     private List<CustomFristBean> mAllDataList;
     private TextView mCustomText;
     private ImageView mBack;
 
     public static final String CUSTOM_LEAGUE_FOCUSID = "custom_leagueId_focus_ids";
     public static final String CUSTOM_TEAM_FOCUSID = "custom_team_focus_ids";
+
+    private Integer LEAGUE_TYPE = 0;
+    private Integer TEAM_TYPE = 1;
+
+    private String LEAGUE_SUFFIX = "_A";//联赛标记
+    private String TEAM_SUFFIX = "_B";//球队标记
 
     private final static int VIEW_STATUS_LOADING = 1;//请求中
     private final static int VIEW_STATUS_NET_NO_DATA = 2;//暂无数据
@@ -86,9 +93,13 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
 
     // 定义关注监听
     public interface CustomFocusClickListener {
-        void FocusOnClick(View view, String dataId, CustomFristBean firstData);
+        void FocusOnClick(View view, String dataId, CustomFristBean firstData , List<CustomSecondBean> currSecondData);
 
         void FocusOnClick(View view, String dataId, CustomSecondBean secondData);
+    }
+    public interface CustomDetailsClickListener{
+        void DetailsOnClick(View view, String dataId, CustomFristBean firstData);
+        void DetailsOnClick(View view, String dataId, CustomSecondBean secondData);
     }
 
     /**
@@ -110,7 +121,7 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
         mBack = (ImageView) findViewById(R.id.public_img_back);
         mBack.setOnClickListener(this);
 
-        mCustomText = (TextView) findViewById(R.id.tv_right);
+        mCustomText = (TextView) findViewById(R.id.right_tv);
         mCustomText.setVisibility(View.VISIBLE);
         mCustomText.setText(getResources().getString(R.string.custom_accomplish_cus));
         mCustomText.setOnClickListener(this);
@@ -183,7 +194,7 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
         String url = BaseURLs.CUSTOM_LIST_CUS_URL;
 
         final Map<String, String> map = new HashMap();
-        String userid = AppConstants.register.getData().getUser().getUserId();
+        String userid = AppConstants.register.getUser().getUserId();
         String deviceid = AppConstants.deviceToken;
         map.put("userId", userid);
         map.put("deviceId", deviceid);
@@ -231,21 +242,21 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
                                 String fucusLeagueId = PreferenceUtil.getString(CUSTOM_LEAGUE_FOCUSID, "");
 
                                 if ("".equals(fucusLeagueId)) {
-                                    PreferenceUtil.commitString(CUSTOM_LEAGUE_FOCUSID, data.getLeagueId() + "_A");
+                                    PreferenceUtil.commitString(CUSTOM_LEAGUE_FOCUSID, data.getLeagueId() + LEAGUE_SUFFIX);
                                 } else {
                                     String[] focusIdArray = fucusLeagueId.split(",");
 
                                     for (String focusId : focusIdArray) {
-                                        if (!focusId.equals(data.getLeagueId()+"_A")) { // ! 非 说明原本地无记录，新的id
-                                            PreferenceUtil.commitString(CUSTOM_LEAGUE_FOCUSID, fucusLeagueId + "," + data.getLeagueId() + "_A");
+                                        if (!focusId.equals(data.getLeagueId()+LEAGUE_SUFFIX)) { // ! 非 说明原本地无记录，新的id
+                                            PreferenceUtil.commitString(CUSTOM_LEAGUE_FOCUSID, fucusLeagueId + "," + data.getLeagueId() + LEAGUE_SUFFIX);
                                             break;
                                         }
                                     }
                                 }
 //                                if (fucusLeagueId.equals("")) {
-//                                    PreferenceUtil.commitString(CUSTOM_LEAGUE_FOCUSID, data.getLeagueId() + "_A");
+//                                    PreferenceUtil.commitString(CUSTOM_LEAGUE_FOCUSID, data.getLeagueId() + LEAGUE_SUFFIX);
 //                                } else {
-//                                    PreferenceUtil.commitString(CUSTOM_LEAGUE_FOCUSID, fucusLeagueId + "," + data.getLeagueId() + "_A");
+//                                    PreferenceUtil.commitString(CUSTOM_LEAGUE_FOCUSID, fucusLeagueId + "," + data.getLeagueId() + LEAGUE_SUFFIX);
 //                                }
                             }
 
@@ -255,16 +266,16 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
                                     String fucusTeamId = PreferenceUtil.getString(CUSTOM_TEAM_FOCUSID, "");
 
                                     if (fucusTeamId.equals("")) {
-                                        PreferenceUtil.commitString(CUSTOM_TEAM_FOCUSID, sendData.getTeamId() + "_B");
+                                        PreferenceUtil.commitString(CUSTOM_TEAM_FOCUSID, sendData.getTeamId() + TEAM_SUFFIX);
                                     } else {
                                         String[] focusIdArray = fucusTeamId.split(",");
                                         for (String focusId : focusIdArray) {
-                                            if (!focusId.equals(sendData.getTeamId()+"_B")) { // ! 非 说明原本地无记录，新的id
-                                                PreferenceUtil.commitString(CUSTOM_TEAM_FOCUSID, fucusTeamId + "," + sendData.getTeamId() + "_B");
+                                            if (!focusId.equals(sendData.getTeamId()+TEAM_SUFFIX)) { // ! 非 说明原本地无记录，新的id
+                                                PreferenceUtil.commitString(CUSTOM_TEAM_FOCUSID, fucusTeamId + "," + sendData.getTeamId() + TEAM_SUFFIX);
                                                 break;
                                             }
                                         }
-//                                        PreferenceUtil.commitString(CUSTOM_TEAM_FOCUSID, fucusTeamId + "," + sendData.getTeamId() + "_B");
+//                                        PreferenceUtil.commitString(CUSTOM_TEAM_FOCUSID, fucusTeamId + "," + sendData.getTeamId() + TEAM_SUFFIX);
                                     }
                                 }
                             }
@@ -279,6 +290,7 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
                 L.d("yxq1226", "=完成前=mTemaIdBuff= " + currentTemaid.toString());
 
                 fucusEvent();
+                detailsEvent();
 
 
                 //刷新时清空recycleview 回收池
@@ -290,6 +302,7 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
                 mCustomListRecycle.setAdapter(mAdapter);
 
                 mAdapter.setmFocus(mCustomFocusClickListener);
+                mAdapter.setmDetails(mCustomDetailsClickListener);
 
                 setOnItemClick(mFirstData);
 
@@ -323,7 +336,7 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
         for (CustomFristBean firstdata : mAllDataList) {
 
             for (String id : onlyId) {
-                if (id.replaceAll("_A", "").equals(firstdata.getLeagueId())) {
+                if (id.replaceAll(LEAGUE_SUFFIX, "").equals(firstdata.getLeagueId())) {
                     if ("".equals(msb.toString())) {
                         msb.append(firstdata.getLeagueId());
                     } else {
@@ -352,7 +365,7 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
             for (CustomSecondBean second : firstdata.getTeamConcerns()) {
 
                 for (String id : onlyId) {
-                    String sub = id.replaceAll("_B", "");
+                    String sub = id.replaceAll(TEAM_SUFFIX, "");
 
                     if (sub.equals(second.getTeamId())) {
                         isConcern = true;
@@ -415,42 +428,72 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
                         }
                     }
                 } else {// 否则为最内层（赛事层）比赛的点击事件这里写
-                    // TODO***************************************************
+//                    mAdapter.deleteAllChild(position, 1);//TODO******** 点击删除后通知后台删除id 重新请求接口新数据
                 }
             }
         });
     }
 
+    public void detailsEvent(){
+        mCustomDetailsClickListener = new CustomDetailsClickListener() {
+            @Override
+            public void DetailsOnClick(View view, String dataId, CustomFristBean firstData) {
+                //TODO==================
+                L.d("qwer_asd = ", "跳转到联赛 " + dataId);
+                Toast.makeText(mContext, "跳转到联赛 " + dataId, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void DetailsOnClick(View view, String dataId, CustomSecondBean secondData) {
+                L.d("qwer_asd = ", "跳转到球队 " + dataId);
+                Toast.makeText(mContext, "跳转到球队 " + dataId, Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
+
     public void fucusEvent() {
         mCustomFocusClickListener = new CustomFocusClickListener() {
             @Override
-            public void FocusOnClick(View view, String dataId, CustomFristBean firstData) {
+            public void FocusOnClick(View view, String dataId, CustomFristBean firstData, List<CustomSecondBean> currSecondData) {
                 boolean isFucus = (boolean) view.getTag();
 
                 if (!isFucus) {// 未选中 --> 选中
-                    addId(dataId, 0);
+                    addId(dataId, LEAGUE_TYPE);
                     view.setTag(false);
                     firstData.setConcern(false);
 
+                    //清空再添加
+                    for (CustomSecondBean currData : currSecondData) {
+                        deletaId(currData.getTeamId()+TEAM_SUFFIX, TEAM_TYPE);
+                    }
+                    for (CustomSecondBean currData : currSecondData) {
+                        addId(currData.getTeamId()+ TEAM_SUFFIX, TEAM_TYPE);
+                        currData.setConcern(false);
+                    }
                 } else { //选中 --> 未选中
-                    deletaId(dataId, 0);
+                    deletaId(dataId, LEAGUE_TYPE);
                     view.setTag(true);
                     firstData.setConcern(true);
+                    for (CustomSecondBean currData : currSecondData) {
+                        deletaId(currData.getTeamId()+TEAM_SUFFIX, TEAM_TYPE);//删除当前联赛下的球队
+                        currData.setConcern(true);
+                    }
                 }
                 mAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void FocusOnClick(View view, String dataId, CustomSecondBean secondData) {
+            public void FocusOnClick(View view, String dataId , CustomSecondBean secondData) {
                 boolean isFucus = (boolean) view.getTag();
                 if (!isFucus) {// 未选中 --> 选中
-                    addId(dataId, 1);
+                    addId(dataId, TEAM_TYPE);
                     view.setTag(false);
                     secondData.setConcern(false);
                 } else { //选中 --> 未选中
-                    deletaId(dataId, 1);
+                    deletaId(dataId, TEAM_TYPE);
                     view.setTag(true);
                     secondData.setConcern(true);
+                    deletaId(secondData.getLeagueId()+LEAGUE_SUFFIX, LEAGUE_TYPE);
                 }
                 mAdapter.notifyDataSetChanged();
             }
@@ -458,7 +501,7 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
     }
 
     private void addId(String thirdid, int type) {
-        if (type == 0) {
+        if (type == LEAGUE_TYPE) {
             String fucusId = PreferenceUtil.getString(CUSTOM_LEAGUE_FOCUSID, "");
             if (fucusId.equals("")) {
                 PreferenceUtil.commitString(CUSTOM_LEAGUE_FOCUSID, thirdid);
@@ -476,7 +519,7 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
     }
 
     private void deletaId(String thirdid, int type) {
-        if (type == 0) {
+        if (type == LEAGUE_TYPE) {
             String fucusId = PreferenceUtil.getString(CUSTOM_LEAGUE_FOCUSID, "");
             String[] arrId = fucusId.split("[,]");
             StringBuffer mSbuf = new StringBuffer();
@@ -510,7 +553,7 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_right:
+            case R.id.right_tv:
 
                 if (isSccomplish) {
 
@@ -529,6 +572,7 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
                 }
                 break;
             case R.id.public_img_back:
+
 
                 if (currentLeagueid != null) {
                     PreferenceUtil.commitString(CUSTOM_LEAGUE_FOCUSID, currentLeagueid.toString());
@@ -573,5 +617,11 @@ public class CustomListActivity extends BaseActivity implements View.OnClickList
 
         setState(VIEW_STATUS_LOADING);
         mLoadHandler.postDelayed(mRun, 500);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mLoadHandler.removeCallbacksAndMessages(null);
     }
 }

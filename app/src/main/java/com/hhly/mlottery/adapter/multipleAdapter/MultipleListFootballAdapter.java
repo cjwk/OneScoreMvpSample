@@ -36,7 +36,7 @@ import java.util.List;
 
 public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-//    Vector<Boolean> checkVector;
+    //    Vector<Boolean> checkVector;
 //    private List<Boolean> isClicks;
     List<Match> datas;
     private Context mContext;
@@ -69,8 +69,9 @@ public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerVi
     public void setmOnItemClickListener(MultipleRecyclerViewItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
+
     public interface MultipleRecyclerViewItemClickListener {
-        void onItemClick(View view, String data , int pos , Match matchData);
+        void onItemClick(View view, String data, int pos, Match matchData);
     }
 
 
@@ -91,7 +92,7 @@ public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerVi
 //        //将创建的View注册点击事件
 //        view.setOnClickListener(new View.OnClickListener() {
 //            @Override
-//            public void notifyDataSetChanged(View v) {
+//            public void onClick(View v) {
 //                if (mOnItemClickListener != null) {
 //                    mOnItemClickListener.onItemClick(v, (String) v.getTag());
 //                }
@@ -103,7 +104,7 @@ public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        final Match match=datas.get(position);
+        final Match match = datas.get(position);
 
         holder.itemView.setTag(match.getThirdId());
 
@@ -119,7 +120,7 @@ public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerVi
             handicap = 1;
         }
 
-        ImmediaViewHolder immediaViewHolder = (ImmediaViewHolder)holder;
+        ImmediaViewHolder immediaViewHolder = (ImmediaViewHolder) holder;
 
 //        if (checkVector.get(position)) {
 ////        if (isClicks.get(position)) {
@@ -132,7 +133,7 @@ public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerVi
         if (match.isFootballChicks()) {
             immediaViewHolder.item_football_content_ll.setBackgroundResource(R.color.multiple_item_bg_color);
 //            immediaViewHolder.item_football_content_ll.setBackgroundResource(R.color.white);
-        }else{
+        } else {
             immediaViewHolder.item_football_content_ll.setBackgroundResource(R.color.white);
         }
 
@@ -147,13 +148,13 @@ public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerVi
 ////                    }
 ////                    isClicks.set(position, true);
 //                    notifyDataSetChanged();
-                    mOnItemClickListener.onItemClick(v, (String) v.getTag(), position , match);
+                    mOnItemClickListener.onItemClick(v, (String) v.getTag(), position, match);
                 }
             });
         }
 
 
-        convert((MultipleListFootballAdapter.ImmediaViewHolder)holder, match, handicap);
+        convert((MultipleListFootballAdapter.ImmediaViewHolder) holder, match, handicap);
     }
 
     @Override
@@ -205,7 +206,7 @@ public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerVi
             super(itemView);
 
             cardView = (CardView) itemView.findViewById(R.id.card_view);
-            keeptime=(TextView)itemView.findViewById(R.id.keeptime);
+            keeptime = (TextView) itemView.findViewById(R.id.keeptime);
             item_football_racename = (TextView) itemView.findViewById(R.id.item_football_racename);
             item_football_time = (TextView) itemView.findViewById(R.id.item_football_time);
             item_football_half_score = (TextView) itemView.findViewById(R.id.item_football_half_score);
@@ -221,17 +222,17 @@ public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerVi
             item_football_left_odds = (TextView) itemView.findViewById(R.id.item_football_left_odds);
             item_football_handicap_value = (TextView) itemView.findViewById(R.id.item_football_handicap_value);
             item_football_right_odds = (TextView) itemView.findViewById(R.id.item_football_right_odds);
-            item_football_odds_layout=(RelativeLayout)itemView.findViewById(R.id.item_football_odds_layout);
-            item_football_content_ll=(LinearLayout)itemView.findViewById(R.id.item_football_content_ll);
+            item_football_odds_layout = (RelativeLayout) itemView.findViewById(R.id.item_football_odds_layout);
+            item_football_content_ll = (LinearLayout) itemView.findViewById(R.id.item_football_content_ll);
 
-            Iv_guangzhu=(ImageView)itemView.findViewById(R.id.Iv_guangzhu);
+            Iv_guangzhu = (ImageView) itemView.findViewById(R.id.Iv_guangzhu);
             home_icon = (ImageView) itemView.findViewById(R.id.home_icon);
             guest_icon = (ImageView) itemView.findViewById(R.id.guest_icon);
         }
 
     }
 
-    private  void convert(final MultipleListFootballAdapter.ImmediaViewHolder holder, final Match match, int handicap) {
+    private void convert(final MultipleListFootballAdapter.ImmediaViewHolder holder, final Match match, int handicap) {
 
 //        if (match.getItemBackGroundColorId() == R.color.item_football_event_yellow) {
 //            holder.item_football_content_ll.setBackgroundResource(match.getItemBackGroundColorId());
@@ -252,23 +253,23 @@ public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerVi
         holder.item_football_guestteam.setText(match.getGuestteam());
 
         //主队url
-        final String homelogourl = teamLogoPre+match.getHomeId().trim()+teamLogoSuff;  //"http://pic.13322.com/basketball/team/135_135/29.png"
+        final String homelogourl = teamLogoPre + match.getHomeId().trim() + teamLogoSuff;
+
         //客队url
-        final String guestlogourl = teamLogoPre+match.getGuestId().trim().trim()+teamLogoSuff;
+        final String guestlogourl = teamLogoPre + match.getGuestId().trim() + teamLogoSuff;
 
 
         // holder.home_icon.setTag(homelogourl);
         // holder.guest_icon.setTag(guestlogourl);
         //ImagaeLoader -- 加载图片
-        ImageLoader.load(mContext,homelogourl,R.mipmap.score_default).into(holder.home_icon);
-        ImageLoader.load(mContext,guestlogourl,R.mipmap.score_default).into(holder.guest_icon);
+        ImageLoader.load(mContext, homelogourl, R.mipmap.score_default).into(holder.home_icon);
+        ImageLoader.load(mContext, guestlogourl, R.mipmap.score_default).into(holder.guest_icon);
 
         holder.item_football_racename.setText(match.getRacename());
         holder.item_football_racename.setTextColor(Color.parseColor(match.getRaceColor()));
         holder.item_football_time.setText(match.getTime());
         holder.item_football_half_score.setTextColor(mContext.getResources().getColor(R.color.text_about_color));
         holder.item_football_full_score.setTextColor(mContext.getResources().getColor(R.color.text_about_color));
-
 
 
         if ("0".equals(match.getStatusOrigin())) {// 未开
@@ -495,7 +496,7 @@ public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerVi
             }
         } else {
 
-            if ("-1".equals(match.getStatusOrigin())){
+            if ("-1".equals(match.getStatusOrigin())) {
                 holder.item_football_half_score.setVisibility(View.VISIBLE);
 
             } else {
@@ -571,7 +572,7 @@ public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerVi
 
                     holder.item_football_handicap_value.setText(HandicapUtils.changeHandicap(handicapValue));
                     holder.item_football_left_odds.setText(odd.getLeftOdds());
-                    holder.item_football_right_odds.setText( odd.getRightOdds());
+                    holder.item_football_right_odds.setText(odd.getRightOdds());
                     if (match.getLeftOddTextColorId() != 0) {
 
                         holder.item_football_left_odds.setTextColor(mContext.getResources().getColor(match.getLeftOddTextColorId()));
@@ -592,7 +593,6 @@ public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerVi
                 }
 
                 if ("-1".equals(match.getStatusOrigin())) {// 完场不会有封盘的情况
-
 
 
                     try {
@@ -689,7 +689,7 @@ public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerVi
                     holder.item_football_left_odds.setVisibility(View.VISIBLE);
                     holder.item_football_handicap_value.setVisibility(View.VISIBLE);
                     holder.item_football_right_odds.setVisibility(View.VISIBLE);
-                    holder.item_football_handicap_value.setText( HandicapUtils.changeHandicapByBigLittleBall(handicapValue));
+                    holder.item_football_handicap_value.setText(HandicapUtils.changeHandicapByBigLittleBall(handicapValue));
                     holder.item_football_left_odds.setText(odd.getLeftOdds());
                     holder.item_football_right_odds.setText(odd.getRightOdds());
 
@@ -723,8 +723,6 @@ public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerVi
                             holder.item_football_handicap_value.setBackgroundResource(R.color.transparent);
                             holder.item_football_right_odds.setTextColor(mContext.getResources().getColor(R.color.content_txt_light_grad));
                             holder.item_football_right_odds.setBackgroundResource(R.color.transparent);
-
-
 
 
                         } else if (re < 0) {
@@ -902,7 +900,7 @@ public class MultipleListFootballAdapter extends RecyclerView.Adapter<RecyclerVi
         }
 
         String focusIds = PreferenceUtil.getString(FocusFragment.FOCUS_ISD, "");
-        Log.e("BBB","取得时候"+focusIds);
+        Log.e("BBB", "取得时候" + focusIds);
         String[] idArray = focusIds.split("[,]");
 
         for (String id : idArray) {

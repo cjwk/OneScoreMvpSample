@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <!-- 标题头 -->
+        <include layout="@layout/layout_header" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:background="@color/betting_recommend_details_bg_color"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/betting_recommend_zhuanjia_details_color"
+                android:textSize="@dimen/text_size_14"
+                android:text="@string/betting_txt_check_payment"/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#eeeeee"/>
+
+        <RelativeLayout
+            android:id="@+id/pay_zfb_rl"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:background="#FFFFFFFF"
+            android:paddingLeft="15dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/icon_zhifubao" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/betting_txt_check_zfb"
+                    android:textColor="@color/betting_recommend_name_color"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+            <RadioButton
+                android:id="@+id/pay_zfb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:button="@drawable/online_payment"
+                android:clickable="false" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#eeeeee"/>
+
+        <RelativeLayout
+            android:id="@+id/pay_weixin_rl"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:background="#FFFFFFFF"
+            android:paddingLeft="15dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/icon_weixin"/>
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/betting_txt_check_weixin"
+                    android:textColor="@color/betting_recommend_name_color"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+            <RadioButton
+                android:id="@+id/pay_weixin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:button="@drawable/online_payment"
+                android:clickable="false"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#eeeeee"/>
+
+        <RelativeLayout
+            android:id="@+id/pay_yu_e_rl"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:background="#FFFFFFFF"
+            android:paddingLeft="15dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/jingcai_icon_money"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/betting_txt_check_balance"
+                    android:textColor="@color/betting_recommend_name_color"
+                    android:textSize="@dimen/text_size_16"/>
+
+                <TextView
+                    android:id="@+id/betting_online_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="--"
+                    android:textColor="@color/betting_recommend_confirm_buy_color"
+                    android:textSize="@dimen/text_size_12"/>
+            </LinearLayout>
+
+            <RadioButton
+                android:id="@+id/pay_yu_e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:button="@drawable/online_payment"
+                android:clickable="false"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/betting_confirm_pay"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:background="@color/betting_recommend_confirm_buy_color">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/betting_recommend_zhuanjia_grand_color"
+                android:textSize="@dimen/text_size_16"
+                android:text="@string/betting_txt_confirm_pay"/>
+            <TextView
+                android:id="@+id/betting_pay_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/betting_recommend_zhuanjia_grand_color"
+                android:textSize="@dimen/text_size_16"
+                android:text="￥ --"/>
+    </LinearLayout>
+</RelativeLayout>

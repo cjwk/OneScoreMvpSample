@@ -140,6 +140,7 @@
     <color name="home_item_lottery_title_des">#9b9b9b</color>
 
     <color name="home_default_icon_coloer">#f5f5f5</color>
+    <color name="account_tab_color">#E5F2FC</color>
 
     <!-- 关于 -->
     <color name="text_about_color">#0090ff</color>
@@ -263,6 +264,13 @@
     <color name="tennis_details_analysis_title_start3">#f75550</color>
     <color name="tennis_details_pager_bg">#f7f7f8</color>
 
+    <!--球队详情-->
+    <color name="foot_team_name_score1">#6ca8ff</color>
+    <color name="foot_team_name_score2">#85c780</color>
+    <color name="foot_team_name_score3">#ff2321</color>
+
+    <!--动画直播-->
+    <color name="foot_animation_half_txt">#81b241</color>
 
     <!-- 开奖详情第二列背景色 -->
     <color name="number_info_two_bg">#f5f5f5</color>
@@ -691,5 +699,42 @@
     <color name="snooker_header_black">#001800</color>
     <color name="item_new_video_color">#222222</color>
     <color name="item_match_jingcai">#dcdcdc</color>
+
+    <!--竞彩推荐颜色-->
+    <color name="betting_recommend_name_color">#222222</color>
+    <color name="betting_recommend_grand_color">#ff5c0b</color>
+    <color name="betting_recommend_zhuanjia_grand_color">#ffffff</color>
+    <color name="betting_recommend_zhuanjia_details_color">#999999</color>
+    <color name="betting_recommend_zhuanjia_spf_color">#0085e1</color>
+    <color name="betting_recommend_details_color">#666666</color>
+    <color name="betting_recommend_details_bg_color">#f5f5f5</color>
+    <color name="betting_recommend_line_color">#eeeeee</color>
+    <color name="betting_recommend_buy_details_bg_color">#e1f2ff</color>
+    <color name="betting_recommend_to_buybg_color">#ff6c23</color>
+    <color name="betting_recommend_to_buy_line_color">#dcdcdc</color>
+    <color name="betting_recommend_to_buy_color">#dfdfdf</color>
+    <color name="betting_recommend_confirm_buy_color">#ff5f10</color>
+    <color name="application_specialist_color">#feffd8</color>
+    <color name="application_specialist_text_color">#4a494a</color>
+    _
+
+    <color name="betting_recommend_issue_title_color">#333333</color>
+    <color name="betting_recommend_issue_leaguename_color">#f0951c</color>
+    <color name="betting_recommend_issue_wanfa_color">#4a494a</color>
+    <color name="betting_recommend_issue_fangan_color">#9b9a9b</color>
+    <color name="betting_recommend_issue_jiage_color">#82899a</color>
+    <color name="betting_recommend_issue_mianfei_color">#ff2221</color>
+    <color name="betting_recommend_issue_balance_color">#fb001a</color>
+    <color name="betting_recommend_issue_payment_bg">#f7f7f8</color>
+
+    <color name="account_trade_name">#4a494a</color>
+    <color name="edit_hint_color">#d7d7d7</color>
+    <color name="basket_equals">#5a93f3</color>
+    <color name="basket_defeat">#74be6d</color>
+    <color name="recycler_view_shadow">#c6ddff</color>
+    <color name="basket_team_circle">#f7d34e</color>
+
+    <color name="foot_ball_score_title_bg">#ffde00</color>
+    <color name="foot_ball_score_title_txt">#0097ff</color>
 
 </resources>

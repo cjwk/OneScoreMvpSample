@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -21,6 +19,7 @@ import com.hhly.mlottery.callback.FootballMatchSearchService;
 import com.hhly.mlottery.callback.RecyclerViewItemClickListener;
 import com.hhly.mlottery.config.BaseURLs;
 import com.hhly.mlottery.util.FocusUtils;
+import com.hhly.mlottery.util.HandMatchId;
 import com.hhly.mlottery.util.net.VolleyContentFast;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
@@ -89,7 +88,7 @@ public class FootballMatchSearchActivity extends BaseActivity implements View.On
                             if (basketballInforSerachAdapter != null) {
                                 //无搜索  隐藏删除键
                                 mSearch_iv_delete.setVisibility(View.GONE);
-                                // basketballInforSerachAdapter.clearData();
+                                basketballInforSerachAdapter.clearData();
                             }
                             return false;
                         }
@@ -164,6 +163,7 @@ public class FootballMatchSearchActivity extends BaseActivity implements View.On
     private void initView() {
         //搜索框
         et_keyword = (EditText) findViewById(R.id.et_keyword);
+        et_keyword.setHint(R.string.please_hint_team);
         //数据返回显示
         mTv_result = (RecyclerView) findViewById(R.id.tv_result);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
@@ -211,15 +211,21 @@ public class FootballMatchSearchActivity extends BaseActivity implements View.On
         basketballInforSerachAdapter.setmOnItemClickListener(new RecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, String data) {
-                String thirdId = data;
-                Intent intent = new Intent(mContext, FootballMatchDetailActivity.class);
-                intent.putExtra("thirdId", thirdId);
-                intent.putExtra("currentFragmentId", 1);
-                startActivity(intent);
-                //startActivityForResult(intent, REQUEST_DETAIL_CODE);
+
+               if (HandMatchId.handId(mContext, data)) {
+
+
+                   String thirdId = data;
+                   Intent intent = new Intent(mContext, FootballMatchDetailActivity.class);
+                   intent.putExtra("thirdId", thirdId);
+                   intent.putExtra("currentFragmentId", 1);
+                   startActivity(intent);
+                   //startActivityForResult(intent, REQUEST_DETAIL_CODE);
+               }
             }
         });
         basketballInforSerachAdapter.notifyDataSetChanged();
+       // resultListBeen.clear();
         //点击监听
         initEvent(resultListBeen);
     }

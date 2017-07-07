@@ -124,13 +124,13 @@ public class FocusUtils {
         } else {
             PreferenceUtil.commitString(FocusFragment.FOCUS_ISD, focusIds + "," + thirdId);
         }
-        //TODO:把用户id,deviceId,deviceToken 传给服务器
+        //把用户id,deviceId,deviceToken 传给服务器
         String deviceId = AppConstants.deviceToken;
         String uMengDeviceToken = PreferenceUtil.getString(AppConstants.uMengDeviceToken, "");
         Log.e("AAA", uMengDeviceToken + "???");
         String userId = "";
-        if (AppConstants.register != null && AppConstants.register.getData() != null && AppConstants.register.getData().getUser() != null) {
-            userId = AppConstants.register.getData().getUser().getUserId();
+        if (AppConstants.register != null && AppConstants.register != null && AppConstants.register.getUser() != null) {
+            userId = AppConstants.register.getUser().getUserId();
         }
         //thirdId
         String url = "http://192.168.31.73:8080/mlottery/core/pushSetting.followMatch.do";
@@ -185,8 +185,8 @@ public class FocusUtils {
         String deviceId = AppConstants.deviceToken;
         String uMengDeviceToken = PreferenceUtil.getString(AppConstants.uMengDeviceToken, "");
         String userId = "";
-        if (AppConstants.register != null && AppConstants.register.getData() != null && AppConstants.register.getData().getUser() != null) {
-            userId = AppConstants.register.getData().getUser().getUserId();
+        if (AppConstants.register != null && AppConstants.register != null && AppConstants.register.getUser() != null) {
+            userId = AppConstants.register.getUser().getUserId();
         }
         //thirdId
         String url = "http://192.168.31.73:8080/mlottery/core/pushSetting.followMatch.do";
@@ -251,12 +251,12 @@ public class FocusUtils {
         } else {
             PreferenceUtil.commitString(BasketballFocusNewFragment.BASKET_FOCUS_IDS, focusIds + "," + thirdId);
         }
-        //TODO:把用户id,deviceId,deviceToken 传给服务器
+        //把用户id,deviceId,deviceToken 传给服务器
         String deviceId = AppConstants.deviceToken;
         String uMengDeviceToken = PreferenceUtil.getString(AppConstants.uMengDeviceToken, "");
         String userId = "";
-        if (AppConstants.register != null && AppConstants.register.getData() != null && AppConstants.register.getData().getUser() != null) {
-            userId = AppConstants.register.getData().getUser().getUserId();
+        if (AppConstants.register != null && AppConstants.register != null && AppConstants.register.getUser() != null) {
+            userId = AppConstants.register.getUser().getUserId();
         }
         String isPushFocus = PreferenceUtil.getBoolean(MyConstants.BASKETBALL_PUSH_FOCUS, true) == true ? "true" : "false";
         //thirdId
@@ -311,10 +311,10 @@ public class FocusUtils {
 
         String deviceId = AppConstants.deviceToken;
         String userId = "";
-        if (AppConstants.register != null && AppConstants.register.getData() != null && AppConstants.register.getData().getUser() != null) {
-            userId = AppConstants.register.getData().getUser().getUserId();
+        if (AppConstants.register != null && AppConstants.register!= null && AppConstants.register.getUser() != null) {
+            userId = AppConstants.register.getUser().getUserId();
         }
-        //TODO:请求后台
+        //请求后台
         Map<String, String> params = new HashMap<>();
         String url = " http://192.168.31.68:8080/mlottery/core/androidBasketballMatch.cancelCustomConcernVS.do";
         params.put("userId", userId);

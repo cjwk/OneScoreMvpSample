@@ -16,7 +16,7 @@ import com.hhly.mlottery.config.BaseURLs;
 import com.hhly.mlottery.frame.basketballframe.basketnewfragment.BasketballFocusNewFragment;
 import com.hhly.mlottery.frame.footballframe.FocusFragment;
 import com.hhly.mlottery.util.AppConstants;
-import com.hhly.mlottery.util.CommonUtils;
+import com.hhly.mlottery.util.DeviceInfo;
 import com.hhly.mlottery.util.L;
 import com.hhly.mlottery.util.PreferenceUtil;
 import com.hhly.mlottery.util.UiUtils;
@@ -36,10 +36,10 @@ import java.util.Map;
 
 public class MoreSettingsActivity extends BaseActivity  implements View.OnClickListener{
 
-    public static final int REQUESTCODE_LOGIN = 100;
-    public static final int REQUESTCODE_LOGOUT = 110;
-    public static final int NOT_LOGGED_ON = 33;
-    public static final int LOGGED_ON = 44;
+    private final int REQUESTCODE_LOGIN = 100;
+    private final int REQUESTCODE_LOGOUT = 110;
+//    public static final int NOT_LOGGED_ON = 33;
+//    public static final int LOGGED_ON = 44;
 
     private ProgressDialog progressBar;
     private TextView public_txt_title;
@@ -100,7 +100,7 @@ public class MoreSettingsActivity extends BaseActivity  implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
-        if(CommonUtils.isLogin()){
+        if(DeviceInfo.isLogin()){
             tv_logout.setVisibility(View.VISIBLE);
          //
             //   findViewById(R.id.view_botom).setVisibility(View.VISIBLE);
@@ -145,20 +145,20 @@ public class MoreSettingsActivity extends BaseActivity  implements View.OnClickL
     private void logout() {
 
         progressBar.show();
-
         String url = BaseURLs.URL_LOGOUT;
         Map<String, String> param = new HashMap<>();
-        param.put("loginToken", AppConstants.register.getData().getLoginToken());
-        param.put("deviceToken", AppConstants.deviceToken);
-        param.put("userId", AppConstants.register.getData().getUser().getUserId());
-        VolleyContentFast.requestJsonByPost(url, param, new VolleyContentFast.ResponseSuccessListener<Register>() {
+        param.put("userId", AppConstants.register.getUser().getUserId());
+        param.put("loginToken", AppConstants.register.getToken());
+
+        VolleyContentFast.requestJsonByGet(url, param, new VolleyContentFast.ResponseSuccessListener<Register>() {
             @Override
             public void onResponse(Register register) {
 
                 progressBar.dismiss();
-                if (register.getResult() == AccountResultCode.SUCC || register.getResult() == AccountResultCode.USER_NOT_LOGIN) {
-                    CommonUtils.saveRegisterInfo(null);
+                if (Integer.parseInt(register.getCode())== AccountResultCode.SUCC || Integer.parseInt(register.getCode()) == AccountResultCode.USER_NOT_LOGIN) {
+                    DeviceInfo.saveRegisterInfo(null);
                     UiUtils.toast(MyApp.getInstance(), R.string.logout_succ);
+
                     PreferenceUtil.commitBoolean("three_login",false);
                     setResult(RESULT_OK);
 
@@ -171,11 +171,11 @@ public class MoreSettingsActivity extends BaseActivity  implements View.OnClickL
 
 
                     request(); //推送需要
-
+                    finish();
 //                    getFootballUserFocus(""); //注销时把未登录状态的用户id请求过来 .篮球不需要是因为篮球进行了预加载，会直接请求关注页面。足球没有。
 //
                 } else {
-                    CommonUtils.handlerRequestResult(register.getResult(), register.getMsg());
+                    DeviceInfo.handlerRequestResult(Integer.parseInt(register.getCode()), "未知错误");
                 }
             }
         }, new VolleyContentFast.ResponseErrorListener() {
@@ -191,17 +191,17 @@ public class MoreSettingsActivity extends BaseActivity  implements View.OnClickL
      * 用户注销把用户状态改成0
      */
     private void request() {
-        String url="http://192.168.31.73:8080/mlottery/core/pushSetting.exitUpdateOnlile.do";
+//        String url="http://192.168.31.73:8080/mlottery/core/pushSetting.exitUpdateOnlile.do";
         Map<String ,String> params=new HashMap<>();
         params.put("deviceId",AppConstants.deviceToken);
         VolleyContentFast.requestJsonByPost(BaseURLs.EXIT_PUSH_ONLINE, params, new VolleyContentFast.ResponseSuccessListener<ConcernBean>() {
             @Override
             public void onResponse(ConcernBean jsonObject) {
-                if(jsonObject.getResult().equals("200")){
-                    //注销成功
-                    L.d("AAA","注销成功");
-
-                }
+//                if(jsonObject.getResult().equals("200")){
+//                    //注销成功
+//                    L.d("AAA","注销成功");
+//
+//                }
                finish();
 
             }
@@ -213,20 +213,20 @@ public class MoreSettingsActivity extends BaseActivity  implements View.OnClickL
             }
         },ConcernBean.class);
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUESTCODE_LOGIN) {
-                // 登录成功返回
-                L.d(TAG, "登录成功");
-
-          //      mViewHandler.sendEmptyMessage(LOGGED_ON);
-                // iv_account.setImageResource(R.mipmap.login);
-            } else if (requestCode == REQUESTCODE_LOGOUT) {
-                L.d(TAG, "注销成功");
-                // iv_account.setImageResource(R.mipmap.logout);
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == RESULT_OK) {
+//            if (requestCode == REQUESTCODE_LOGIN) {
+//                // 登录成功返回
+//                L.d(TAG, "登录成功");
+//
+//          //      mViewHandler.sendEmptyMessage(LOGGED_ON);
+//                // iv_account.setImageResource(R.mipmap.login);
+//            } else if (requestCode == REQUESTCODE_LOGOUT) {
+//                L.d(TAG, "注销成功");
+//                // iv_account.setImageResource(R.mipmap.logout);
+//            }
+//        }
+//    }
 }

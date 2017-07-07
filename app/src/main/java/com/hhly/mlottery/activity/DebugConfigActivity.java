@@ -13,7 +13,6 @@ import com.hhly.mlottery.util.PreferenceUtil;
 import com.umeng.analytics.MobclickAgent;
 
 public class DebugConfigActivity extends BaseActivity {
-
     private final static String TAG = "DebugConfigActivity";
     public final static int ZH_1332255 = 1;
     public final static int TH_1332255 = 2;
@@ -41,7 +40,8 @@ public class DebugConfigActivity extends BaseActivity {
         MobclickAgent.openActivityDurationTrack(false);
 
         Button config_submit = (Button) findViewById(R.id.config_submit);
-        Button bt_zidingyi = (Button) findViewById(R.id.bt_zidingyi);
+        final Button bt_zidingyi = (Button) findViewById(R.id.bt_zidingyi);
+
 
         //国内测试环境
         findViewById(R.id.config_ceshi_zh).setOnClickListener(new OnClickListener() {
@@ -132,17 +132,17 @@ public class DebugConfigActivity extends BaseActivity {
                     PreferenceUtil.commitInt(MyConstants.WS_HOME_CONFIG, WS_1332255_TH);
                 } else if (config_tuisong.getCheckedRadioButtonId() == R.id.config_ws_vn) {
                     PreferenceUtil.commitInt(MyConstants.WS_HOME_CONFIG, WS_1332255_VN);
-                }else if (config_tuisong.getCheckedRadioButtonId() == R.id.config_shengchan_ws) {
-                    PreferenceUtil.commitInt(MyConstants.WS_HOME_CONFIG,WS_13322_ZH );
-                }else if (config_tuisong.getCheckedRadioButtonId() == R.id.config_shengchan_ws_th) {
-                    PreferenceUtil.commitInt(MyConstants.WS_HOME_CONFIG,WS_13322_TH );
-                }else if (config_tuisong.getCheckedRadioButtonId() == R.id.config_shengchan_ws_vn) {
-                    PreferenceUtil.commitInt(MyConstants.WS_HOME_CONFIG,WS_13322_VN );
-                }else if (config_tuisong.getCheckedRadioButtonId() == R.id.config_shengchan_ws_vn_hn) {
-                    PreferenceUtil.commitInt(MyConstants.WS_HOME_CONFIG,WS_13366_VN );
+                } else if (config_tuisong.getCheckedRadioButtonId() == R.id.config_shengchan_ws) {
+                    PreferenceUtil.commitInt(MyConstants.WS_HOME_CONFIG, WS_13322_ZH);
+                } else if (config_tuisong.getCheckedRadioButtonId() == R.id.config_shengchan_ws_th) {
+                    PreferenceUtil.commitInt(MyConstants.WS_HOME_CONFIG, WS_13322_TH);
+                } else if (config_tuisong.getCheckedRadioButtonId() == R.id.config_shengchan_ws_vn) {
+                    PreferenceUtil.commitInt(MyConstants.WS_HOME_CONFIG, WS_13322_VN);
+                } else if (config_tuisong.getCheckedRadioButtonId() == R.id.config_shengchan_ws_vn_hn) {
+                    PreferenceUtil.commitInt(MyConstants.WS_HOME_CONFIG, WS_13366_VN);
                 }
 
-                startActivity(new Intent(DebugConfigActivity.this, WelcomeActivity.class));
+                startActivity(new Intent(DebugConfigActivity.this, IndexActivity.class));
                 System.exit(0);
 
 
@@ -158,6 +158,7 @@ public class DebugConfigActivity extends BaseActivity {
 
              /*   EditText ed = (EditText) findViewById(R.id.et_input);
                 String str = ed.getText().toString();
+
                 if (TextUtils.isEmpty(str)) {
                     Toast.makeText(DebugConfigActivity.this, "不能为空！", Toast.LENGTH_SHORT).show();
                     return;
@@ -172,12 +173,18 @@ public class DebugConfigActivity extends BaseActivity {
 
                 PreferenceUtil.commitString("DIY_INPUT", str);*/
 
-                startActivity(new Intent(DebugConfigActivity.this, BasketIndexDetailsActivity.class));
+                //System.exit(0);
+                //   public LeagueCup(int type, List<String> thirdId, String racename, String raceId, int count, boolean hot) {
 
-                System.exit(0);
+
+                /// Intent intent = new Intent(DebugConfigActivity.this, MyFocusActivity.class);
+                // intent.putExtra("type",0);
+
+                // startActivity(intent);
 
             }
         });
+
     }
 
 }

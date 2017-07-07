@@ -24,6 +24,7 @@ import com.hhly.mlottery.activity.SnookerSettingActivity;
 import com.hhly.mlottery.adapter.PureViewPagerAdapter;
 import com.hhly.mlottery.base.BaseWebSocketFragment;
 import com.hhly.mlottery.config.BaseURLs;
+import com.hhly.mlottery.config.BaseUserTopics;
 import com.hhly.mlottery.frame.BallType;
 import com.hhly.mlottery.frame.snookerframe.SnookerImmediateFragment;
 import com.hhly.mlottery.frame.snookerframe.SnookerResultFragment;
@@ -68,8 +69,11 @@ public class SnookerListScoreFragment extends BaseWebSocketFragment implements V
          */
 //        setWebSocketUri("ws://192.168.10.242:61634");
         setWebSocketUri(BaseURLs.WS_SERVICE);
-        setTopic("USER.topic.snooker");
+//        setTopic("USER.topic.snooker");
+        setTopic(BaseUserTopics.snookerMatch);
         super.onCreate(savedInstanceState);
+
+        EventBus.getDefault().register(this);
 
     }
 
@@ -146,6 +150,8 @@ public class SnookerListScoreFragment extends BaseWebSocketFragment implements V
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // tv_match_name.setText(((TextView) view.findViewById(R.id.tv)).getText().toString());
                 //  iv_match.setImageResource(R.mipmap.nav_icon_cbb);
+                L.d("websocket123", ">>>>>>>>斯洛克比分关闭");
+
                 closeWebSocket();
 
                 EventBus.getDefault().post(new ScoreSwitchFg(position));
@@ -274,6 +280,7 @@ public class SnookerListScoreFragment extends BaseWebSocketFragment implements V
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -393,7 +400,7 @@ public class SnookerListScoreFragment extends BaseWebSocketFragment implements V
 
     @Override
     protected void onTextResult(String text) {
-        L.d("yxq", "收到消息==" + text);
+        L.d("websocket123", "斯洛克收到消息==" + text);
         EventBus.getDefault().post(new SnookerScoresWebSocketEntity(text)); //收到的消息传到即时页面
     }
 
@@ -424,6 +431,20 @@ public class SnookerListScoreFragment extends BaseWebSocketFragment implements V
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_fix_out);
                 break;
+        }
+    }
+
+
+    public void onEventMainThread(CloseWebSocketEventBus closeWebSocketEventBus) {
+
+        if (closeWebSocketEventBus.isVisible()) {
+            L.d("websocket123", "_________斯洛克 比分 关闭 fg");
+            closeWebSocket();
+        } else {
+            if (closeWebSocketEventBus.getIndex() == BallType.SNOOKER) {
+                L.d("websocket123", "_________斯洛克 比分 打开 fg");
+                connectWebSocket();
+            }
         }
     }
 }

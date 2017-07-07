@@ -1,6 +1,7 @@
 package com.hhly.mlottery.frame.footballframe;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.hhly.mlottery.MyApp;
 import com.hhly.mlottery.R;
+import com.hhly.mlottery.activity.FootballMatchDetailActivity;
 import com.hhly.mlottery.adapter.basketball.BasketballDatabaseScheduleSectionAdapter;
 import com.hhly.mlottery.adapter.basketball.SportsDialogAdapter;
 import com.hhly.mlottery.adapter.football.FootballDatabaseScheduleSectionAdapter;
@@ -31,8 +33,9 @@ import com.hhly.mlottery.bean.footballDetails.footballdatabasebean.ScheduleBean;
 import com.hhly.mlottery.bean.footballDetails.footballdatabasebean.ScheduleDatasBean;
 import com.hhly.mlottery.bean.footballDetails.footballdatabasebean.ScheduleRaceBean;
 import com.hhly.mlottery.config.BaseURLs;
-import com.hhly.mlottery.util.DateUtil;
+import com.hhly.mlottery.config.FootBallDetailTypeEnum;
 import com.hhly.mlottery.util.DisplayUtil;
+import com.hhly.mlottery.util.HandMatchId;
 import com.hhly.mlottery.util.LocaleFactory;
 import com.hhly.mlottery.util.net.VolleyContentFast;
 
@@ -138,6 +141,7 @@ public class FootballDatabaseScheduleNewFragment extends Fragment implements Vie
 
         initEmptyView();
 
+        setDetailsOnClick();
         initRecycler();
 
         mTitleTextView.setOnClickListener(this);
@@ -583,6 +587,7 @@ public class FootballDatabaseScheduleNewFragment extends Fragment implements Vie
 
         mSectionsNew = new ArrayList<>();
         mAdapterNew = new FootballDatabaseScheduleSectionAdapter(mSectionsNew);
+        mAdapterNew.setFootballTeamDetailsClickListener(footballTeamDetailsClickListener);
         mAdapterNew.addHeaderView(mButtonFrame);
         mAdapterNew.setEmptyView(true , mEmptyView);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
@@ -709,5 +714,27 @@ public class FootballDatabaseScheduleNewFragment extends Fragment implements Vie
     }
     public interface OnItemClickListener {
         void onItemClick(int position);
+    }
+
+    //点击内页跳转
+    private FootballTeamDetailsClickListener footballTeamDetailsClickListener;
+    public interface FootballTeamDetailsClickListener {
+        void DetailsOnClick(View view, ScheduleDatasBean matchData);
+    }
+    private void setDetailsOnClick(){
+        footballTeamDetailsClickListener = new FootballTeamDetailsClickListener() {
+            @Override
+            public void DetailsOnClick(View view, ScheduleDatasBean matchData) {
+                    if (matchData.getGuestId() != null) {
+                        if(HandMatchId.handId(getActivity(), matchData.getMatchId()+"")) {
+
+                            Intent intent = new Intent(getActivity(), FootballMatchDetailActivity.class);
+                            intent.putExtra("thirdId", matchData.getMatchId() + "");
+                            intent.putExtra(FootBallDetailTypeEnum.CURRENT_TAB_KEY, FootBallDetailTypeEnum.FOOT_DETAIL_LIVE);
+                            startActivity(intent);
+                        }
+                    }
+            }
+        };
     }
 }

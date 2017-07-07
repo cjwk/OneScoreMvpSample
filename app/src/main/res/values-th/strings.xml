@@ -316,9 +316,13 @@
     <string name="diy_combat_rate"> ความน่าจะเป็นของการปะทะกัน</string>
     <string name="diy_host_rate"> ความน่าจะเป็นของทีมเหย้า</string>
     <string name="diy_guest_rate"> ความน่าจะเป็นของทีมเยือน</string>
-    <string name="symbol_times" translatable="false">×</string>
-    <string name="symbol_plus" translatable="false">+</string>
-    <string name="symbol_equal" translatable="false">=</string>
+
+    //不需要翻译的string只在默认string文件里面写一遍就好了，这里不需要再写了
+    <!-- <string name="symbol_times" translatable="false">×</string>
+     <string name="symbol_plus" translatable="false">+</string>
+     <string name="symbol_equal" translatable="false">=</string>
+     <string name="label_line" translatable="false">-</string>-->
+
     <string name="action_close">ปิด</string>
     <string name="action_compute">คำนวณ</string>
     <string name="big_data_check_alert"> ผลลัพธ์ไม่สามารถคำนวณได้  กรุณากรอกตัวเลขที่เหมาะสม(0~1)</string>
@@ -387,7 +391,6 @@
     <string name="intelligent_qiupinglv"> ลูกและเสมอ</string>
     <string name="intelligent_qiufulv"> ลูกและแพ้</string>
     <string name="version_update_title"> กำลังดาว์นโหลดเวอร์ชั่นอัพเดท  กรุณารอสักครู่...</string>
-    <string name="label_line" translatable="false">-</string>
 
 
     <string name="rong_comment"> ความคิดเห็น</string>
@@ -1641,4 +1644,59 @@
 
     <string name="home_gender">เพศ</string>
     <string name="no_select_head">您还未选择头像</string>
+    <string name="foot_text">文字</string>
+    <string name="foot_lineup">阵容</string>
+    <string name="foot_statistics">统计</string>
+    <string name="nopage">暂无比赛直播</string>
+    <string name="corner_score">角球比分</string>
+    <string name="higher">高于</string>
+    <string name="jishi_pan">即时盘</string>
+    <string name="lower">低于</string>
+    <string name="available_balance">可用余额(元)</string>
+    <string name="frozen_balance">冻结余额(元)</string>
+    <string name="total_balance">总余额(元)</string>
+    <string name="account_detail">账户明细</string>
+    <string name="click_to_reload">点击重试</string>
+    <string name="withdraw_input_money">请输入提现金额</string>
+    <string name="withdraw_unless_100">提现金额最小100</string>
+    <string name="withdraw_morethan_total">提现金额大于总额</string>
+    <string name="withdraw_error">提现失败,请重试</string>
+    <string name="bind_card_name_null">开户名不能为空</string>
+    <string name="bind_card_bank_null">开户银行不能为空</string>
+    <string name="bind_card_card_error">银行卡号不正确</string>
+    <string name="bind_success">绑定成功</string>
+    <string name="bind_error">绑定失败</string>
+    <string name="withdraw">提现</string>
+    <string name="bind_card_name">开户名:</string>
+    <string name="bind_card_card_num">银行卡号:</string>
+    <string name="withdraw_amount">提取金额</string>
+    <string name="withdraw_available">可提现</string>
+    <string name="please_input_amount">请输入提取金额</string>
+    <string name="_1_n_2_17_17_n_3_1_n_4">1.为了保障你的资金安全，你的提款申请成功并经核对无误后，将通过人工处理到第三方支付平台再汇到你的账户。  2.处理时间：17点之前的提款申请，当日内处理;17点后的提款申请，次日处理。节假日到账时间顺延。  3.提款需收取1元的手续费  4.提款申请下发银行后以银行处理的到账时间为准</string>
+    <string name="withdraw_waiting">提现审核中...</string>
+    <string name="withdraw_3_day">需要三个工作日完成审核,请耐心等待</string>
+    <string name="bind_card_bindcard">绑定银行卡</string>
+    <string name="bindcard_input_info">请认真填写相应地银行卡信息</string>
+    <string name="bind_bind_bank">开户银行</string>
+    <string name="bind_card_hint_name">姓名</string>
+    <string name="bind_card_hint_bank">您的开户银行</string>
+    <string name="bind_card_card_number">银行卡卡号</string>
+    <string name="bind_card_input_card_number">请输入你的银行卡卡号</string>
+    <string name="bind_card_save">保存</string>
+    <string name="basket_team_zhanji">战绩</string>
+    <string name="basket_team_jiaolian">教练</string>
+    <string name="basket_team_avg_score">场均得分</string>
+    <string name="basket_team_avg_assitant">场均助攻</string>
+    <string name="basket_team_avg_borad">场均篮板</string>
+    <string name="basket_team_avg_lose">场均失分</string>
+    <string name="basket_team_abg_misplay">场均失误</string>
+    <string name="basket_team_total_chang">总场次</string>
+    <string name="basket_team_forward">前锋</string>
+    <string name="basket_team_center">中锋</string>
+    <string name="basket_team_defender">后卫</string>
+    <string name="basket_team_statistics">球队统计</string>
+    <string name="basket_team_result_schdule">赛程赛果</string>
+    <string name="basket_team_handicap_statistics">盘口统计</string>
+    <string name="basket_team_tech_staticss">技术统计</string>
+    <string name="basket_team_player_num">号</string>
 </resources>

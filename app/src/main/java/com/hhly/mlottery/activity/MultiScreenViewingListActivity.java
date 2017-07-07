@@ -39,7 +39,6 @@ import com.hhly.mlottery.util.L;
 import com.hhly.mlottery.util.MultipleBasketFilterListEvent;
 import com.hhly.mlottery.util.net.VolleyContentFast;
 import com.hhly.mlottery.widget.ExactSwipeRefreshLayout;
-import com.umeng.analytics.MobclickAgent;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,7 +52,6 @@ import de.greenrobot.event.EventBus;
  * Created by yixq on 2017/1/5.
  * mail：yixq@13322.com
  * describe:多屏动画列表页
- * ps: 由于BaseActivity复写了onSaveInstanceState()方法,继承BaseActivity使用Eventbus时在4.4系统手机中会崩溃，所以直接继承Activity。
  */
 
 public class MultiScreenViewingListActivity extends Activity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
@@ -600,6 +598,7 @@ public class MultiScreenViewingListActivity extends Activity implements View.OnC
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+
                 if (checkedId == mBasketRadioButton.getId()) {
                     borf = BASKET_TYPE;
                     isBasketLoad = -1;
@@ -846,17 +845,4 @@ public class MultiScreenViewingListActivity extends Activity implements View.OnC
         setState(MULTIPLE_STATUS_LOADING);
         mHandler.postDelayed(mRun, 500);
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
-    }
-
 }

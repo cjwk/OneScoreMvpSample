@@ -6,6 +6,8 @@ import com.hhly.mlottery.util.AppConstants;
 import com.hhly.mlottery.util.MyConstants;
 import com.hhly.mlottery.util.PreferenceUtil;
 
+import data.utils.Sign;
+
 
 /**
  * @author Tenney
@@ -75,6 +77,7 @@ public class BaseURLs {
 
             if (url_config == DebugConfigActivity.ZH_1332255) {
                 return "m.1332255.com:81";
+//                return "192.168.74.85:8096";
             } else if (url_config == DebugConfigActivity.TH_1332255) {
                 return "m.th.1332255.com:81";
             } else if (url_config == DebugConfigActivity.VN_1332255) {
@@ -91,6 +94,7 @@ public class BaseURLs {
                 return PreferenceUtil.getString("DIY_INPUT", "m.1332255.com:81");
             } else {
                 return "m.1332255.com:81";
+//                return "192.168.74.85:8096";
             }
         }
 
@@ -187,14 +191,17 @@ public class BaseURLs {
 
 
     public final static String WS_SERVICE = WS + WS_HOST;
+    /*用户中心新URL*/
+
+    public final static String P_URL_API_HOST = HTTP + HOST + URL_SPLITTER ;
 
     public final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER + "mlottery/core/";
     /*新搜索特制url*/
     public final static String NEW_URL_API_HOST = HTTP + HOST + URL_SPLITTER + "mlottery/core";
     /*上传图片新URl*/
-    public final static String NEW_URL_API_PHOST = HTTP + PHOST + URL_SPLITTER + "upload/";
+//    public final static String NEW_URL_API_PHOST = HTTP + PHOST + URL_SPLITTER + "upload/";
     //视频直播
-    private final static String URL_MATCHVIDEO_DATA = "matchVideo.findVideoInfoApp.do";
+//    private final static String URL_MATCHVIDEO_DATA = "matchVideo.findVideoInfoApp.do";
 
     public final static String LANGUAGE_PARAM = "lang";
     public final static String TIMEZONE_PARAM = "timeZone";
@@ -346,80 +353,80 @@ public class BaseURLs {
      * 获取当前期的开奖结果及下一期的开奖时间
      */
     // 香港开奖
-    private final static String URL_LHCNextAndNew = "nextAndNewLotteryResults.findLhcNextAndNewResults.do";
-
-    // 七星彩开奖
-    private final static String URL_QXCCNextAndNew = "nextAndNewLotteryResults.findQXCNextAndNewResults.do";
-
-
-    // 重庆时时彩
-    private final static String URL_CQSSCNextAndNew = "detailedLotteryResults.findCQSSCNextAndNewResults.do";
-
-    // 江西时时彩
-    private final static String URL_JXSSCNextAndNew = "detailedLotteryResults.findJXSSCNextAndNewResults.do";
-
-    // 新疆时时彩
-    private final static String URL_XJSSCNextAndNew = "detailedLotteryResults.findXJSSCNextAndNewResults.do";
-
-    // 云南时时彩
-    private final static String URL_YNSSCNextAndNew = "detailedLotteryResults.findYNSSCNextAndNewResults.do";
-
-    // 七星彩
-    private final static String URL_QXCNextAndNew = "detailedLotteryResults.findQXCNextAndNewResults.do";
-
-    // 广东11选5
-    private final static String URL_D11X5NextAndNew = "detailedLotteryResults.findD11X5NextAndNewResults.do";
-
-    // 广东快乐10分
-    private final static String URL_DKL10NextAndNew = "detailedLotteryResults.findDKL10NextAndNewResults.do";
-
-    // 湖北11选5
-    private final static String URL_HB11X5NextAndNew = "detailedLotteryResults.findHB11X5NextAndNewResults.do";
-
-    // 江苏11选5
-    private final static String URL_JS11X5NextAndNew = "detailedLotteryResults.findJS11X5NextAndNewResults.do";
-
-    // 江西11选5
-    private final static String URL_JX11X5NextAndNew = "detailedLotteryResults.findJX11X5NextAndNewResults.do";
-
-    // 安徽快3
-    private final static String URL_AHK3NextAndNew = "detailedLotteryResults.findAHK3NextAndNewResults.do";
-
-    // 湖南快乐10分
-    private final static String URL_HNKL10NextAndNew = "detailedLotteryResults.findHNKL10NextAndNewResults.do";
-
-    // 快乐8
-    private final static String URL_KL8NextAndNew = "detailedLotteryResults.findKL8NextAndNewResults.do";
-
-    // 吉林快3
-    private final static String URL_JLK3NextAndNew = "detailedLotteryResults.findJLK3NextAndNewResults.do";
-
-    // 辽宁11选5
-    private final static String URL_LN11X5NextAndNew = "detailedLotteryResults.findLN11X5NextAndNewResults.do";
-
-    // 北京赛车
-    private final static String URL_PK10NextAndNew = "detailedLotteryResults.findPK10NextAndNewResults.do";
-
-    // 江苏快3
-    private final static String URL_JSK3NextAndNew = "detailedLotteryResults.findJSK3NextAndNewResults.do";
-
-    // 时时乐
-    private final static String URL_SSLNextAndNew = "detailedLotteryResults.findSSLNextAndNewResults.do";
-
-    // 广西快3
-    private final static String URL_GXK3NextAndNew = "detailedLotteryResults.findGXK3NextAndNewResults.do";
-
-    // 幸运农场
-    private final static String URL_CQKL10NextAndNew = "detailedLotteryResults.findCQKL10NextAndNewResults.do";
-
-    // 山东11选5
-    private final static String URL_SD11X5NextAndNew = "detailedLotteryResults.findSD11X5NextAndNewResults.do";
-
-    // 天津时时彩
-    private final static String URL_TJSSCNextAndNew = "detailedLotteryResults.findTJSSCNextAndNewResults.do";
+//    private final static String URL_LHCNextAndNew = "nextAndNewLotteryResults.findLhcNextAndNewResults.do";
+//
+//    // 七星彩开奖
+//    private final static String URL_QXCCNextAndNew = "nextAndNewLotteryResults.findQXCNextAndNewResults.do";
+//
+//
+//    // 重庆时时彩
+//    private final static String URL_CQSSCNextAndNew = "detailedLotteryResults.findCQSSCNextAndNewResults.do";
+//
+//    // 江西时时彩
+//    private final static String URL_JXSSCNextAndNew = "detailedLotteryResults.findJXSSCNextAndNewResults.do";
+//
+//    // 新疆时时彩
+//    private final static String URL_XJSSCNextAndNew = "detailedLotteryResults.findXJSSCNextAndNewResults.do";
+//
+//    // 云南时时彩
+//    private final static String URL_YNSSCNextAndNew = "detailedLotteryResults.findYNSSCNextAndNewResults.do";
+//
+//    // 七星彩
+//    private final static String URL_QXCNextAndNew = "detailedLotteryResults.findQXCNextAndNewResults.do";
+//
+//    // 广东11选5
+//    private final static String URL_D11X5NextAndNew = "detailedLotteryResults.findD11X5NextAndNewResults.do";
+//
+//    // 广东快乐10分
+//    private final static String URL_DKL10NextAndNew = "detailedLotteryResults.findDKL10NextAndNewResults.do";
+//
+//    // 湖北11选5
+//    private final static String URL_HB11X5NextAndNew = "detailedLotteryResults.findHB11X5NextAndNewResults.do";
+//
+//    // 江苏11选5
+//    private final static String URL_JS11X5NextAndNew = "detailedLotteryResults.findJS11X5NextAndNewResults.do";
+//
+//    // 江西11选5
+//    private final static String URL_JX11X5NextAndNew = "detailedLotteryResults.findJX11X5NextAndNewResults.do";
+//
+//    // 安徽快3
+//    private final static String URL_AHK3NextAndNew = "detailedLotteryResults.findAHK3NextAndNewResults.do";
+//
+//    // 湖南快乐10分
+//    private final static String URL_HNKL10NextAndNew = "detailedLotteryResults.findHNKL10NextAndNewResults.do";
+//
+//    // 快乐8
+//    private final static String URL_KL8NextAndNew = "detailedLotteryResults.findKL8NextAndNewResults.do";
+//
+//    // 吉林快3
+//    private final static String URL_JLK3NextAndNew = "detailedLotteryResults.findJLK3NextAndNewResults.do";
+//
+//    // 辽宁11选5
+//    private final static String URL_LN11X5NextAndNew = "detailedLotteryResults.findLN11X5NextAndNewResults.do";
+//
+//    // 北京赛车
+//    private final static String URL_PK10NextAndNew = "detailedLotteryResults.findPK10NextAndNewResults.do";
+//
+//    // 江苏快3
+//    private final static String URL_JSK3NextAndNew = "detailedLotteryResults.findJSK3NextAndNewResults.do";
+//
+//    // 时时乐
+//    private final static String URL_SSLNextAndNew = "detailedLotteryResults.findSSLNextAndNewResults.do";
+//
+//    // 广西快3
+//    private final static String URL_GXK3NextAndNew = "detailedLotteryResults.findGXK3NextAndNewResults.do";
+//
+//    // 幸运农场
+//    private final static String URL_CQKL10NextAndNew = "detailedLotteryResults.findCQKL10NextAndNewResults.do";
+//
+//    // 山东11选5
+//    private final static String URL_SD11X5NextAndNew = "detailedLotteryResults.findSD11X5NextAndNewResults.do";
+//
+//    // 天津时时彩
+//    private final static String URL_TJSSCNextAndNew = "detailedLotteryResults.findTJSSCNextAndNewResults.do";
 
     //赛场
-    private final static String URL_FOOTBALL_DETAIL = "footBallMatch.queryAndroidMatchInfos.do";
+//    private final static String URL_FOOTBALL_DETAIL = "footBallMatch.queryAndroidMatchInfos.do";
 
     //赛场新接口
     private final static String URL_FOOTBALL_DETAIL_FIRST = "footBallMatch.queryAndroidFirstMatchInfos.do";
@@ -445,17 +452,17 @@ public class BaseURLs {
     private final static String FOOTBALLMATCH_MATCHODD_DETAILS = "footBallMatch.matchOddDetail.do";
 
     //分析
-    private final static String URL_FOOTBALL_ANALYSIS = "footBallMatch.matchAnalysis.do";
+//    private final static String URL_FOOTBALL_ANALYSIS = "footBallMatch.matchAnalysis.do";
     // 阵容首发
-    private final static String URL_FOOTBALL_DETAIL_FINDLINEUP = "footBallMatch.findLineUp.do";
+//    private final static String URL_FOOTBALL_DETAIL_FINDLINEUP = "footBallMatch.findLineUp.do";
     // 角球走势
-    private final static String URL_FOOTBALL_DETAIL_FINDCORNERKICKCOUNTS = "footBallMatch.findCornerKickCounts.do";
-    // 攻防走势
-    private final static String URL_FOOTBALL_DETAIL_FINDDEFENSECOUNTS = "footBallMatch.findDefenseCounts.do";
-    // 角球和攻防走势
-    private final static String URL_FOOTBALL_DETAIL_FINDCORNERANDDANGER = "footBallMatch.findCornerAndDanger.do";
-    //视频直播
-    public final static String URL_FOOTBALL_DETAIL_URL_MATCHVIDEO_DATA = URL_API_HOST + URL_MATCHVIDEO_DATA;
+//    private final static String URL_FOOTBALL_DETAIL_FINDCORNERKICKCOUNTS = "footBallMatch.findCornerKickCounts.do";
+//    // 攻防走势
+//    private final static String URL_FOOTBALL_DETAIL_FINDDEFENSECOUNTS = "footBallMatch.findDefenseCounts.do";
+//    // 角球和攻防走势
+//    private final static String URL_FOOTBALL_DETAIL_FINDCORNERANDDANGER = "footBallMatch.findCornerAndDanger.do";
+//    //视频直播
+//    public final static String URL_FOOTBALL_DETAIL_URL_MATCHVIDEO_DATA = URL_API_HOST + URL_MATCHVIDEO_DATA;
     // 二期改版首页接口
 //    private final static String URL_HOME_PAGER_DATA = "mainPage.findAndroidMainRsts.do";
 //    private final static String URL_HOME_PAGER_DATA = "mainPage.findAndroidLotteryMainRsts.do";// 1.2.0版本首页新接口
@@ -577,83 +584,83 @@ public class BaseURLs {
      * 获取当前期的开奖结果及下一期的开奖时间
      */
     // 香港开奖
-    public final static String URL_LHCNextAndNewResults = URL_API_HOST + URL_LHCNextAndNew;
-
-    // 七星彩
-    public final static String URL_QXCCNextAndNewResults = URL_API_HOST + URL_QXCCNextAndNew;
-
-
-    // 重庆时时彩
-    public final static String URL_CQSSCNextAndNewResults = URL_API_HOST + URL_CQSSCNextAndNew;
-
-    // 江西时时彩
-    public final static String URL_JXSSCNextAndNewResults = URL_API_HOST + URL_JXSSCNextAndNew;
-
-    // 新疆时时彩
-    public final static String URL_XJSSCNextAndNewResults = URL_API_HOST + URL_XJSSCNextAndNew;
-
-    // 云南时时彩
-    public final static String URL_YNSSCNextAndNewResults = URL_API_HOST + URL_YNSSCNextAndNew;
-
-    // 七星彩
-    public final static String URL_QXCNextAndNewResults = URL_API_HOST + URL_QXCNextAndNew;
-
-    // 广东11选5
-    public final static String URL_D11X5NextAndNewResults = URL_API_HOST + URL_D11X5NextAndNew;
-
-    // 广东快乐10分
-    public final static String URL_DKL10NextAndNewResults = URL_API_HOST + URL_DKL10NextAndNew;
-
-    // 湖北11选5
-    public final static String URL_HB11X5NextAndNewResults = URL_API_HOST + URL_HB11X5NextAndNew;
-
-    // 江苏11选5
-    public final static String URL_JS11X5NextAndNewResults = URL_API_HOST + URL_JS11X5NextAndNew;
-
-    // 江西11选5
-    public final static String URL_JX11X5NextAndNewResults = URL_API_HOST + URL_JX11X5NextAndNew;
-
-    // 安徽快3
-    public final static String URL_AHK3NextAndNewResults = URL_API_HOST + URL_AHK3NextAndNew;
-
-    // 湖南快乐10分
-    public final static String URL_HNKL10NextAndNewResults = URL_API_HOST + URL_HNKL10NextAndNew;
-
-    // 快乐8
-    public final static String URL_KL8NextAndNewResults = URL_API_HOST + URL_KL8NextAndNew;
-
-    // 吉林快3
-    public final static String URL_JLK3NextAndNewResults = URL_API_HOST + URL_JLK3NextAndNew;
-
-    // 辽宁11选5
-    public final static String URL_LN11X5NextAndNewResults = URL_API_HOST + URL_LN11X5NextAndNew;
-
-    // 北京赛车
-    public final static String URL_PK10NextAndNewResults = URL_API_HOST + URL_PK10NextAndNew;
-
-    // 江苏快3
-    public final static String URL_JSK3NextAndNewResults = URL_API_HOST + URL_JSK3NextAndNew;
-
-    // 时时乐
-    public final static String URL_SSLNextAndNewResults = URL_API_HOST + URL_SSLNextAndNew;
-
-    // 广西快3
-    public final static String URL_GXK3NextAndNewResults = URL_API_HOST + URL_GXK3NextAndNew;
-
-    // 幸运农场
-    public final static String URL_CQKL10NextAndNewResults = URL_API_HOST + URL_CQKL10NextAndNew;
-
-    // 山东11选5
-    public final static String URL_SD11X5NextAndNewResults = URL_API_HOST + URL_SD11X5NextAndNew;
-
-    // 天津时时彩
-    public final static String URL_TJSSCNextAndNewResults = URL_API_HOST + URL_TJSSCNextAndNew;
+//    public final static String URL_LHCNextAndNewResults = URL_API_HOST + URL_LHCNextAndNew;
+//
+//    // 七星彩
+//    public final static String URL_QXCCNextAndNewResults = URL_API_HOST + URL_QXCCNextAndNew;
+//
+//
+//    // 重庆时时彩
+//    public final static String URL_CQSSCNextAndNewResults = URL_API_HOST + URL_CQSSCNextAndNew;
+//
+//    // 江西时时彩
+//    public final static String URL_JXSSCNextAndNewResults = URL_API_HOST + URL_JXSSCNextAndNew;
+//
+//    // 新疆时时彩
+//    public final static String URL_XJSSCNextAndNewResults = URL_API_HOST + URL_XJSSCNextAndNew;
+//
+//    // 云南时时彩
+//    public final static String URL_YNSSCNextAndNewResults = URL_API_HOST + URL_YNSSCNextAndNew;
+//
+//    // 七星彩
+//    public final static String URL_QXCNextAndNewResults = URL_API_HOST + URL_QXCNextAndNew;
+//
+//    // 广东11选5
+//    public final static String URL_D11X5NextAndNewResults = URL_API_HOST + URL_D11X5NextAndNew;
+//
+//    // 广东快乐10分
+//    public final static String URL_DKL10NextAndNewResults = URL_API_HOST + URL_DKL10NextAndNew;
+//
+//    // 湖北11选5
+//    public final static String URL_HB11X5NextAndNewResults = URL_API_HOST + URL_HB11X5NextAndNew;
+//
+//    // 江苏11选5
+//    public final static String URL_JS11X5NextAndNewResults = URL_API_HOST + URL_JS11X5NextAndNew;
+//
+//    // 江西11选5
+//    public final static String URL_JX11X5NextAndNewResults = URL_API_HOST + URL_JX11X5NextAndNew;
+//
+//    // 安徽快3
+//    public final static String URL_AHK3NextAndNewResults = URL_API_HOST + URL_AHK3NextAndNew;
+//
+//    // 湖南快乐10分
+//    public final static String URL_HNKL10NextAndNewResults = URL_API_HOST + URL_HNKL10NextAndNew;
+//
+//    // 快乐8
+//    public final static String URL_KL8NextAndNewResults = URL_API_HOST + URL_KL8NextAndNew;
+//
+//    // 吉林快3
+//    public final static String URL_JLK3NextAndNewResults = URL_API_HOST + URL_JLK3NextAndNew;
+//
+//    // 辽宁11选5
+//    public final static String URL_LN11X5NextAndNewResults = URL_API_HOST + URL_LN11X5NextAndNew;
+//
+//    // 北京赛车
+//    public final static String URL_PK10NextAndNewResults = URL_API_HOST + URL_PK10NextAndNew;
+//
+//    // 江苏快3
+//    public final static String URL_JSK3NextAndNewResults = URL_API_HOST + URL_JSK3NextAndNew;
+//
+//    // 时时乐
+//    public final static String URL_SSLNextAndNewResults = URL_API_HOST + URL_SSLNextAndNew;
+//
+//    // 广西快3
+//    public final static String URL_GXK3NextAndNewResults = URL_API_HOST + URL_GXK3NextAndNew;
+//
+//    // 幸运农场
+//    public final static String URL_CQKL10NextAndNewResults = URL_API_HOST + URL_CQKL10NextAndNew;
+//
+//    // 山东11选5
+//    public final static String URL_SD11X5NextAndNewResults = URL_API_HOST + URL_SD11X5NextAndNew;
+//
+//    // 天津时时彩
+//    public final static String URL_TJSSCNextAndNewResults = URL_API_HOST + URL_TJSSCNextAndNew;
 
     /**
      * 体育彩票
      */
 
-    private final static String URL_MAIN = "matchResults.main.findMainResult.do";
+//    private final static String URL_MAIN = "matchResults.main.findMainResult.do";
 
     //即时(增加队徽请求字段)
     private final static String URL_IMMEDIATE = "androidMatchResults.findImmediateMatchs.do";
@@ -671,13 +678,13 @@ public class BaseURLs {
     private final static String URL_CEASELESS = "androidMatchResults.findCeaselessMatch.do";
 
     //关注(增加队徽请求字段)
-    private final static String URL_FOCUS = "androidMatchResults.findFocusMatchs.do";
+//    private final static String URL_FOCUS = "androidMatchResults.findFocusMatchs.do";
 
 
     // 刷新
-    private final static String URL_INCREMENT = "matchResults.findIncrementMatchs.do";
+//    private final static String URL_INCREMENT = "matchResults.findIncrementMatchs.do";
 
-    public final static String URL_MainMatchs = URL_API_HOST + URL_MAIN;
+//    public final static String URL_MainMatchs = URL_API_HOST + URL_MAIN;
 
     public final static String URL_ImmediateMatchs = URL_API_HOST + URL_IMMEDIATE;
 
@@ -687,9 +694,9 @@ public class BaseURLs {
 
     public final static String URL_CeaselessMatchs = URL_API_HOST + URL_CEASELESS;
 
-    public final static String URL_FocusMatchs = URL_API_HOST + URL_FOCUS;
+//    public final static String URL_FocusMatchs = URL_API_HOST + URL_FOCUS;
 
-    public final static String URL_IncrementMatchs = URL_API_HOST + URL_INCREMENT;
+//    public final static String URL_IncrementMatchs = URL_API_HOST + URL_INCREMENT;
 
     public final static String URL_Hot_focus = URL_API_HOST + URL_HOT;
 
@@ -711,7 +718,7 @@ public class BaseURLs {
     //赛场统计数据
     public final static String URL_FOOTBALL_DETAIL_STATISTICAL_DATA_INFO = URL_API_HOST + URL_FOOTBALL_DETAIL_STATISTICAL_DATA;
     // 阵容
-    public final static String URL_FOOTBALL_DETAIL_FINDLINEUP_INFO = URL_API_HOST + URL_FOOTBALL_DETAIL_FINDLINEUP;
+//    public final static String URL_FOOTBALL_DETAIL_FINDLINEUP_INFO = URL_API_HOST + URL_FOOTBALL_DETAIL_FINDLINEUP;
 
     //走势图表 进攻 危险进攻 射正 射偏
 
@@ -719,7 +726,7 @@ public class BaseURLs {
 
 
     //分析
-    public final static String URL_FOOTBALL_DETAIL_ANALYSIS_INFO = URL_API_HOST + URL_FOOTBALL_ANALYSIS;
+//    public final static String URL_FOOTBALL_DETAIL_ANALYSIS_INFO = URL_API_HOST + URL_FOOTBALL_ANALYSIS;
     // 二期首页
     public final static String URL_HOME_PAGER_INFO = URL_API_HOST + URL_HOME_PAGER_DATA;
 
@@ -741,10 +748,10 @@ public class BaseURLs {
 
 
     // 首页数据测试URL
-    public final static String URL_MAINDEMO = URL_API_HOST + "main.findMainResult.do";
+//    public final static String URL_MAINDEMO = URL_API_HOST + "main.findMainResult.do";
 
     //首页BannerURL
-    public final static String URL_MAINBANNER = URL_API_HOST + "androidAds.findPicAdsAche.do";
+//    public final static String URL_MAINBANNER = URL_API_HOST + "androidAds.findPicAdsAche.do";
 
     // 版本更新"http://192.168.10.66:8080/mlottery/core/apkDownload.apkUpdate.do";
 
@@ -756,11 +763,11 @@ public class BaseURLs {
     /**
      * 保存umeng渠道号，提交渠道号
      */
-    public final static String UMENG_CHANNEL_URL = "http://kj.13322.com/traffic/api";// 体彩正式环境
+    public final static String UMENG_CHANNEL_URL = "http://kj.13322.com/traffic/data.api";// 体彩正式环境
 //    public final static String UMENG_CHANNEL_URL = "http://183.61.172.88:8343/traffic/api";// 体彩测试环境
 
     //用户留存率分析
-    public final static String USER_ACTION_ANALYSIS_URL = "http://union.13322.com/traffic/api/appRetention";// 体彩正式环境
+    public final static String USER_ACTION_ANALYSIS_URL = "http://union.13322.com/traffic/data.api/appRetention";// 体彩正式环境
 //    public final static String USER_ACTION_ANALYSIS_URL = "http://183.61.172.88:8343/traffic/api/appRetention";// 体彩测试环境
 
     //指数详情
@@ -774,24 +781,24 @@ public class BaseURLs {
     public final static String URL_BASKET_HTTP = "http://";
     public final static String URL_BASKET_PROJECT = "/mlottery/core/";
     //即时字段
-    public final static String URL_BASKET_FINDLIVEMATCH = "basketballMatch.findLiveMatch.do";
+//    public final static String URL_BASKET_FINDLIVEMATCH = "basketballMatch.findLiveMatch.do";
     //赛果字段
-    public final static String URL_BASKET_FINDFINISHEDNATCH = "basketballMatch.findFinishedMatch.do";
+//    public final static String URL_BASKET_FINDFINISHEDNATCH = "basketballMatch.findFinishedMatch.do";
     //赛程字段
-    public final static String URL_BASKET_FINDSCHEDULEDNATCH = "basketballMatch.findScheduledMatch.do";
+//    public final static String URL_BASKET_FINDSCHEDULEDNATCH = "basketballMatch.findScheduledMatch.do";
     //关注字段
-    public final static String URL_BASKET_FINDFAVOURITEMATCH = "basketballMatch.findFavouriteMatch.do";
+//    public final static String URL_BASKET_FINDFAVOURITEMATCH = "basketballMatch.findFavouriteMatch.do";
     //头部比分字段
     public final static String URL_BASKET_FINDSCORE = "basketballDetail.findScore.do";
     //篮球赔率界面接口
     public final static String URL_BASKET_FINDODDS = "basketballDetail.findOdds.do";
 
     //即时接口  //HOST ==>  192.168.10.242:8181 / m.1332255.com
-    public final static String URL_BASKET_IMMEDIATE = URL_BASKET_HTTP + HOST + URL_BASKET_PROJECT + URL_BASKET_FINDLIVEMATCH;
+//    public final static String URL_BASKET_IMMEDIATE = URL_BASKET_HTTP + HOST + URL_BASKET_PROJECT + URL_BASKET_FINDLIVEMATCH;
     //赛果接口
-    public final static String URL_BASKET_RESULT = URL_BASKET_HTTP + HOST + URL_BASKET_PROJECT + URL_BASKET_FINDFINISHEDNATCH;
+//    public final static String URL_BASKET_RESULT = URL_BASKET_HTTP + HOST + URL_BASKET_PROJECT + URL_BASKET_FINDFINISHEDNATCH;
     //赛程接口
-    public final static String URL_BASKET_SCHEDULE = URL_BASKET_HTTP + HOST + URL_BASKET_PROJECT + URL_BASKET_FINDSCHEDULEDNATCH;
+//    public final static String URL_BASKET_SCHEDULE = URL_BASKET_HTTP + HOST + URL_BASKET_PROJECT + URL_BASKET_FINDSCHEDULEDNATCH;
     //头部字段
     public final static String URL_BASKET_DETAILS = HTTP + HOST + URL_BASKET_PROJECT + URL_BASKET_FINDSCORE;
     //篮球赔率界面
@@ -811,7 +818,7 @@ public class BaseURLs {
 //	public final static String URL_BASKET_SOCKET = "ws://192.168.10.242:61634/ws";
 //	public final static String URL_BASKET_SOCKET = "ws://m.1332255.com/ws";
 //	public final static String URL_BASKET_SOCKET = "ws://"+ HOST + "/ws";
-    public final static String URL_BASKET_SOCKET = "ws://" + WS_HOST;
+//    public final static String URL_BASKET_SOCKET = "ws://" + WS_HOST;
 
     /**
      * 篮球详情接口
@@ -826,7 +833,7 @@ public class BaseURLs {
     // 赛程
     public final static String URL_BASKET_DATABASE_SCHEDULE = URL_API_HOST + "basketballData.findSchedule.do";
     // 排行
-    public final static String URL_BASKET_DATABASE_RANKING = URL_API_HOST + "basketballData.findRanking.do";
+//    public final static String URL_BASKET_DATABASE_RANKING = URL_API_HOST + "basketballData.findRanking.do";
 
     //篮球资料库积分
 //    public final static String URL_FOOTBALL_DATABASE_INTEGRAL = "http://192.168.10.242:8181/mlottery/core/basketballData.findRanking117.do";
@@ -878,14 +885,14 @@ public class BaseURLs {
     public final static String URL_LEAGUESTATISTICSTODAY = URL_API_HOST + "toDayMatchStatistics.findTodayMatchStatistics.do";
 
     //联赛列表
-    public final static String URL_QLIBARYLEAGUES = "footballLeagueData.qLibaryLeagues.do";
-    public final static String URL_INFORMATION = URL_API_HOST + URL_QLIBARYLEAGUES;
+//    public final static String URL_QLIBARYLEAGUES = "footballLeagueData.qLibaryLeagues.do";
+//    public final static String URL_INFORMATION = URL_API_HOST + URL_QLIBARYLEAGUES;
     //查询联赛所有赛季时间和默认积分榜
     public final static String URL_QLEAGUEDATE = "footballLeagueData.qLeagueDate.do";
     public final static String URL_FOOT_QLEAGUEDATE = URL_API_HOST + URL_QLEAGUEDATE;
     //查询联赛详情
-    public final static String URL_QLEAGUESCORE = "footballLeagueData.qLeagueScore.do";
-    public final static String URL_FOOT_QLEAGUESCORE = URL_API_HOST + URL_QLEAGUEDATE;
+//    public final static String URL_QLEAGUESCORE = "footballLeagueData.qLeagueScore.do";
+//    public final static String URL_FOOT_QLEAGUESCORE = URL_API_HOST + URL_QLEAGUEDATE;
     // 联赛 qLeagueRace
 
     //足球资讯列表请求url
@@ -901,7 +908,7 @@ public class BaseURLs {
     /**
      * 指数推送
      */
-    public final static String URL_CPI_SOCKET = WS_SERVICE;
+//    public final static String URL_CPI_SOCKET = WS_SERVICE;
     /**
      * 新版足球分析接口
      */
@@ -913,31 +920,46 @@ public class BaseURLs {
     /**
      * 发送验证码
      */
-    public final static String URL_SENDSMSCODE = URL_API_HOST + "androidUserCenter.sendSmsCode.do";
+    public final static String URL_SENDSMSCODE = P_URL_API_HOST + "user/getsms";
+    public final static String SENDSMSCODE = "/user/getsms";
     /**
      * 注册
      */
-    public final static String URL_REGISTER = URL_API_HOST + "androidUserCenter.register.do";
+    public final static String URL_REGISTER = P_URL_API_HOST + "user/register";
+    /**
+     * 专家认证
+     */
+    public final static String EXPERTAUTH = P_URL_API_HOST + "user/expertAuth";
+    /**
+     * 专家详细信息
+     */
+    public final static String EXPERTINFO = P_URL_API_HOST + "user/expertInfo";
     /**
      * 登录
      */
-    public final static String URL_LOGIN = URL_API_HOST + "androidUserCenter.login.do";
+    public final static String URL_LOGIN = P_URL_API_HOST + "user/login";
     /**
      * 登出
      */
-    public final static String URL_LOGOUT = URL_API_HOST + "androidUserCenter.logout.do";
+    public final static String URL_LOGOUT = P_URL_API_HOST + "user/logout";
+    /**
+     * 修改图片
+     */
+    public final static String MODIFY_PICTURE = P_URL_API_HOST + "user/updateavator";
     /**
      * 重置密码
      */
-    public final static String URL_RESETPASSWORD = URL_API_HOST + "androidUserCenter.resetPassword.do";
+    public final static String URL_RESETPASSWORD = P_URL_API_HOST + "user/resetpassword";
     /**
      * 修改昵称
      */
-    public final static String URL_EDITNICKNAME = URL_API_HOST + "androidUserCenter.editNickname.do";
+    public final static String URL_EDITNICKNAME = P_URL_API_HOST + "user/updatenickname";
     /**
      * 修改密码
      */
-    public final static String URL_CHANGEPASSWORD = URL_API_HOST + "androidUserCenter.changePassword.do";
+    public final static String URL_CHANGEPASSWORD = P_URL_API_HOST + "user/updatepassword";
+    //上传头像
+    public final static String PUT_PHOTO_URL=P_URL_API_HOST+"user/updateavatorbyurl";
 
     /**
      * 资讯Id查询
@@ -961,17 +983,17 @@ public class BaseURLs {
     /**
      * --融云 获取用户Token URL--
      */
-    public final static String RONG_USER_TOKEN = "https://api.cn.ronghub.com/user/getToken.json";
+//    public final static String RONG_USER_TOKEN = "https://api.cn.ronghub.com/user/getToken.json";
     /**
      * --融云 获取聊天室ID URL--
      */
-    public final static String RONG_CHARTROOM_ID = "https://api.cn.ronghub.com/chatroom/create.json";
+//    public final static String RONG_CHARTROOM_ID = "https://api.cn.ronghub.com/chatroom/create.json";
     /**
      * --融去 获取聊天室人数 URL--
      */
-    public final static String RONG_CHARTROOM_COUNT = "https://api.cn.ronghub.com/chatroom/user/query.json";
+//    public final static String RONG_CHARTROOM_COUNT = "https://api.cn.ronghub.com/chatroom/user/query.json";
     /*头像图片上传*/
-    public final static String UPLOADIMAGE = NEW_URL_API_PHOST + "uploadImage.do";
+//    public final static String UPLOADIMAGE = NEW_URL_API_PHOST + "uploadImage.do";
     /*头像URL上传*/
     public final static String UPDATEHEADICON = URL_API_HOST + "androidUserCenter.updateHeadIcon.do";
 
@@ -1029,8 +1051,8 @@ public class BaseURLs {
     /**
      * 斯洛克
      */
-    public final static String SNOOKER_LIST_URL = URL_API_HOST + "snookerMatch.getFirstSnookerMatch.do";
-    public final static String SNOOKER_LIST_LOADMORE_URL = URL_API_HOST + "snookerMatch.getSnookerLeagues.do"; // http://m.1332255.com:81/mlottery/core/snookerMatch.getSnookerLeagues.do?dateLeaguesId=2016-11-20_125358,2016-11-19_125358
+//    public final static String SNOOKER_LIST_URL = URL_API_HOST + "snookerMatch.getFirstSnookerMatch.do";
+//    public final static String SNOOKER_LIST_LOADMORE_URL = URL_API_HOST + "snookerMatch.getSnookerLeagues.do"; // http://m.1332255.com:81/mlottery/core/snookerMatch.getSnookerLeagues.do?dateLeaguesId=2016-11-20_125358,2016-11-19_125358
 
     //斯诺克头部跟分析页
     public final static String SNOOKER_ANALYZE_URL = URL_API_HOST + "snookerAnalysis.findAnalysisInfo.do";
@@ -1097,7 +1119,9 @@ public class BaseURLs {
     // 网球比分关注列表
     public final static String TENNIS_FOCUS_URL = URL_API_HOST + "tennisMatch.connerns.do";
     //网球指数列表接口
-    public final static String TENNIS_INDEX_LIST=URL_API_HOST+"tennisIndexData.findIndexDataList.do";
+    public final static String TENNIS_INDEX_LIST = URL_API_HOST + "tennisIndexData.findIndexDataList.do";
+    //网球指数列表指数详情
+    public final static String TENNIS_INDEX_DETAILS = URL_API_HOST + "tennisIndexData.findIndexOddsDetail.do";
 
     // 网球内页 头部和分析
     public final static String TENNIS_DATAILS_URL = URL_API_HOST + "tennisMatch.findContentAnalysis.do";
@@ -1106,6 +1130,20 @@ public class BaseURLs {
     // 网球内页 赔率公司指数详情接口
     public final static String TENNIS_DATAILS_ODDS_INFO_URL = URL_API_HOST + "tennisMatch.findContentOddsDetail.do";
 
+    // 球队详情-头部
+    public final static String FOOT_TEAM_DATA_URL = URL_API_HOST + "footballLeagueData.findTeamDateAndRank.do";
+    // 球队详情-数据
+    public final static String FOOT_TEAM_DATA_INFO_URL = URL_API_HOST + "footballLeagueData.findTeamInfoById.do";
+    // 球队详情-赛程赛果
+    public final static String FOOT_TEAM_HISTORY_URL = URL_API_HOST + "footballLeagueData.findTeamMatchList.do";
+    // 球队详情-盘口
+    public final static String FOOT_TEAM_ODDS_URL = URL_API_HOST + "footballLeagueData.findTeamMatchOdd.do";
+    // 球队详情-阵容
+    public final static String FOOT_TEAM_LIST_URL = URL_API_HOST + "footballLeagueData.findTeamPlayers.do";
+
+
+    // 专家详情页
+    public final static String EXPERTS_LIST_URL = URL_API_HOST + "expert.findAppExpert.do";
 
     /*****************************************************************************************************************
      * 下面URL为HTML页面
@@ -1124,11 +1162,7 @@ public class BaseURLs {
 
     //邀请码分享
     public final static String INVITED_ACTIVITY_URL = HTTP + HOST + URL_SPLITTER + "download_yqm.html";
-
-
-    /***
-     * 斯洛克url
-     */
+    /***********************************************************************************************************************/
 
     //斯洛克资料库排名
     public final static String URL_SNOOKER_INFO_RANK = URL_API_HOST + "snookerWorldRanking.getWorldRankingPaging.do";
@@ -1146,11 +1180,75 @@ public class BaseURLs {
     //斯诺克资料库赛事内页历届冠军
     public final static String SNOOKER_FINDPREVIOUSWINNERS = URL_API_HOST + "snookerData.findPreviousWinners.do";
     //斯诺克指数接口
-    public final static String SNOOKER_INDEX_LIST=URL_API_HOST+"snookerOdds.getSnookerOddsByDate.do";
+    public final static String SNOOKER_INDEX_LIST = URL_API_HOST + "snookerOdds.getSnookerOddsByDate.do";
     //篮球比分搜索
+    public final static String IOSBASKETBALLMATCH = URL_API_HOST + "IOSBasketballMatch.fuzzySearch.do";
+    //足球竞彩
+    public final static String FINDBETTINGLIST = URL_API_HOST + "footballBetting.findBettingList.do";
+    //技术统计
+    public final static String TEAMTECHSTATDATA = URL_API_HOST + "basketballData.teamTechStatData.do";
+    //盘口统计
+    public final static String TEAMPLATEDATA = URL_API_HOST + "basketballData.teamPlateData.do";
 
-    public final static String IOSBASKETBALLMATCH=URL_API_HOST+"IOSBasketballMatch.fuzzySearch.do";
+    /*推荐专家*/
+    public final static String EXPERTPROMOTIONS = P_URL_API_HOST + "promotion/info/expertPromotions";
+    public final static String EXPERTINTRODUCT = P_URL_API_HOST + "user/expertIntroduct";
+    /*获取用户信息*/
+    public final static String GETUSERINFO = P_URL_API_HOST + "user/getuserinfo";
+    /**
+     * 角球列表
+     */
+    public final static String CORNER_LIST=URL_API_HOST+"corner.getCornerList.do";
 
     /***********************************************************************************************************************/
 
+    /**
+     * 竞彩推介
+     */
+    public final static String URL_BETTING_HTTP = "http://";
+
+    //支付接口参数(调用支付宝、微信)
+    public final static String PARAMENT_RECHARGE_PAY = "/user/pay/recharge";
+    //支付接口(调用支付宝、微信)
+    public final static String URL_RECHARGE_PAY = URL_BETTING_HTTP + HOST + PARAMENT_RECHARGE_PAY;
+
+    //推介列表接口参数
+    public final static String PARAMENT_RECOMMEND_LIST = "/promotion/info/list";
+    //推介详情接口参数
+    public final static String PARAMENT_RECOMMEND_DETAILS = "/promotion/info/detail";
+    //充值页面接口参数
+    public final static String PARAMENT_CHARGE_MONEY = "/user/pay/recharge";
+    //支付页面参数
+    public final static String PARAMENT_ORDER_CREATE = "/promotion/order/create";
+    //余额支付接口参数
+    public final static String PARAMENT_ORDER_PAY = "/promotion/order/pay";
+    //余额查询接口参数
+    public final static String PARAMENT_PAY_BALANCE = "/user/pay/balance";
+
+    //内页赛事推介接口参数
+    public final static String PARAMENT_MATCH_RECOMMEND = "/promotion/info/matchPromotions";
+    //推介发布玩法接口参数
+    public final static String PARAMENT_ISSUE_PLAY = "/promotion/info/getpromotiontype";
+    //推介发布的接口参数
+    public final static String PARAMENT_TO_ISSUE = "/promotion/info/publicpromotion";
+
+    //推介列表
+    public final static String URL_RECOMEND_LIST = URL_BETTING_HTTP + HOST + PARAMENT_RECOMMEND_LIST;
+    //推介详情
+    public final static String URL_REMMEND_DETAILS = URL_BETTING_HTTP + HOST + PARAMENT_RECOMMEND_DETAILS;
+    //充值页面接口
+    public final static String URL_CHARGE_MONEY = URL_BETTING_HTTP + HOST + PARAMENT_CHARGE_MONEY;
+    //支付页面接口
+    public final static String URL_ORDER_CREATE = URL_BETTING_HTTP + HOST + PARAMENT_ORDER_CREATE;
+    //余额支付接口
+    public final static String URL_ORDER_PAY = URL_BETTING_HTTP + HOST + PARAMENT_ORDER_PAY;
+    //余额查询接口
+    public final static String URI_PAY_BALANCE = URL_BETTING_HTTP + HOST + PARAMENT_PAY_BALANCE;
+    //内页赛事推介接口
+    public final static String URI_BETTING_ISSUE_LIST = URL_BETTING_HTTP + HOST + PARAMENT_MATCH_RECOMMEND;
+    //推介发布玩法接口
+    public final static String URI_BETTING_ISSUE_PLAY = URL_BETTING_HTTP + HOST + PARAMENT_ISSUE_PLAY;
+    //推介发布的接口
+    public final static String URI_BETTING_TO_ISSUE = URL_BETTING_HTTP + HOST + PARAMENT_TO_ISSUE;
+//    String balanceUrl = "http://192.168.10.242:8098/promotion/info/publicpromotion";
 }

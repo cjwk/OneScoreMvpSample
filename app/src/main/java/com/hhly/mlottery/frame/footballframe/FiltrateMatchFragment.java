@@ -19,9 +19,12 @@ import com.hhly.mlottery.adapter.FiltrateMatchAdapter.ClickChangeListener;
 import com.hhly.mlottery.bean.HotFocusLeagueCup;
 import com.hhly.mlottery.bean.LeagueCup;
 import com.hhly.mlottery.callback.RequestHostFocusCallBack;
+import com.hhly.mlottery.config.FootBallMatchFilterTypeEnum;
 import com.hhly.mlottery.util.AppConstants;
+import com.hhly.mlottery.util.CollectionUtils;
 import com.hhly.mlottery.util.HotFocusUtils;
 import com.hhly.mlottery.util.L;
+import com.hhly.mlottery.util.PreferenceUtil;
 import com.hhly.mlottery.widget.GrapeGridView;
 import com.umeng.analytics.MobclickAgent;
 
@@ -40,12 +43,21 @@ public class FiltrateMatchFragment extends Fragment implements OnClickListener {
     private final static String TAG = "FiltrateMatchFragment";
 
     //private GridView mGridView;
+    private final static String FG_ID = "fgid";
+
     private final static String ALL_CUPS = "allcupss";
     private final static String CHECKED_CUPS = "checkedcups";
     private final static String CHECKED_DEFUALT = "checked_defualt";
 
+    private final int ROLLBALL_FRAGMENT = 0;
+    private final int IMMEDIA_FRAGMENT = 1;
+    private final int RESULT_FRAGMENT = 2;
+    private final int SCHEDULE_FRAGMENT = 3;
+    private final int FOCUS_FRAGMENT = 4;
+
     private FiltrateMatchAdapter mAdapterHot;
     private FiltrateMatchAdapter mAdapterOther;
+
 
     /**
      * 全选按钮
@@ -93,16 +105,19 @@ public class FiltrateMatchFragment extends Fragment implements OnClickListener {
     private GrapeGridView mGrapeGridViewHot;
     private GrapeGridView mGrapeGridViewOther;
 
+    private int mCurrentFgId = 0;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    public static FiltrateMatchFragment newInstance(Parcelable[] cups, Parcelable[] checkedCups, boolean isDefualt) {
+    public static FiltrateMatchFragment newInstance(int fgId, Parcelable[] cups, Parcelable[] checkedCups, boolean isDefualt) {
         FiltrateMatchFragment fragment = new FiltrateMatchFragment();
 
         Bundle bundle = new Bundle();
+        bundle.putInt(FG_ID, fgId);
         bundle.putParcelableArray(ALL_CUPS, cups);
         bundle.putParcelableArray(CHECKED_CUPS, checkedCups);
         bundle.putBoolean(CHECKED_DEFUALT, isDefualt);
@@ -141,6 +156,8 @@ public class FiltrateMatchFragment extends Fragment implements OnClickListener {
             }
         }
 
+        mCurrentFgId = bundle.getInt(FG_ID);
+
         Parcelable[] checkedCups = bundle.getParcelableArray(CHECKED_CUPS);
         mCheckedIds = new LinkedList<>();
         mSelectedCups = new ArrayList<>();
@@ -148,13 +165,18 @@ public class FiltrateMatchFragment extends Fragment implements OnClickListener {
         isCheckedDefualt = bundle.getBoolean(CHECKED_DEFUALT);
         if (!isCheckedDefualt && checkedCups != null && checkedCups.length > 0) {
             for (Parcelable cup : checkedCups) {
-                mCheckedIds.add(((LeagueCup) cup).getRaceId());
+                // mCheckedIds.add(((LeagueCup) cup).getRaceId());
                 mSelectedCups.add((LeagueCup) cup);
             }
         }
 
+
+        //设置本地保存的checkId
+        setFilterCheckId();
+
+
         mAllSize = ComputeRaceTotal(mAllCups);
-        mSelectedSize = ComputeRaceTotal(mSelectedCups);
+        mSelectedSize = ComputeSelectRaceTotal(mSelectedCups);
         mHideNumber.setText(String.valueOf(mAllSize - mSelectedSize));
 
         mSelectAllBtn = (TextView) view.findViewById(R.id.filtrate_match_all_btn);
@@ -176,6 +198,32 @@ public class FiltrateMatchFragment extends Fragment implements OnClickListener {
         });
 
         return view;
+    }
+
+    private void setFilterCheckId() {
+        List<String> list = new ArrayList<>();
+        switch (mCurrentFgId) {
+            case ROLLBALL_FRAGMENT:
+                list.addAll((ArrayList) PreferenceUtil.getDataList(FootBallMatchFilterTypeEnum.FOOT_ROLL));
+                break;
+            case IMMEDIA_FRAGMENT:
+                list.addAll((ArrayList) PreferenceUtil.getDataList(FootBallMatchFilterTypeEnum.FOOT_IMMEDIA));
+                break;
+            case RESULT_FRAGMENT:
+                list.addAll((ArrayList) PreferenceUtil.getDataList(FootBallMatchFilterTypeEnum.FOOT_RESULT));
+                break;
+            case SCHEDULE_FRAGMENT:
+                list.addAll((ArrayList) PreferenceUtil.getDataList(FootBallMatchFilterTypeEnum.FOOT_SCHEDULE));
+                break;
+            default:
+                break;
+        }
+
+        L.d("ddddeee", "shuai==" + list.size() + "");
+
+        for (String id : list) {
+            mCheckedIds.add(id);
+        }
     }
 
     private void newAdapter() {
@@ -394,6 +442,21 @@ public class FiltrateMatchFragment extends Fragment implements OnClickListener {
         int total = 0;
         for (LeagueCup leagueCup : list) {
             total += leagueCup.getCount();
+        }
+        return total;
+    }
+
+
+    private int ComputeSelectRaceTotal(List<LeagueCup> list) {
+        int total = 0;
+        for (LeagueCup leagueCup : list) {
+            if (CollectionUtils.notEmpty(mCheckedIds)) {
+                if (mCheckedIds.contains(leagueCup.getRaceId())) {
+                    total += leagueCup.getCount();
+                }
+            } else {
+                total += leagueCup.getCount();
+            }
         }
         return total;
     }

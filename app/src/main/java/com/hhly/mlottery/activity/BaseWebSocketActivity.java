@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.hhly.mlottery.MyApp;
 import com.hhly.mlottery.util.DeviceInfo;
 import com.hhly.mlottery.util.L;
 import com.hhly.mlottery.util.cipher.MD5Util;
@@ -13,6 +14,7 @@ import com.neovisionaries.ws.client.WebSocketException;
 import com.neovisionaries.ws.client.WebSocketFactory;
 import com.neovisionaries.ws.client.WebSocketFrame;
 import com.neovisionaries.ws.client.WebSocketState;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.IOException;
 import java.util.List;
@@ -123,32 +125,6 @@ public abstract class BaseWebSocketActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        L.d(TAG, "_onResume_");
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                synchronized (ws) {
-//        if (ws.getState().equals(WebSocketState.CREATED)) {
-//            L.d(TAG, "run");
-//            try {
-//                ws.connect();
-//            } catch (WebSocketException e) {
-//                onConnectFail();
-//                e.printStackTrace();
-//            }
-//        } else if (ws.getState().equals(WebSocketState.CLOSED)) {
-//            reconnect();
-//        }
-//                }
-//            }
-//        }).start();
-
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         L.d(TAG, "__onDestroy__");
@@ -156,13 +132,14 @@ public abstract class BaseWebSocketActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (ws != null) {
-                    synchronized (ws) {
+                    synchronized (this) {
                         ws.disconnect();
                     }
                     ws = null;
                 }
             }
         }).start();
+        MyApp.getRefWatcher().watch(this);
     }
 
     public WebSocketState getSocketState() {
@@ -176,7 +153,7 @@ public abstract class BaseWebSocketActivity extends AppCompatActivity {
     private void connect() {
         try {
             if (ws != null) {
-                synchronized (ws) {
+                synchronized (this) {
                     if (ws != null) {
                         if (ws.getState().equals(WebSocketState.CREATED)) {
                             ws.connect();
@@ -211,7 +188,7 @@ public abstract class BaseWebSocketActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (ws != null) {
-                    synchronized (ws) {
+                    synchronized (this) {
                         if (ws != null) {
                             ws.disconnect();
                         }
@@ -305,5 +282,18 @@ public abstract class BaseWebSocketActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

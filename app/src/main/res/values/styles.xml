@@ -2,7 +2,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!---->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -364,7 +364,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>
-        <item name="android:textColor">@color/light</item>
+        <item name="android:textColor">@color/mdy_333</item>
         <item name="android:textSize">10sp</item>
         <item name="android:text"></item>
     </style>
@@ -623,6 +623,11 @@
         <item name="android:background">@drawable/selector_loginbtn_new_blue</item>
     </style>
 
+    <style name="new_new_loginbtn_new_blue" parent="new_login_item_bg">
+        <item name="android:background">@drawable/selector_loginbtn_white</item>
+    </style>
+
+
     <style name="new_loginbtn_blue" parent="new_login_item_bg">
         <item name="android:background">@drawable/selector_loginbtn_new_white</item>
     </style>
@@ -716,7 +721,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="login_edittext_loginbtn_newblue" parent="new_loginbtn_new_blue">
+    <style name="login_edittext_loginbtn_newblue" parent="new_new_loginbtn_new_blue">
         <item name="android:layout_height">44dp</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/white</item>
@@ -786,7 +791,7 @@
 
     <style name="WW_Width_0dp">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
     </style>
 
     <style name="item_rollball_MeasureSpec_EXACTLY">
@@ -1109,5 +1114,185 @@
         <item name="android:textSize">@dimen/tennis_score_item</item>
     </style>
 
+    <!--竞彩推荐页-->
+    <style name="betting_recommend_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textSize">@dimen/text_size_11</item>
+    </style>
+
+    <style name="betting_recommend_details_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="android:textColor">@color/betting_recommend_zhuanjia_details_color</item>
+    </style>
+
+    <style name="betting_recommend_team_name_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textColor">@color/betting_recommend_name_color</item>
+    </style>
+
+    <style name="betting_recommend_buy_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="android:textColor">@color/betting_recommend_zhuanjia_details_color</item>
+    </style>
+    <!--角球列表页赔率字体样式-->
+    <style name="corner_text_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text"></item>
+        <item name="android:textSize">@dimen/text_size_13</item>
+        <item name="android:textColor">@color/mdy_333</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:gravity">center</item>
+
+    </style>
+
+    <!-- 竞彩推介发布内容 -->
+    <style name="betting_recommend_issue_check">
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/betting_issue_check_txt_color</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+    </style>
+
+    <!-- 竞彩推介发布文字内容 -->
+    <style name="betting_recommend_issue_fabu">
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/betting_issue_check_txt_color</item>
+        <item name="android:textSize">@dimen/text_size_11</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+    </style>
+    <!--账户明细余额字体样式-->
+    <style name="account_detail_balance">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:text">可用余额(元)</item>
+        <item name="android:textSize">@dimen/text_size_15</item>
+    </style>
+
+    <!--竞彩推介发布详情-->
+    <style name="betting_recommend_issue_fabu_key">
+        <item name="android:textColor">@color/betting_recommend_issue_wanfa_color</item>
+        <item name="android:textSize">@dimen/text_size_13</item>
+    </style>
+    <style name="betting_recommend_issue_fabu_key_xhdpi">
+        <item name="android:textColor">@color/betting_recommend_issue_wanfa_color</item>
+        <item name="android:textSize">@dimen/text_size_11</item>
+    </style>
+
+    <style name="betting_recommend_issue_fabu_jiage">
+        <item name="android:textColor">@color/betting_recommend_issue_jiage_color</item>
+        <item name="android:textSize">@dimen/text_size_13</item>
+    </style>
+    <!--提现页面-->
+    <style name="withdraw_text_style">
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textColor">@color/application_specialist_text_color</item>
+    </style>
+
+    <!-- 状态栏 -->
+    <style name="MyToolBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="colorControlActivated">@android:color/white</item>
+    </style>
+    <!--篮球球队技术-->
+    <style name="basket_team_data_left">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/home_item_lottery_title_des</item>
+        <item name="android:textSize">@dimen/text_size_13</item>
+        <item name="android:text">排名</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!--篮球球队技术-->
+    <style name="basket_team_data_right">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/snooker</item>
+        <item name="android:textSize">@dimen/text_size_15</item>
+        <item name="android:text">--</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <!--篮球球队技术场均那些-->
+    <style name="basket_team_changjun">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/snooker</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="android:text">--</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <!--盘口统计-->
+    <style name="handicap_statisticss" >
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/home_item_lottery_title</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!--技术统计-->
+    <style name="technial_stctistic" >
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/home_item_lottery_title</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!--竖线条-->
+
+    <style name="technial_ve_line" >
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:background">@color/item_match_jingcai</item>
+    </style>
+    <style name="technial_vr_line" >
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/item_match_jingcai</item>
+    </style>
+    <!--竖线条-->
+    <style name="technial_hr_line" >
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0.5dp</item>
+
+        <item name="android:background">@color/item_match_jingcai</item>
+    </style>
 
 </resources>

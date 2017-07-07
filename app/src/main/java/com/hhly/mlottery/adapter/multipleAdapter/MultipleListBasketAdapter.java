@@ -16,12 +16,9 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.hhly.mlottery.R;
-import com.hhly.mlottery.adapter.custom.CustomMyDataAdapter;
 import com.hhly.mlottery.bean.basket.BasketAllOddBean;
 import com.hhly.mlottery.bean.basket.BasketMatchBean;
 import com.hhly.mlottery.bean.basket.BasketOddBean;
-import com.hhly.mlottery.bean.basket.BasketRootBean;
-import com.hhly.mlottery.bean.custombean.CustomMineBean.CustomMineThirdDataBean;
 import com.hhly.mlottery.frame.basketballframe.MyRotateAnimation;
 import com.hhly.mlottery.util.ImageLoader;
 import com.hhly.mlottery.util.MyConstants;
@@ -70,7 +67,7 @@ public class MultipleListBasketAdapter extends BaseQuickAdapter<BasketMatchBean>
         this.mOnItemClickListener = mOnItemClickListener;
     }
     public interface MultipleRecyclerViewBasketItemClickListener {
-        void onItemClick(View view, String data , int pos , BasketMatchBean matchData);
+        void onItemClick(View view, String data, int pos, BasketMatchBean matchData);
     }
 
 

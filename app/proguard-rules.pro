@@ -126,7 +126,7 @@
 -keep class org.apache.commons.logging.** { *; }
 -keep class android.net.compatibility.** { *; }
 -keep class android.net.http.** { *; }
-
+-keep class org.apache.http.{*;}
 ########################## 友盟推送 End
 
 # License
@@ -218,6 +218,8 @@
 -keep class com.hhly.mlottery.activity.SnookerInformationSerachActivity{ *;}
 -keep class com.hhly.mlottery.callback.SearchService { *; }
 -keep class com.hhly.mlottery.callback.BasketSearchservice{ *; }
+-keep class com.hhly.mlottery.callback.SnookerSearchService{ *; }
+-keep class com.hhly.mlottery.callback.FootballMatchSearchService{ *; }
 
 ##篮球指数
 -keep class com.hhly.mlottery.frame.cpifrag.basketballtask.data.ApiService{ *; }
@@ -253,3 +255,17 @@ public void *(***);
 -keep class dice.** {*; }
 -dontwarn dice.**
 ##-----TalkingData统计 end-----
+
+##-----支付宝 begin-----
+-libraryjars libs/alipaySingle-20161222.jar
+
+-keep class com.alipay.android.app.IAlixPay{*;}
+-keep class com.alipay.android.app.IAlixPay$Stub{*;}
+-keep class com.alipay.android.app.IRemoteServiceCallback{*;}
+-keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
+-keep class com.alipay.sdk.app.PayTask{ public *;}
+-keep class com.alipay.sdk.app.AuthTask{ public *;}
+
+-dontwarn android.net.**
+-keep class android.net.SSLCertificateSocketFactory{*;}
+##-----支付宝 end-----

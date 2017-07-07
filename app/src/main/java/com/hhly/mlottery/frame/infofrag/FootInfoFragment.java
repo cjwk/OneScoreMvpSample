@@ -25,9 +25,11 @@ import com.hhly.mlottery.activity.FootballMatchDetailActivity;
 import com.hhly.mlottery.adapter.InfoCenterAdapter;
 import com.hhly.mlottery.bean.infoCenterBean.InfoCenterBean;
 import com.hhly.mlottery.config.BaseURLs;
+import com.hhly.mlottery.config.FootBallDetailTypeEnum;
 import com.hhly.mlottery.config.StaticValues;
 import com.hhly.mlottery.util.DateUtil;
 import com.hhly.mlottery.util.DisplayUtil;
+import com.hhly.mlottery.util.HandMatchId;
 import com.hhly.mlottery.util.L;
 import com.hhly.mlottery.util.net.VolleyContentFast;
 import com.hhly.mlottery.widget.InfoCenterPW;
@@ -78,11 +80,14 @@ public class FootInfoFragment extends Fragment implements View.OnClickListener, 
             @Override
             public void onItemClick(View view, int i) {
                 int thirdId = mInfoCenterBean.intelligences.get(currentIndexDate).list.get(i).thirdId;
-                L.d("xxx", "thirdId: " + thirdId);
-                Intent intent = new Intent(mContext, FootballMatchDetailActivity.class);
-                intent.putExtra(FootballMatchDetailActivity.BUNDLE_PARAM_THIRDID, String.valueOf(thirdId));
-                intent.putExtra("info_center", 1);
-                startActivity(intent);
+
+                if (HandMatchId.handId(mContext, String.valueOf(thirdId))) {
+                    L.d("xxx", "thirdId: " + thirdId);
+                    Intent intent = new Intent(mContext, FootballMatchDetailActivity.class);
+                    intent.putExtra(FootballMatchDetailActivity.BUNDLE_PARAM_THIRDID, String.valueOf(thirdId));
+                    intent.putExtra(FootBallDetailTypeEnum.CURRENT_TAB_KEY, FootBallDetailTypeEnum.FOOT_DETAIL_INFOCENTER);
+                    startActivity(intent);
+                }
             }
         });
     }

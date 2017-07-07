@@ -44,6 +44,8 @@ public class OddsFragment extends Fragment {
         InitView(view);
     }
 
+    public OddsFragment(){}
+
     public static OddsFragment newInstance() {
         OddsFragment fragment = new OddsFragment();
         Bundle args = new Bundle();
@@ -92,6 +94,10 @@ public class OddsFragment extends Fragment {
         //如果是隐藏
         //相当于Fragment的onPause
         isVisible = isVisibleToUser;
+
+        if(isVisibleToUser){
+            mPlateFragment.loadData();
+        }
     }
 
     /**

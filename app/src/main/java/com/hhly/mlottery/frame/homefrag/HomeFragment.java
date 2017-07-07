@@ -36,7 +36,9 @@ import com.alibaba.fastjson.JSON;
 import com.android.volley.DefaultRetryPolicy;
 import com.hhly.mlottery.MyApp;
 import com.hhly.mlottery.R;
+import com.hhly.mlottery.activity.AccountDetailActivity;
 import com.hhly.mlottery.activity.DebugConfigActivity;
+import com.hhly.mlottery.activity.FootballEventAnimationFragment;
 import com.hhly.mlottery.activity.HomeUserOptionsActivity;
 import com.hhly.mlottery.activity.ProductAdviceActivity;
 import com.hhly.mlottery.adapter.homePagerAdapter.HomeListBaseAdapter;
@@ -50,7 +52,7 @@ import com.hhly.mlottery.callback.ProductListener;
 import com.hhly.mlottery.config.BaseURLs;
 import com.hhly.mlottery.config.StaticValues;
 import com.hhly.mlottery.util.AppConstants;
-import com.hhly.mlottery.util.CommonUtils;
+import com.hhly.mlottery.util.DeviceInfo;
 import com.hhly.mlottery.util.DisplayUtil;
 import com.hhly.mlottery.util.L;
 import com.hhly.mlottery.util.PreferenceUtil;
@@ -59,6 +61,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -86,25 +89,15 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private TextView tv_home_name;
 
     public HomePagerEntity mHomePagerEntity;// 首页实体对象
-    private UpdateInfo mUpdateInfo;// 版本更新对象
     private static final int LOADING_DATA_START = 0;// 加载数据
     private static final int LOADING_DATA_SUCCESS = 1;// 加载成功
     private static final int LOADING_DATA_ERROR = 2;// 加载失败
     private static final int REFRES_DATA_SUCCESS = 3;// 下拉刷新
-    private static final int VERSION_UPDATA_SUCCESS = 4;// 版本更新请求成功
-    private static final int DOWNLOAD_UPGRADE = 5;// 准备开始升级下载
     private static final int REFRESH_ADVICE = 6;
-    private static final String COMP_VER = "1"; // 完整版
-    private static final String PURE_VER = "2"; // 纯净版
-
-    private String version;// 当前版本Name
-    private String versionCode;// 当前版本Code
-    private String channelNumber;// 当前版本渠道号
 
     private final int MIN_CLICK_DELAY_TIME = 2000;// 控件点击间隔时间
     private long lastClickTime = 0;
     private int clickCount = 0;// 点击次数
-    private ProgressDialog progressBar;
 
     private int REQUEST_CODE = 1;
 
@@ -112,14 +105,67 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private Activity mActivity;
 
+    // 当前版本的菜单入口范围
+    private String[] menuList = {
+//            "10",// 足球指数
+//            "11",// 足球数据
+//            "13",// 足球比分
+//            "20",// 篮球即时比分
+//            "21",// 篮球赛果
+//            "22",// 篮球赛程
+//            "23",// 篮球关注
+//            "24",// 篮球资讯
+//            "350",// 彩票资讯
+//            "80",// 多屏动画列表
+//            "60",// 情报中心
+
+
+            "12", // 体育资讯
+            "14", // 体育视频
+            "30", // 彩票开奖
+            "31", // 香港开奖
+            "32", // 重庆时时彩
+            "33", // 江西时时彩
+            "34", // 新疆时时彩
+            "35", // 云南时时彩
+            "36", // 七星彩
+            "37",// 广东11选5
+            "38",// 广东快乐10分
+            "39",// 湖北11选5
+            "310",// 安徽快3
+            "311",// 湖南快乐10分
+            "312",// 快乐8
+            "313",// 吉林快三
+            "314",// 辽宁11选5
+            "315",// 北京赛车
+            "316",// 江苏快3
+            "317",// 时时乐
+            "318",// 广西快三
+            "319",// 幸运农场
+            "320",// 江苏11选5
+            "321",// 江西11选5
+            "322",// 山东11选5
+            "323",// 天津时时彩
+            "19",// 今日联赛统计
+            "324",// 双色球
+            "325",// 大乐透
+            "326",// 排列三
+            "327",// 排列五
+            "328",// 胜负彩
+            "329",// 六场半全场
+            "330",// 四场进球彩
+            "331",// 福彩3D
+            "332",// 七乐彩
+            "44",// 竞彩足球
+            "101",// 角球比分
+            "92"// 竞彩推介
+    };
 
     /**
      * 跳转其他Activity 的requestcode
      */
     public static final int REQUESTCODE_LOGIN = 100;
     public static final int REQUESTCODE_LOGOUT = 110;
-    private File saveFile;
-
 
     public HomeFragment() {
         // Required empty public constructor
@@ -130,9 +176,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = mActivity;
-
-        channelNumber = getAppMetaData(mContext, "UMENG_CHANNEL");// 获取渠道号
-        getVersion();// 获取版本号
     }
 
 
@@ -140,12 +183,10 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_home, container, false);
         initView();
-
         initData();
         initEvent();
         return mView;
     }
-
 
     /**
      * 初始化布局
@@ -155,7 +196,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         iv_home_pic = (ImageView) mView.findViewById(R.id.iv_home_pic);
         iv_home_pic.setOnClickListener(this);
 
-        if (CommonUtils.isLogin()) {
+        if (DeviceInfo.isLogin()) {
             iv_home_pic.setImageResource(R.mipmap.login);
         } else {
             iv_home_pic.setImageResource(R.mipmap.logout);
@@ -183,7 +224,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void initData() {
         try {
             readObjectFromFile();// 获取本地数据
-            versionUpdate();// 版本更新
             getRequestData(0);// 获取网络数据
         } catch (Exception e) {
             L.d("获取数据异常：" + e.getMessage());
@@ -236,12 +276,16 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     itemRecord.height = firstView.getHeight();
                     itemRecord.top = firstView.getTop();
                     recordSp.append(firstVisibleItem, itemRecord);
-                    int h = getScrollY();//滚动距离
 
-                    if (h <= 100) {
-                        tv_home_name.setAlpha(h / 100f);
-                    }else{
-                        tv_home_name.setAlpha(1);
+                    try {
+                        int h = getScrollY();//滚动距离
+                        if (h <= 100) {
+                            tv_home_name.setAlpha(h / 100f);
+                        } else {
+                            tv_home_name.setAlpha(1);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -277,9 +321,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
         // 设置参数
         Map<String, String> myPostParams = new HashMap<>();
-        myPostParams.put("version", version);
-        myPostParams.put("versionCode", versionCode);
-        myPostParams.put("channelNumber", channelNumber);
+        myPostParams.put("version", MyApp.version);
+        myPostParams.put("versionCode", String.valueOf(MyApp.versionCode));
+        myPostParams.put("channelNumber", MyApp.channelNumber);
 
         VolleyContentFast.requestStringByGet(BaseURLs.URL_HOME_PAGER_INFO, myPostParams, null, new VolleyContentFast.ResponseSuccessListener<String>() {
             @Override
@@ -287,8 +331,21 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 if (jsonObject != null) {// 请求成功
                     try {
                         mHomePagerEntity = JSON.parseObject(jsonObject, HomePagerEntity.class);
+                        Iterator<HomeContentEntity> iterator = mHomePagerEntity.getMenus().getContent().iterator();
+                        /**---------屏蔽多余首页菜单入口--Start--------------------------*/
+                        while (iterator.hasNext()) {
+                            HomeContentEntity entity = iterator.next();
+                            // 当前菜单集合不包含此菜单
+                            if (entity.getJumpType() == 2) {
+                                if (!Arrays.asList(menuList).contains(entity.getJumpAddr())) {
+                                    iterator.remove();
+                                }
+                            }
+                        }
+                        /**---------屏蔽多余首页菜单入口--End--------------------------*/
+
                         /**----将百度渠道的游戏竞猜和彩票相关去除掉--Start---*/
-                        if ("B1001".equals(channelNumber) || "B1002".equals(channelNumber) || "B1003".equals(channelNumber) || "Q01116".equals(channelNumber)) {
+                        if ("B1001".equals(MyApp.channelNumber) || "B1002".equals(MyApp.channelNumber) || "B1003".equals(MyApp.channelNumber) || "Q01116".equals(MyApp.channelNumber)) {
                             // 处理条目入口
                             Iterator<HomeOtherListsEntity> iteratorItem = mHomePagerEntity.getOtherLists().iterator();
                             while (iteratorItem.hasNext()) {
@@ -298,7 +355,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 }
                             }
                             // 处理菜单入口
-                            Iterator<HomeContentEntity> iterator = mHomePagerEntity.getMenus().getContent().iterator();
                             while (iterator.hasNext()) {
                                 HomeContentEntity b = iterator.next();
                                 if ("遊戲競猜".equals(b.getTitle()) || "游戏竞猜".equals(b.getTitle()) ||
@@ -494,55 +550,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
     }
 
-    /**
-     * 检查版本更新
-     */
-    private void versionUpdate() {
-        Map<String, String> map = new HashMap<String, String>();
-        if (AppConstants.fullORsimple) {
-            map.put("versionType", PURE_VER);
-        } else {
-            map.put("versionType", COMP_VER);
-        }
-
-        // 各版本升级参数
-        switch (MyApp.isPackageName) {
-            case AppConstants.PACKGER_NAME_ZH:
-                map.put("localeType", AppConstants.LOCALETYPE_ZH);
-                break;
-            case AppConstants.PACKGER_NAME_TH:
-                map.put("localeType", AppConstants.LOCALETYPE_TH);
-                break;
-            case AppConstants.PACKGER_NAME_VN:
-                map.put("localeType", AppConstants.LOCALETYPE_VN);
-                break;
-            case AppConstants.PACKGER_NAME_VN_HN:
-                map.put("localeType", AppConstants.LOCALETYPE_VN_HN);
-                break;
-            case AppConstants.PACKGER_NAME_UK:
-                map.put("localeType", AppConstants.LOCALETYPE_UK);
-                break;
-            default:
-                break;
-        }
-
-        VolleyContentFast.requestJsonByGet(BaseURLs.URL_VERSION_UPDATE, map, new DefaultRetryPolicy(2000, 1, 1), new VolleyContentFast.ResponseSuccessListener<UpdateInfo>() {
-            @Override
-            public synchronized void onResponse(final UpdateInfo json) {
-                if (json != null) {
-                    mUpdateInfo = json;
-                    mHandler.sendEmptyMessage(VERSION_UPDATA_SUCCESS);
-                }
-            }
-        }, new VolleyContentFast.ResponseErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyContentFast.VolleyException exception) {
-
-            }
-        }, UpdateInfo.class);
-    }
-
-
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -572,53 +579,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         home_page_list.setAdapter(mListBaseAdapter);
                     }
                     break;
-                case VERSION_UPDATA_SUCCESS:// 检查版本更新
-                    try {
-                        boolean isNewVersion = true;
-                        int serverVersion = Integer.parseInt(mUpdateInfo.getVersion()); // 取得服务器上的版本code
-                        int currentVersion = Integer.parseInt(versionCode);// 获取当前版本code
-                        L.d("xxx", "serverVersion:" + serverVersion);
-                        L.d("xxx", "currentVersion:" + currentVersion);
-                        if (currentVersion < serverVersion) {// 有更新
-//                            promptVersionUp();
-                            String versionIgnore = PreferenceUtil.getString(AppConstants.HOME_PAGER_VERSION_UPDATE_KEY, null);// 获取本地忽略版本
-                            L.d("xxx", "versionIgnore:" + versionIgnore);
-                            if (versionIgnore != null) {
-                                if (versionIgnore.contains("#")) {
-                                    String[] split = versionIgnore.split("#");
-                                    for (int i = 0, len = split.length; i < len; i++) {
-                                        if (serverVersion == Integer.parseInt(split[i])) {
-                                            isNewVersion = false;
-                                            break;
-                                        }
-                                    }
-                                    if (isNewVersion) {
-                                        promptVersionUp();
-                                    }
-                                } else {
-                                    if (serverVersion != Integer.parseInt(versionIgnore)) {
-                                        promptVersionUp();
-                                    }
-                                }
-                            } else {
-                                promptVersionUp();
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case DOWNLOAD_UPGRADE:
-                    // 先判断是否为网络数据连接
-                    ConnectivityManager connectMgr = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkInfo info = connectMgr.getActiveNetworkInfo();
-                    if (info != null && info.getType() == ConnectivityManager.TYPE_MOBILE) {
-                        // 判断是否是手机网络
-                        promptNetInfo();
-                    } else {
-                        downloadUpgrade();
-                    }
-                    break;
                 case REFRESH_ADVICE: //刷新首页点赞数
                     for (int i = 0, len = mHomePagerEntity.getOtherLists().size(); i < len; i++) {
                         int labType = mHomePagerEntity.getOtherLists().get(i).getContent().getLabType();// 获取类型
@@ -635,142 +595,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
     };
 
-
-    /**
-     * 新版本更新提示
-     */
-    private void promptVersionUp() {
-        try {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AppThemeDialog);//  android.R.style.Theme_Material_Light_Dialog
-            builder.setCancelable(false);// 设置对话框以外不可点击
-            builder.setTitle(mContext.getResources().getString(R.string.about_soft_update));// 提示标题
-            String mMessage = mUpdateInfo.getDescription();// 获取提示内容
-            if (mUpdateInfo != null) {
-                if (mMessage.contains("#")) {
-                    mMessage = mMessage.replace("#", "\n");// 换行处理
-                }
-                builder.setMessage(mMessage);// 提示内容
-            }
-            builder.setPositiveButton(mContext.getResources().getString(R.string.basket_analyze_update), new DialogInterface.OnClickListener() {
-                //@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    mHandler.sendEmptyMessage(DOWNLOAD_UPGRADE);
-                }
-            });
-            builder.setNegativeButton(mContext.getResources().getString(R.string.basket_analyze_dialog_cancle), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                    // Toast.makeText(mContext, "取消", Toast.LENGTH_SHORT).show();
-                }
-            });
-            builder.setNeutralButton(mContext.getResources().getString(R.string.home_pager_version_update), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    String versionIgnore = PreferenceUtil.getString(AppConstants.HOME_PAGER_VERSION_UPDATE_KEY, null);
-                    if (versionIgnore != null) {
-                        versionIgnore = versionIgnore + "#" + mUpdateInfo.getVersion();
-                    } else {
-                        versionIgnore = String.valueOf(mUpdateInfo.getVersion());
-                    }
-                    PreferenceUtil.commitString(AppConstants.HOME_PAGER_VERSION_UPDATE_KEY, versionIgnore);
-                    L.d("xxx", "PreferenceUtil...." + PreferenceUtil.getString(AppConstants.HOME_PAGER_VERSION_UPDATE_KEY, null));
-                    dialog.cancel();
-                }
-            });
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-        } catch (Resources.NotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    /**
-     * 当前连接的网络提示
-     */
-    private void promptNetInfo() {
-        try {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AppThemeDialog);
-            builder.setCancelable(false);// 设置对话框以外不可点击
-            builder.setTitle(mContext.getResources().getString(R.string.to_update_kindly_reminder));// 提示标题
-            builder.setMessage(mContext.getResources().getString(R.string.kindly_reminder_comment));// 提示内容
-            builder.setPositiveButton(mContext.getResources().getString(R.string.continue_download), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    downloadUpgrade();
-                }
-            });
-            builder.setNegativeButton(mContext.getResources().getString(R.string.basket_analyze_dialog_cancle), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-        } catch (Resources.NotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 开始下载升级
-     */
-    private void downloadUpgrade() {
-        progressBar = new ProgressDialog(mContext);
-        progressBar.setCanceledOnTouchOutside(false);
-        progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressBar.setMessage(mContext.getResources().getString(R.string.download_update));
-        progressBar.setMax(100);
-        progressBar.setProgress(0);
-        saveFile = new File(Environment.getExternalStorageDirectory().getPath() + "/ybf_full_GF1001.apk");
-        HttpRequest.download(mUpdateInfo.getUrl(), saveFile, new FileDownloadCallback() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                progressBar.show();
-                Toast.makeText(mContext, mContext.getResources().getString(R.string.version_update_title), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onProgress(int progress, long networkSpeed) {
-                super.onProgress(progress, networkSpeed);
-                progressBar.setProgress(progress);
-            }
-
-            @Override
-            public void onFailure() {
-                super.onFailure();
-                progressBar.dismiss();
-                Toast.makeText(mContext, mContext.getResources().getString(R.string.download_error), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onDone() {
-                super.onDone();
-                progressBar.dismiss();
-                installAPK(saveFile);
-            }
-        });
-    }
-
-    private void installAPK(File file) {
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setAction(android.content.Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-        startActivity(intent);
-    }
-
-
     @Override
     public void onRefresh() {
         getRequestData(1);
-
     }
 
     @Override
@@ -778,63 +605,10 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         switch (v.getId()) {
             case R.id.iv_home_pic:
                 MobclickAgent.onEvent(mContext, "HomePager_User_Info_Start");
-                goToUserOptionsActivity();
+                startActivityForResult(new Intent(mContext, HomeUserOptionsActivity.class), REQUESTCODE_LOGIN);
                 break;
-
             default:
                 break;
-        }
-    }
-
-    private void goToUserOptionsActivity() {
-        startActivityForResult(new Intent(mContext, HomeUserOptionsActivity.class), REQUESTCODE_LOGIN);
-    }
-
-    /**
-     * 获取application中指定的meta-data
-     *
-     * @return 如果没有获取成功(没有对应值，或者异常)，则返回值为空
-     */
-    private String getAppMetaData(Context ctx, String key) {
-        if (ctx == null || TextUtils.isEmpty(key)) {
-            return null;
-        }
-        String resultData = null;
-        try {
-            PackageManager packageManager = ctx.getPackageManager();
-            if (packageManager != null) {
-                ApplicationInfo applicationInfo = packageManager.getApplicationInfo(ctx.getPackageName(), PackageManager.GET_META_DATA);
-                if (applicationInfo != null) {
-                    if (applicationInfo.metaData != null) {
-                        resultData = applicationInfo.metaData.getString(key);
-                    }
-                }
-
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            L.d(e.getMessage());
-        }
-        return resultData;
-    }
-
-
-    /**
-     * 获取版本号
-     */
-    private void getVersion() {
-        try {
-            PackageManager manager = getActivity().getPackageManager();
-            PackageInfo info = manager.getPackageInfo(getActivity().getPackageName(), 0);
-            versionCode = String.valueOf(info.versionCode);
-            String xxx = info.versionName.replace(".", "#");
-            String[] split = xxx.split("#");
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < 3; i++) {
-                sb = sb.append(split[i]);
-            }
-            version = sb.toString();
-        } catch (Exception e) {
-            L.d(e.getMessage());
         }
     }
 
@@ -859,6 +633,5 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onAttach(Context context) {
         super.onAttach(context);
         mActivity = (Activity) context;
-
     }
 }

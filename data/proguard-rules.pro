@@ -15,3 +15,9 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+
+##篮球指数
+-keep class data.api.UserCenterApiService{ *; }
+-keep class data.api.AccountDetailApi{ *; }
+

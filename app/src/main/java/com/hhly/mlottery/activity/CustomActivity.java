@@ -28,6 +28,7 @@ import com.hhly.mlottery.bean.websocket.WebBasketMatch;
 import com.hhly.mlottery.bean.websocket.WebBasketOdds;
 import com.hhly.mlottery.bean.websocket.WebBasketOdds5;
 import com.hhly.mlottery.config.BaseURLs;
+import com.hhly.mlottery.config.BaseUserTopics;
 import com.hhly.mlottery.config.StaticValues;
 import com.hhly.mlottery.frame.basketballframe.basketnewfragment.BasketballFocusNewFragment;
 import com.hhly.mlottery.util.AppConstants;
@@ -90,7 +91,8 @@ public class CustomActivity extends BaseWebSocketActivity implements View.OnClic
          */
         setWebSocketUri(BaseURLs.WS_SERVICE);
 //        setWebSocketUri("ws://192.168.10.242:61634");
-        setTopic("USER.topic.basketball");
+//        setTopic("USER.topic.basketball");
+        setTopic(BaseUserTopics.customBasketball);
         super.onCreate(savedInstanceState);
         //注册
         EventBus.getDefault().register(this);
@@ -108,12 +110,12 @@ public class CustomActivity extends BaseWebSocketActivity implements View.OnClic
 
         /**头部布局*/
         TextView mCustomTitle = (TextView) findViewById(R.id.public_txt_title);
-        mCustomTitle.setText(getResources().getString(R.string.custom_mine_cus));
+        mCustomTitle.setText(getResources().getString(R.string.my_focus));
 
         mBack = (ImageView) findViewById(R.id.public_img_back);
         mBack.setOnClickListener(this);
 
-        mCustomText = (TextView) findViewById(R.id.tv_right);
+        mCustomText = (TextView) findViewById(R.id.right_tv);
         mCustomText.setVisibility(View.VISIBLE);
         mCustomText.setText(getResources().getString(R.string.custom_redact_cus));
         mCustomText.setOnClickListener(this);
@@ -209,7 +211,7 @@ public class CustomActivity extends BaseWebSocketActivity implements View.OnClic
         String url = BaseURLs.CUSTOM_MINE_CUS_URL;
 
         Map<String, String> map = new HashMap<>();
-        String userid = AppConstants.register.getData().getUser().getUserId();
+        String userid = AppConstants.register.getUser().getUserId();
         String deviceid = AppConstants.deviceToken;
         map.put("userId", userid);
         map.put("deviceId", deviceid);
@@ -397,7 +399,6 @@ public class CustomActivity extends BaseWebSocketActivity implements View.OnClic
                         }
                     }
                 } else {// 否则为最内层（赛事层）比赛的点击事件这里写
-                    // TODO***************************************************
 
                     CustomMineThirdDataBean parent = (CustomMineThirdDataBean) mData.get(position);
                     Intent intent = new Intent(CustomActivity.this, BasketDetailsActivityTest.class);
@@ -419,8 +420,8 @@ public class CustomActivity extends BaseWebSocketActivity implements View.OnClic
     public void getBasketballUserConcern() {
         //请求后台，及时更新关注赛事内容
         String userId = "";
-        if (AppConstants.register != null && AppConstants.register.getData() != null && AppConstants.register.getData().getUser() != null) {
-            userId = AppConstants.register.getData().getUser().getUserId();
+        if (AppConstants.register != null && AppConstants.register != null && AppConstants.register.getUser() != null) {
+            userId = AppConstants.register.getUser().getUserId();
         }
         if (userId != null && userId != "") {
             String url = " http://192.168.31.68:8080/mlottery/core/androidBasketballMatch.findConcernVsThirdIds.do";
@@ -463,6 +464,9 @@ public class CustomActivity extends BaseWebSocketActivity implements View.OnClic
         super.onDestroy();
         //反注册 取消绑定
         EventBus.getDefault().unregister(this);
+        mLoadHandler.removeCallbacksAndMessages(null);
+        mCustomHandler.removeCallbacksAndMessages(null);
+        mSocketHandler.removeCallbacksAndMessages(null);
     }
 
     /*****************************************以下推送方法**********************************************/
@@ -534,7 +538,7 @@ public class CustomActivity extends BaseWebSocketActivity implements View.OnClic
                     ws_json = ws_json.substring(0, ws_json.length() - 1);
                     mWebBasketOdds = JSON.parseObject(ws_json, WebBasketOdds.class);
                 }
-                updateListViewItemOdd(mWebBasketOdds);  //TODO
+                updateListViewItemOdd(mWebBasketOdds);
             }
 
 
@@ -840,7 +844,7 @@ public class CustomActivity extends BaseWebSocketActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_right:
+            case R.id.right_tv:
                 startActivity(new Intent(CustomActivity.this, CustomListActivity.class));
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_fix_out);
                 break;
@@ -874,7 +878,7 @@ public class CustomActivity extends BaseWebSocketActivity implements View.OnClic
 
         L.d("yxq123456 ", customListEvent.getmLeagueMsg() + " **** " + customListEvent.getmTeamMsg());
         sendUrl = BaseURLs.CUSTOM_SENDID_CUS_URL;
-        String userids = AppConstants.register.getData().getUser().getUserId();
+        String userids = AppConstants.register.getUser().getUserId();
         String deviceid = AppConstants.deviceToken;
         String devicetoken = PreferenceUtil.getString(AppConstants.uMengDeviceToken, "");
 

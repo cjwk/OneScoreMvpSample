@@ -7,15 +7,16 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.hhly.mlottery.R;
-import com.hhly.mlottery.bean.footballDetails.BottomOddsItem;
 import com.hhly.mlottery.util.HandicapUtils;
 
 import java.util.List;
 
+import data.bean.BottomOddsItem;
+
 /**
  * @author wang gang
  * @date 2016/6/6 10:06
- * @des ${TODO}
+ * @des ${}
  */
 public class DetailsRollOdd extends FrameLayout {
     private Context mContext;

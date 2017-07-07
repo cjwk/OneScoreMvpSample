@@ -3,6 +3,7 @@ package com.hhly.mlottery.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -21,10 +22,10 @@ import com.hhly.mlottery.bean.ChoseStartBean;
 import com.hhly.mlottery.bean.account.Register;
 import com.hhly.mlottery.config.BaseURLs;
 import com.hhly.mlottery.util.AppConstants;
-import com.hhly.mlottery.util.CommonUtils;
-import com.hhly.mlottery.util.ListDatasSaveUtils;
+import com.hhly.mlottery.util.DeviceInfo;
 import com.hhly.mlottery.util.PreferenceUtil;
 import com.hhly.mlottery.util.UiUtils;
+import com.hhly.mlottery.util.cipher.MD5Util;
 import com.hhly.mlottery.util.net.VolleyContentFast;
 import com.hhly.mlottery.util.net.account.AccountResultCode;
 import com.umeng.analytics.MobclickAgent;
@@ -39,12 +40,10 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Created by yuely198 on 2016/11/14.
+ * 选择球头像
  */
 
 public class AvatarSelectionActivity extends Activity implements View.OnClickListener {
-
-
-
 
 
     private TextView public_txt_title;
@@ -57,8 +56,8 @@ public class AvatarSelectionActivity extends Activity implements View.OnClickLis
 
     private ProgressDialog progressBar;
     private String CupChicked;
-    private String mCupChickedMan = null;
-    private String mCupChickedWoman = null;//选中的id
+    //    private String mCupChickedMan = null;
+//    private String mCupChickedWoman = null;//选中的id
     private TextView start_famle_size;
     private TextView start_male_size;
 
@@ -66,24 +65,20 @@ public class AvatarSelectionActivity extends Activity implements View.OnClickLis
 
     List<String> male = new ArrayList<>();
     List<String> female = new ArrayList<>();
-    private ListDatasSaveUtils listMaleDatasSaveUtils;
-    private List<List<ChoseStartBean.DataBean.MaleBean>> maleDatas = new ArrayList<>();
+    //    private ListDatasSaveUtils listMaleDatasSaveUtils;
+//    private List<List<ChoseStartBean.DataBean.MaleBean>> maleDatas = new ArrayList<>();
     private ChoseFailStartManAdapter choseFailStartManAdapter;
     private ChoseFailStartWomanAdapter choseFailStartWomanAdapter;
     private LinearLayout text_times_title1;
     private ImageView ib_operate_more;
+    private String language;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-
-
         initView();
         loadData();
-
 
     }
 
@@ -107,7 +102,7 @@ public class AvatarSelectionActivity extends Activity implements View.OnClickLis
                     PreferenceUtil.commitString("maleSize", mMaleDatas.size() + "");
 
                     //start_male_size.setText(mMaleDatas.size());
-                    start_male_size.setText(mMaleDatas.size() + "");
+                    start_male_size.setText(String.valueOf(mMaleDatas.size()));
                     ///maleDatas.add(mMaleDatas);
                     //listMaleDatasSaveUtils.setDataList("maleDatas",mMaleDatas);
                     if (choseStartManAdapter == null) {
@@ -123,7 +118,6 @@ public class AvatarSelectionActivity extends Activity implements View.OnClickLis
                                 CupChicked = mMaleDatas.get(position).getHeadIcon();
                             }
                         });
-                        //   choseStartManAdapter.setOnCheckListener(onCheckmanListener);
                         male_gridview.setAdapter(choseStartManAdapter);
                     }
 
@@ -136,7 +130,7 @@ public class AvatarSelectionActivity extends Activity implements View.OnClickLis
                         }
                     }
                     PreferenceUtil.commitString("femaleSize", mFemaleDatas.size() + "");
-                    start_famle_size.setText(mFemaleDatas.size() + "");
+                    start_famle_size.setText(String.valueOf(mFemaleDatas.size()));
                     if (choseStartAdapter == null) {
                         choseStartAdapter = new ChoseStartWomanAdapter(AvatarSelectionActivity.this, json.getData().getFemale(), R.layout.avatar_start_head_child);
                         famle_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -158,7 +152,7 @@ public class AvatarSelectionActivity extends Activity implements View.OnClickLis
         }, new VolleyContentFast.ResponseErrorListener() {
             @Override
             public void onErrorResponse(VolleyContentFast.VolleyException exception) {
-                if (PreferenceUtil.getString("maleSize", "")!=null){
+                if (!"".equals(PreferenceUtil.getString("maleSize", ""))) {
                     start_male_size.setText(PreferenceUtil.getString("maleSize", ""));
                     for (int i = 0; i < Integer.parseInt(PreferenceUtil.getString("maleSize", "")); i++) {
                         String url = PreferenceUtil.getString("male" + i, "");
@@ -184,14 +178,14 @@ public class AvatarSelectionActivity extends Activity implements View.OnClickLis
                 }
 
                 //足球宝贝
-                if (PreferenceUtil.getString("femaleSize", "")!=null){
+                if (!"".equals(PreferenceUtil.getString("femaleSize", ""))) {
                     start_famle_size.setText(PreferenceUtil.getString("femaleSize", ""));
                     for (int i = 0; i < Integer.parseInt(PreferenceUtil.getString("femaleSize", "")); i++) {
                         String url = PreferenceUtil.getString("female" + i, "");
                         female.add(url);
                     }
-                    if (choseStartAdapter==null){
-                        choseFailStartWomanAdapter = new ChoseFailStartWomanAdapter(AvatarSelectionActivity.this,female , R.layout.avatar_start_head_child);
+                    if (choseStartAdapter == null) {
+                        choseFailStartWomanAdapter = new ChoseFailStartWomanAdapter(AvatarSelectionActivity.this, female, R.layout.avatar_start_head_child);
                         famle_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -199,8 +193,8 @@ public class AvatarSelectionActivity extends Activity implements View.OnClickLis
                                 choseFailStartManAdapter.setSeclection(-1);
                                 choseFailStartWomanAdapter.notifyDataSetChanged();
                                 choseFailStartManAdapter.notifyDataSetChanged();
-                                CupChicked=null;
-                                CupChicked=female.get(position);
+                                CupChicked = null;
+                                CupChicked = female.get(position);
                             }
                         });
                         famle_gridview.setAdapter(choseFailStartWomanAdapter);
@@ -218,7 +212,7 @@ public class AvatarSelectionActivity extends Activity implements View.OnClickLis
         progressBar.setCancelable(false);
         progressBar.setMessage(getResources().getString(R.string.is_uploading));
 
-        listMaleDatasSaveUtils = new ListDatasSaveUtils(AvatarSelectionActivity.this, "Datas");
+//        listMaleDatasSaveUtils = new ListDatasSaveUtils(AvatarSelectionActivity.this, "Datas");
         setContentView(R.layout.avatar_selection_heade);
 
         text_times_title1 = (LinearLayout) findViewById(R.id.text_times_title1);
@@ -253,8 +247,11 @@ public class AvatarSelectionActivity extends Activity implements View.OnClickLis
             case R.id.text_times_title1:
                 //请求后台进行账户绑定
                 if (CupChicked != null) {
+                    EventBus.getDefault().post(new ChoseHeadStartBean(CupChicked));
+                    AppConstants.register.getUser().setImageSrc(CupChicked);
                     putPhotoUrl(CupChicked);
-                } else if (CupChicked == null) {
+                    finish();
+                } else {
                     UiUtils.toast(getApplicationContext(), R.string.no_select_head);
                 }
                 break;
@@ -271,28 +268,40 @@ public class AvatarSelectionActivity extends Activity implements View.OnClickLis
         progressBar.show();
         Map<String, String> param = new HashMap<>();
 
-        param.put("deviceToken", AppConstants.deviceToken);
 
-        param.put("loginToken", PreferenceUtil.getString(AppConstants.SPKEY_TOKEN, ""));
+        param.put("userId", AppConstants.register.getUser().getUserId());
 
-        param.put("imgUrl", headerUrl);
-        VolleyContentFast.requestJsonByPost(BaseURLs.UPDATEHEADICON, param, new VolleyContentFast.ResponseSuccessListener<Register>() {
+        param.put("avatorURL",headerUrl);
+        param.put("loginToken",AppConstants.register.getToken());
+
+
+        if (MyApp.isLanguage.equals("rCN")) {
+            // 如果是中文简体的语言环境
+            language = "langzh";
+        } else if (MyApp.isLanguage.equals("rTW")) {
+            // 如果是中文繁体的语言环境
+            language="langzh-TW";
+        }
+
+
+        String sign=DeviceInfo.getSign("/user/updateavatorbyurl"+"avatorURL"+headerUrl+language+"loginToken"+AppConstants.register.getToken()+"timeZone8"+"userId"+AppConstants.register.getUser().getUserId());
+        param.put("sign",sign);
+        VolleyContentFast.requestJsonByPost(BaseURLs.PUT_PHOTO_URL, param, new VolleyContentFast.ResponseSuccessListener<Register>() {
             @Override
             public void onResponse(Register register) {
                 //  progressBar.dismiss();
 
-                if (register.getResult() == AccountResultCode.SUCC) {
+                if (Integer.parseInt(register.getCode()) == AccountResultCode.SUCC) {
                     UiUtils.toast(MyApp.getInstance(), R.string.picture_put_success);
-                    register.getData().getUser().setLoginAccount(PreferenceUtil.getString(AppConstants.SPKEY_LOGINACCOUNT, "aa"));
-                    CommonUtils.saveRegisterInfo(register);
-                    AppConstants.register.getData().getUser().setHeadIcon(headerUrl);
-                    if (register.getData().getUser().getHeadIcon()!= null) {
-                        EventBus.getDefault().post(new ChoseHeadStartBean(headerUrl));
-                    }
+                   // register.getUser().setPhoneNum(PreferenceUtil.getString(AppConstants.SPKEY_LOGINACCOUNT, "aa"));
+                   // DeviceInfo.saveRegisterInfo(register);
+                    AppConstants.register.getUser().setImageSrc(headerUrl);
+                    PreferenceUtil.commitString(AppConstants.HEADICON,headerUrl);
+                    EventBus.getDefault().post(new ChoseHeadStartBean(headerUrl));
                     progressBar.dismiss();
                     finish();
                 } else {
-                    CommonUtils.handlerRequestResult(register.getResult(), register.getMsg());
+                    DeviceInfo.handlerRequestResult(Integer.parseInt(register.getCode()),"未知错误");
                     progressBar.dismiss();
                 }
             }

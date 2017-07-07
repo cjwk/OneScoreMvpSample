@@ -8,11 +8,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hhly.mlottery.R;
 import com.hhly.mlottery.adapter.cpiadapter.basket.BasketIndexFiltrateMatchAdapter;
 import com.hhly.mlottery.bean.basket.index.BasketIndexBean;
+import com.hhly.mlottery.config.FootBallMatchFilterTypeEnum;
+import com.hhly.mlottery.util.PreferenceUtil;
 import com.hhly.mlottery.widget.GrapeGridView;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -21,7 +25,7 @@ import java.util.List;
 /**
  * @author: Wangg
  * @Name：BasketBallIndexFiltrateActivity
- * @Description:
+ * @Description:篮球指数筛选
  * @Created on:2017/3/21  14:45.
  */
 
@@ -120,6 +124,14 @@ public class BasketBallIndexFiltrateActivity extends Activity implements View.On
                     normalTemp.add(mFilterTagsList.get(i));
                 }
             }
+
+            //如果本地存在取本地的值
+            if (PreferenceUtil.getDataList(FootBallMatchFilterTypeEnum.BASKET_INDEX).size() > 0) {
+                List<String> list = PreferenceUtil.getDataList(FootBallMatchFilterTypeEnum.BASKET_INDEX);
+                mCheckedIds.clear();
+                mCheckedIds.addAll(list);
+            }
+
             mTempCheckIdsReset.addAll(mCheckedIds);
 //            tempCheckids1.addAll(mCheckedIds);
         } else {
@@ -204,11 +216,15 @@ public class BasketBallIndexFiltrateActivity extends Activity implements View.On
                 setHideNumber();
                 break;
             case R.id.cpi_filtrate_submit_btn:// 确定
-                Intent intent = new Intent();
-                intent.putExtra("key", mCheckedIds);
-                setResult(0, intent);
-                finish();
-                isDefaultHot = false;
+                if (mCheckedIds.size() <= 0) {
+                    Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.at_least_one_race), Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent();
+                    intent.putExtra("key", mCheckedIds);
+                    setResult(0, intent);
+                    finish();
+                    isDefaultHot = false;
+                }
                 break;
             default:
                 break;
@@ -247,5 +263,18 @@ public class BasketBallIndexFiltrateActivity extends Activity implements View.On
             mCheckedIds.remove(fileterTagsBean.getLeagueId());
         }
         setHideNumber();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

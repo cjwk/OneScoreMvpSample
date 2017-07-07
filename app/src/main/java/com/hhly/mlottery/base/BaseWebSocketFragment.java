@@ -2,9 +2,8 @@ package com.hhly.mlottery.base;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
-
+import com.hhly.mlottery.MyApp;
 import com.hhly.mlottery.util.DeviceInfo;
 import com.hhly.mlottery.util.L;
 import com.hhly.mlottery.util.cipher.MD5Util;
@@ -118,7 +117,7 @@ public abstract class BaseWebSocketFragment extends Fragment {
 
         ws.addListener(new MyWebSocketAdapter());
 
-        L.d(TAG, "WebSocket State = " + ws.getState());
+//        L.d(TAG, "WebSocket State = " + ws.getState());
 
 
     }
@@ -140,14 +139,14 @@ public abstract class BaseWebSocketFragment extends Fragment {
             @Override
             public void run() {
                 if (ws != null) {
-                    synchronized (ws) {
+                    synchronized (this) {
                         ws.disconnect();
                     }
                     ws = null;
                 }
             }
         }).start();
-
+        MyApp.getRefWatcher().watch(this);
     }
 
     public WebSocketState getSocketState() {
@@ -161,12 +160,12 @@ public abstract class BaseWebSocketFragment extends Fragment {
     private void connect() {
         try {
             if (ws != null) {
-                synchronized (ws) {
+                synchronized (this) {
                     if (ws != null) {
                         if (ws.getState().equals(WebSocketState.CREATED)) {
-                            L.d(TAG, "before connect ws.getState() = " + ws.getState());
+//                            L.d(TAG, "before connect ws.getState() = " + ws.getState());
                             ws.connect();
-                            L.d(TAG, "after connect ws.getState() = " + ws.getState());
+//                            L.d(TAG, "after connect ws.getState() = " + ws.getState());
                         } else if (ws.getState().equals(WebSocketState.CLOSED)) {
                             ws = ws.recreate().connect();
                         }
@@ -202,7 +201,7 @@ public abstract class BaseWebSocketFragment extends Fragment {
             @Override
             public void run() {
                 if (ws != null) {
-                    synchronized (ws) {
+                    synchronized (this) {
                         if (ws != null) {
                             ws.disconnect();
                         }
@@ -271,15 +270,15 @@ public abstract class BaseWebSocketFragment extends Fragment {
         public void onStateChanged(WebSocket websocket, WebSocketState newState) throws Exception {
             super.onStateChanged(websocket, newState);
             L.d(TAG, "onStateChanged");
-            L.d(TAG, "websocket.getState() = " + websocket.getState());
-            L.d(TAG, "newState = " + newState);
+//            L.d(TAG, "websocket.getState() = " + websocket.getState());
+//            L.d(TAG, "newState = " + newState);
         }
 
         @Override
         public void onError(WebSocket websocket, WebSocketException cause) throws Exception {
             super.onError(websocket, cause);
             L.d(TAG, "onError");
-            L.d(TAG, "cause" + cause.getMessage());
+//            L.d(TAG, "cause" + cause.getMessage());
         }
 
         @Override

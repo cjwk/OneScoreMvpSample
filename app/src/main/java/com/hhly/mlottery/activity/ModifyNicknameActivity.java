@@ -17,10 +17,11 @@ import com.hhly.mlottery.R;
 import com.hhly.mlottery.bean.account.Register;
 import com.hhly.mlottery.config.BaseURLs;
 import com.hhly.mlottery.util.AppConstants;
-import com.hhly.mlottery.util.CommonUtils;
+import com.hhly.mlottery.util.DeviceInfo;
 import com.hhly.mlottery.util.L;
 import com.hhly.mlottery.util.PreferenceUtil;
 import com.hhly.mlottery.util.UiUtils;
+import com.hhly.mlottery.util.cipher.MD5Util;
 import com.hhly.mlottery.util.net.VolleyContentFast;
 import com.hhly.mlottery.util.net.account.AccountResultCode;
 import com.umeng.analytics.MobclickAgent;
@@ -39,6 +40,7 @@ public class ModifyNicknameActivity extends BaseActivity implements View.OnClick
     private Button public_btn_save;
     private ProgressDialog progressBar;
     private String mNickname;//传递过来的昵称
+    private String language;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +54,12 @@ public class ModifyNicknameActivity extends BaseActivity implements View.OnClick
 
     @Override
     protected void onResume() {
-        /**友盟页面统计*/
-//        MobclickAgent.onResume(this);
-//        MobclickAgent.onPageStart("RegisterActivity");
         super.onResume();
         et_nickname.setFocusable(true);
         et_nickname.setFocusableInTouchMode(true);
         et_nickname.requestFocus();
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() { //让软键盘延时弹出，以更好的加载Activity
+        new Timer().schedule(new TimerTask() { //让软键盘延时弹出，以更好的加载Activity
             public void run() {
                 InputMethodManager inputManager = (InputMethodManager) et_nickname.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.showSoftInput(et_nickname, 0);
@@ -116,9 +114,19 @@ public class ModifyNicknameActivity extends BaseActivity implements View.OnClick
                  progressBar.show();
                  String url = BaseURLs.URL_EDITNICKNAME;
                  Map<String, String> param = new HashMap<>();
-                 param.put("loginToken", AppConstants.register.getData().getLoginToken());
-                 param.put("deviceToken", AppConstants.deviceToken);
+                 param.put("userId", AppConstants.register.getUser().getUserId());
                  param.put("nickname", nickName);
+                 param.put("loginToken",AppConstants.register.getToken());
+                 if (MyApp.isLanguage.equals("rCN")) {
+                     // 如果是中文简体的语言环境
+                     language = "langzh";
+                 } else if (MyApp.isLanguage.equals("rTW")) {
+                     // 如果是中文繁体的语言环境
+                     language="langzh-TW";
+                 }
+
+                 String sign=DeviceInfo.getSign("/user/updatenickname"+language+"loginToken"+AppConstants.register.getToken()+"nickname"+nickName+"timeZone8"+"userId"+AppConstants.register.getUser().getUserId());
+                 param.put("sign",sign);
 
                  VolleyContentFast.requestJsonByPost(url, param, new VolleyContentFast.ResponseSuccessListener<Register>() {
                      @Override
@@ -126,18 +134,19 @@ public class ModifyNicknameActivity extends BaseActivity implements View.OnClick
 
                          progressBar.dismiss();
 
-                         if (bean.getResult() == AccountResultCode.SUCC) {
+                         if (Integer.parseInt(bean.getCode()) == AccountResultCode.SUCC) {
                              UiUtils.toast(MyApp.getInstance(), R.string.modify_nickname_succ);
-                             AppConstants.register.getData().getUser().setNickName(nickName);
+                             AppConstants.register.getUser().setNickName(nickName);
                             // CommonUtils.saveRegisterInfo(AppConstants.register);
-                             PreferenceUtil.commitString(AppConstants.SPKEY_NICKNAME, bean.getData().getUser().getNickName());
+                            PreferenceUtil.commitString(AppConstants.SPKEY_NICKNAME, nickName);
                              finish();
-                         } else if (bean.getResult() == AccountResultCode.USER_NOT_LOGIN) {
+                         } else if (Integer.parseInt(bean.getCode())  == AccountResultCode.TOKEN_INVALID) {
                              UiUtils.toast(getApplicationContext() ,R.string.name_invalid);
+                             AppConstants.register.setToken(null);
                              Intent intent = new Intent(ModifyNicknameActivity.this, LoginActivity.class);
                              startActivity(intent);
                          } else {
-                             CommonUtils.handlerRequestResult(bean.getResult(), bean.getMsg());
+                             DeviceInfo.handlerRequestResult(Integer.parseInt(bean.getCode()) , "未知错误");
                          }
                      }
                  }, new VolleyContentFast.ResponseErrorListener() {

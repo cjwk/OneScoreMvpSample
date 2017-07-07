@@ -1,14 +1,11 @@
 package com.hhly.mlottery.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.hhly.mlottery.R;
 import com.hhly.mlottery.bean.multiplebean.MultipleByValueBean;
-import com.hhly.mlottery.util.AppConstants;
-import com.hhly.mlottery.util.PreferenceUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +35,7 @@ public class MultiScreenIntroduceActivity extends BaseActivity {
         setContentView(R.layout.activity_multi_screen_introduce);
         ButterKnife.bind(this);
 
-//        PreferenceUtil.commitBoolean(AppConstants.ANIMATION_RED_KEY, true);// 记录红点功能
+       // PreferenceUtil.commitBoolean(AppConstants.ANIMATION_RED_KEY, true);// 记录红点功能
     }
 
     @OnClick(R.id.btn_enter)

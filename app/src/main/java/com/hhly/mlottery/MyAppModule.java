@@ -1,16 +1,16 @@
 package com.hhly.mlottery;
 
-import com.hhly.mlottery.data.DataManager;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import data.DataManager;
 
 /**
  * @author: Wangg
  * @name：xxx
- * @description: xxx
+ * @description: MyApp Module
  * @created on:2017/4/8  15:23.
  */
 

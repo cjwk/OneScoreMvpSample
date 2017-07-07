@@ -3,7 +3,7 @@ package com.hhly.mlottery.bean.footballDetails;
 /**
  * @author wang gang
  * @date 2016/6/16 12:03
- * @des ${TODO}
+ * @des ${}
  */
 public class WebSocketRollballOdd {
 
@@ -12,6 +12,8 @@ public class WebSocketRollballOdd {
     private String left;
     private String middle;
     private String right;
+    private String matchInTime;
+    private String score;
 
     public String getThirdId() {
         return thirdId;
@@ -51,5 +53,34 @@ public class WebSocketRollballOdd {
 
     public void setRight(String right) {
         this.right = right;
+    }
+
+    public String getMatchInTime() {
+        return matchInTime;
+    }
+
+    public void setMatchInTime(String matchInTime) {
+        this.matchInTime = matchInTime;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    @Override
+    public String toString() {
+        return "WebSocketRollballOdd{" +
+                "thirdId='" + thirdId + '\'' +
+                ", oddType='" + oddType + '\'' +
+                ", left='" + left + '\'' +
+                ", middle='" + middle + '\'' +
+                ", right='" + right + '\'' +
+                ", matchInTime='" + matchInTime + '\'' +
+                ", score='" + score + '\'' +
+                '}';
     }
 }

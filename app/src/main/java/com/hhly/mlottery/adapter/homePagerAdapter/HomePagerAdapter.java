@@ -2,6 +2,7 @@ package com.hhly.mlottery.adapter.homePagerAdapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -28,16 +29,17 @@ import com.hhly.mlottery.activity.WebActivity;
 import com.hhly.mlottery.bean.homepagerentity.HomeBannersEntity;
 import com.hhly.mlottery.bean.homepagerentity.HomeContentEntity;
 import com.hhly.mlottery.bean.homepagerentity.HomePagerEntity;
+import com.hhly.mlottery.config.FootBallDetailTypeEnum;
 import com.hhly.mlottery.util.AppConstants;
-import com.hhly.mlottery.util.CommonUtils;
+import com.hhly.mlottery.util.DeviceInfo;
 import com.hhly.mlottery.util.DisplayUtil;
+import com.hhly.mlottery.util.HandMatchId;
 import com.hhly.mlottery.util.ImageLoader;
 import com.hhly.mlottery.util.L;
 import com.umeng.analytics.MobclickAgent;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -62,40 +64,10 @@ public class HomePagerAdapter extends PagerAdapter {
         this.mHomePagerEntity = homePagerEntity;
         this.mTopHolder = topHolder;
 
-        filterData();
         setBannersDefPic();
         onDrawPoint();
         setScroller();
         initBannerListener();
-    }
-
-    /**
-     * 过滤跳数据
-     */
-    private void filterData() {
-        try {
-            Iterator<HomeContentEntity> iterator = mHomePagerEntity.getBanners().getContent().iterator();
-            while (iterator.hasNext()) {
-                String jumpAddr = iterator.next().getJumpAddr();
-                switch (jumpAddr) {
-                    case "10":// 足球指数
-                    case "11":// 足球数据
-                    case "13":// 足球比分
-                    case "20":// 篮球即时比分
-                    case "21":// 篮球赛果
-                    case "22":// 篮球赛程
-                    case "23":// 篮球关注
-                    case "24":// 篮球资讯
-                    case "350":// 彩票资讯
-                    case "80":// 多屏动画列表
-                    case "42":// 香港彩票图表页面
-                        iterator.remove();
-                        break;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -245,18 +217,40 @@ public class HomePagerAdapter extends PagerAdapter {
                 lastClickTime = currentTime;
                 String jumpAddr = mHomePagerEntity.getBanners().getContent().get(index).getJumpAddr();
                 int jumpType = mHomePagerEntity.getBanners().getContent().get(index).getJumpType();
-//                Integer labSeq = mHomePagerEntity.getBanners().getContent().get(index).getLabSeq();
+                Integer labSeq = mHomePagerEntity.getBanners().getContent().get(index).getLabSeq();
                 String title = mHomePagerEntity.getBanners().getContent().get(index).getTitle();
                 String picUrl = mHomePagerEntity.getBanners().getContent().get(index).getPicUrl();
 
                 if (!TextUtils.isEmpty(jumpAddr)) {
                     switch (jumpType) {
+                        case 5:// 调用浏览器
+                        {
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.VIEW");
+                            Uri content_url = Uri.parse(jumpAddr);
+                            intent.setData(content_url);
+                            mContext.startActivity(intent);
+                        }
+                        break;
                         case 0:// 无
+                            break;
+                        case 6:// 德州跳转
+                            if (DeviceInfo.isLogin()) {
+                                Intent intent = new Intent(mContext, WebActivity.class);
+                                intent.putExtra("key", jumpAddr);// 跳转地址
+                                intent.putExtra("infoTypeName", title);
+                                intent.putExtra("imageurl", picUrl);
+                                intent.putExtra("title", title);
+                                intent.putExtra("subtitle", "");
+                                mContext.startActivity(intent);
+                            } else {// 跳转到登录界面
+                                mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                            }
                             break;
                         case 1:// 页面
                         {
                             if (jumpAddr.contains("{loginToken}")) {// 是否需要登录
-                                if (CommonUtils.isLogin()) {// 判断用户是否登录
+                                if (DeviceInfo.isLogin()) {// 判断用户是否登录
                                     Intent intent = new Intent(mContext, WebActivity.class);
                                     intent.putExtra("key", jumpAddr);// 跳转地址
                                     intent.putExtra("infoTypeName", title);
@@ -280,71 +274,36 @@ public class HomePagerAdapter extends PagerAdapter {
                             break;
                         }
                         case 2:// 内页
-//                            int sportsInfoIndex = 0;
                             switch (jumpAddr) {
                                 case "10":// 足球指数
-//                                {
-//                                    Intent intent = new Intent(mContext, FootballActivity.class);
-//                                    intent.putExtra(AppConstants.FOTTBALL_KEY, AppConstants.FOTTBALL_EXPONENT_VALUE);
-//                                    mContext.startActivity(intent);
-//                                }
                                     break;
                                 case "11":// 足球数据
-//                                {
-//                                    Intent intent = new Intent(mContext, FootballActivity.class);
-//                                    intent.putExtra(AppConstants.FOTTBALL_KEY, AppConstants.FOTTBALL_DATA_VALUE);
-//                                    mContext.startActivity(intent);
-//                                }
                                     break;
                                 case "12":// 体育资讯
-                                    mContext.startActivity(new Intent(mContext, CounselActivity.class));
+                                    Intent foot_intent = new Intent(mContext, CounselActivity.class);
+                                    foot_intent.putExtra("currentIndex", labSeq);
+                                    mContext.startActivity(foot_intent);
+                                    MobclickAgent.onEvent(mContext, "HomePager_Menu_Football_Information");
                                     break;
                                 case "13":// 足球比分
-//                                {
-//                                    Intent intent = new Intent(mContext, FootballActivity.class);
-//                                    intent.putExtra(AppConstants.FOTTBALL_KEY, AppConstants.FOTTBALL_SCORE_VALUE);
-//                                    mContext.startActivity(intent);
-//                                }
                                     break;
                                 case "14":// 足球视频
                                     mContext.startActivity(new Intent(mContext, VideoActivity.class));
                                     break;
                                 case "20":// 篮球即时比分
-                                {
-//                                    Intent intent = new Intent(mContext, BasketListActivity.class);
-//                                    intent.putExtra(AppConstants.BASKETBALL_KEY, AppConstants.BASKETBALL_SCORE_KEY);
-//                                    mContext.startActivity(intent);
-                                }
-                                break;
+                                    break;
                                 case "21":// 篮球赛果
-                                {
-//                                    Intent intent = new Intent(mContext, BasketListActivity.class);
-//                                    intent.putExtra(AppConstants.BASKETBALL_KEY, AppConstants.BASKETBALL_AMIDITHION_VALUE);
-//                                    mContext.startActivity(intent);
-                                }
-                                break;
+                                    break;
                                 case "22":// 篮球赛程
-                                {
-//                                    Intent intent = new Intent(mContext, BasketListActivity.class);
-//                                    intent.putExtra(AppConstants.BASKETBALL_KEY, AppConstants.BASKETBALL_COMPETITION_VALUE);
-//                                    mContext.startActivity(intent);
-                                }
-                                break;
+                                    break;
                                 case "23":// 篮球关注
-                                {
-//                                    Intent intent = new Intent(mContext, BasketListActivity.class);
-//                                    intent.putExtra(AppConstants.BASKETBALL_KEY, AppConstants.BASKETBALL_ATTENTION_VALUE);
-//                                    mContext.startActivity(intent);
-                                }
-                                break;
+                                    break;
                                 case "24":// 篮球资讯
-//                                    Toast.makeText(mContext, "篮球资讯", Toast.LENGTH_SHORT).show();
                                     break;
                                 case "30":// 彩票开奖
                                     mContext.startActivity(new Intent(mContext, NumbersActivity.class));
                                     break;
                                 case "350":// 彩票资讯
-//                                    Toast.makeText(mContext, "彩票资讯", Toast.LENGTH_SHORT).show();
                                     break;
                                 case "31":// 香港开奖
                                 {
@@ -508,26 +467,11 @@ public class HomePagerAdapter extends PagerAdapter {
                                 }
                                 break;
                                 case "80":// 多屏动画列表
-                                {
-//                                    if (PreferenceUtil.getBoolean("introduce", true)) {
-//                                        mContext.startActivity(new Intent(mContext, MultiScreenIntroduceActivity.class));
-//
-//                                        PreferenceUtil.commitBoolean("introduce", false);
-//                                    } else {
-//                                        mContext.startActivity(new Intent(mContext, MultiScreenViewingListActivity.class));
-//                                    }
-                                }
-                                break;
+                                    break;
                                 case "90":// 个人中心
                                     mContext.startActivity(new Intent(mContext, HomeUserOptionsActivity.class));
                                     break;
                                 case "42":// 香港彩票图表页面
-//                                {
-//                                    Intent intent = new Intent(mContext, NumbersInfoBaseActivity.class);
-//                                    intent.putExtra(AppConstants.LOTTERY_KEY, String.valueOf(AppConstants.ONE));
-//                                    intent.putExtra("index", 1);
-//                                    mContext.startActivity(intent);
-//                                }
                                     break;
                             }
                             break;
@@ -537,11 +481,14 @@ public class HomePagerAdapter extends PagerAdapter {
                                 switch (split[0]) {
                                     case "18":// 足球
                                     {
-                                        Intent intent = new Intent(mContext, FootballMatchDetailActivity.class);
-                                        intent.putExtra("thirdId", split[1]);
-                                        intent.putExtra("currentFragmentId", 0);
-                                        intent.putExtra("chart_ball_view", 1);
-                                        mContext.startActivity(intent);
+                                        if (HandMatchId.handId(mContext, split[1])) {
+
+                                            Intent intent = new Intent(mContext, FootballMatchDetailActivity.class);
+                                            intent.putExtra("thirdId", split[1]);
+                                            intent.putExtra("currentFragmentId", 0);
+                                            intent.putExtra(FootBallDetailTypeEnum.CURRENT_TAB_KEY, FootBallDetailTypeEnum.FOOT_DETAIL_LIVE);
+                                            mContext.startActivity(intent);
+                                        }
                                     }
                                     break;
                                     case "26":// 篮球

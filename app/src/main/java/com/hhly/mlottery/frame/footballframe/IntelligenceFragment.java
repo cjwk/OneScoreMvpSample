@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.hhly.mlottery.R;
+import com.hhly.mlottery.activity.FootballMatchDetailActivity;
 import com.hhly.mlottery.adapter.football.IntelligenceRecentAdapter;
 import com.hhly.mlottery.adapter.football.IntelligenceResultAdapter;
 import com.hhly.mlottery.bean.intelligence.BigDataForecast;
@@ -22,6 +23,7 @@ import com.hhly.mlottery.bean.intelligence.BigDataForecastData;
 import com.hhly.mlottery.bean.intelligence.BigDataForecastFactor;
 import com.hhly.mlottery.bean.intelligence.BigDataResult;
 import com.hhly.mlottery.config.BaseURLs;
+import com.hhly.mlottery.util.L;
 import com.hhly.mlottery.util.StringFormatUtils;
 import com.hhly.mlottery.util.net.VolleyContentFast;
 import com.hhly.mlottery.view.RoundProgressBar;
@@ -133,7 +135,6 @@ public class IntelligenceFragment extends Fragment {
     private List<BigDataResult.GridViewEntity> halfTodayHandicapList=new ArrayList<>();
     private LinearLayout mLlTodayHandicapHalf;
 
-    private String mThirdId;
     private BigDataForecast mBigDataForecast;
     private BigDataForecastFactor mFactor;
     private BigDataResult mResult;
@@ -149,14 +150,11 @@ public class IntelligenceFragment extends Fragment {
     private IntelligenceRecentAdapter mRecentHalfAdapter;
     private List<BigDataResult.GridViewEntity> halfRecentList=new ArrayList<>();
 
+//    private boolean isLoading = false;// 是否已加载过数据
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        if (args != null) {
-            mThirdId = args.getString(KEY_THIRD_ID);
-        }
         if (mFactor == null) {
             mFactor = new BigDataForecastFactor();
         }
@@ -334,9 +332,9 @@ public class IntelligenceFragment extends Fragment {
         mGvTodayHandicapHalf.setFocusable(false);
     }
 
-    private void initData(){
+    public void initData(){
         Map<String, String> params = new HashMap<>();
-        params.put(KEY_THIRD_ID, mThirdId);
+        params.put(KEY_THIRD_ID, getActivity() != null ? ((FootballMatchDetailActivity)getActivity()).mThirdId : null);
 
         VolleyContentFast.requestJsonByGet(BaseURLs.URL_INTELLIGENCE_BIG_DATA, params,
                 new VolleyContentFast.ResponseSuccessListener<BigDataResult>() {
@@ -390,7 +388,6 @@ public class IntelligenceFragment extends Fragment {
                 new VolleyContentFast.ResponseErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyContentFast.VolleyException exception) {
-                        // TODO: 异常处理
                     }
                 }, BigDataResult.class);
     }
@@ -805,12 +802,7 @@ public class IntelligenceFragment extends Fragment {
         alertView.setVisibility(View.VISIBLE);
     }
 
-    public static IntelligenceFragment newInstance(String thirdId) {
-
-        Bundle args = new Bundle();
-        args.putString(KEY_THIRD_ID, thirdId);
-        IntelligenceFragment fragment = new IntelligenceFragment();
-        fragment.setArguments(args);
-        return fragment;
+    public static IntelligenceFragment newInstance() {
+        return new IntelligenceFragment();
     }
 }
